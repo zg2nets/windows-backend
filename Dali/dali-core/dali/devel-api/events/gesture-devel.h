@@ -1,8 +1,8 @@
-#ifndef DALI_ADAPTOR_LOG_FACTORY_INTERFACE_H
-#define DALI_ADAPTOR_LOG_FACTORY_INTERFACE_H
+#ifndef DALI_GESTURE_DEVEL_H
+#define DALI_GESTURE_DEVEL_H
 
 /*
- * Copyright (c) 2017 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2019 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,23 +15,33 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
+
+#include <dali/public-api/events/gesture.h>
 
 namespace Dali
 {
 
-class LogFactoryInterface
+namespace DevelGesture
 {
-public:
-  /**
-   * @brief Install a log function for this thread.
-   *
-   * Only need to use once per thread, before any processing occurs.
-   */
-  virtual void InstallLogFunction() const = 0;
+
+/**
+ * @copydoc Dali::Gesture::Type
+ */
+enum Type
+{
+  Pinch      = Gesture::Pinch,
+  Pan        = Gesture::Pan,
+  Tap        = Gesture::Tap,
+  LongPress  = Gesture::LongPress,
+
+  // Devel Gesture Types
+  Rotation   = 1 << 4, ///< When the user rotates two fingers around a particular ares of the screen.
 };
+
+} // namespace DevelGesture
 
 } // namespace Dali
 
-
-#endif //DALI_ADAPTOR_LOG_FACTORY_INTERFACE_H
+#endif // DALI_GESTURE_DEVEL_H

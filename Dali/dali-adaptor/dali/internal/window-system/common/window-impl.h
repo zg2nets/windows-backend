@@ -24,17 +24,12 @@
 #include <dali/public-api/actors/layer.h>
 #include <dali/public-api/render-tasks/render-task-list.h>
 
-#ifdef DALI_ADAPTOR_COMPILATION
-#include <dali/integration-api/scene-holder-impl.h>
-#else
-#include <dali/integration-api/adaptors/scene-holder-impl.h>
-#endif
-
 // INTERNAL INCLUDES
-#include <dali/internal/adaptor/common/adaptor-impl.h>
 #include <dali/public-api/adaptor-framework/window.h>
 #include <dali/public-api/adaptor-framework/key-grab.h>
 #include <dali/devel-api/adaptor-framework/window-devel.h>
+#include <dali/integration-api/adaptor-framework/scene-holder-impl.h>
+#include <dali/internal/adaptor/common/adaptor-impl.h>
 #include <dali/internal/window-system/common/event-handler.h>
 
 namespace Dali
@@ -67,6 +62,8 @@ public:
   typedef Dali::Window::ResizedSignalType ResizedSignalType;
   typedef Dali::Window::FocusChangeSignalType FocusChangeSignalType;
   typedef Dali::Window::ResizeSignalType ResizeSignalType;
+  typedef Dali::DevelWindow::VisibilityChangedSignalType VisibilityChangedSignalType;
+  typedef Dali::DevelWindow::TransitionEffectEventSignalType TransitionEffectEventSignalType;
   typedef Signal< void () > SignalType;
 
   /**
@@ -400,6 +397,11 @@ private:
    */
   void OnDeleteRequest();
 
+  /**
+   * Called when the window receives a Transition effect-start/end event.
+   */
+  void OnTransitionEffectEvent( DevelWindow::EffectState state, DevelWindow::EffectType type );
+
 private: // Dali::Internal::Adaptor::SceneHolder
 
   /**
@@ -469,6 +471,7 @@ public: // Signals
    * @copydoc Dali::Window::ResizedSignal()
    */
   ResizedSignalType& ResizedSignal() { return mResizedSignal; }
+
   /**
    * @copydoc Dali::Window::ResizedSignal()
    */
@@ -480,9 +483,19 @@ public: // Signals
   SignalType& DeleteRequestSignal() { return mDeleteRequestSignal; }
 
   /**
+   * @copydoc Dali::DevelWindow::VisibilityChangedSignal()
+   */
+  VisibilityChangedSignalType& VisibilityChangedSignal() { return mVisibilityChangedSignal; }
+
+  /**
    * @copydoc Dali::Window::SignalEventProcessingFinished()
    */
   Dali::DevelWindow::EventProcessingFinishedSignalType& EventProcessingFinishedSignal() { return mScene.EventProcessingFinishedSignal(); }
+
+  /**
+   * @copydoc Dali::DevelWindow::TransitionEffectEventSignal()
+   */
+  TransitionEffectEventSignalType& TransitionEffectEventSignal() { return mTransitionEffectEventSignal; }
 
 private:
 
@@ -515,6 +528,8 @@ private:
   SignalType                            mDeleteRequestSignal;
   FocusChangeSignalType                 mFocusChangeSignal;
   ResizeSignalType                      mResizeSignal;
+  VisibilityChangedSignalType           mVisibilityChangedSignal;
+  TransitionEffectEventSignalType       mTransitionEffectEventSignal;
 };
 
 } // namespace Adaptor

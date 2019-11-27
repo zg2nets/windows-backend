@@ -29,13 +29,8 @@
 #include <dali/devel-api/adaptor-framework/orientation.h>
 #include <dali/integration-api/events/touch-event-integ.h>
 
-#ifdef DALI_ADAPTOR_COMPILATION
-#include <dali/integration-api/render-surface-interface.h>
-#else
-#include <dali/integration-api/adaptors/render-surface-interface.h>
-#endif
-
 // INTERNAL HEADERS
+#include <dali/integration-api/adaptor-framework/render-surface-interface.h>
 #include <dali/internal/window-system/common/event-handler.h>
 #include <dali/internal/window-system/common/orientation-impl.h>
 #include <dali/internal/window-system/common/render-surface-factory.h>
@@ -86,7 +81,9 @@ Window::Window()
   mResizedSignal(),
   mDeleteRequestSignal(),
   mFocusChangeSignal(),
-  mResizeSignal()
+  mResizeSignal(),
+  mVisibilityChangedSignal(),
+  mTransitionEffectEventSignal()
 {
 }
 
@@ -113,6 +110,7 @@ void Window::Initialize(const PositionSize& positionSize, const std::string& nam
   mWindowBase->IconifyChangedSignal().Connect( this, &Window::OnIconifyChanged );
   mWindowBase->FocusChangedSignal().Connect( this, &Window::OnFocusChanged );
   mWindowBase->DeleteRequestSignal().Connect( this, &Window::OnDeleteRequest );
+  mWindowBase->TransitionEffectEventSignal().Connect( this, &Window::OnTransitionEffectEvent );
 
   mWindowSurface->OutputTransformedSignal().Connect( this, &Window::OnOutputTransformed );
 
@@ -291,6 +289,9 @@ void Window::Show()
   {
     WindowVisibilityObserver* observer( mAdaptor );
     observer->OnWindowShown();
+
+    Dali::Window handle( this );
+    mVisibilityChangedSignal.Emit( handle, true );
   }
 
   DALI_LOG_RELEASE_INFO( "Window (%p) Show(): iconified = %d\n", this, mIconified );
@@ -306,6 +307,9 @@ void Window::Hide()
   {
     WindowVisibilityObserver* observer( mAdaptor );
     observer->OnWindowHidden();
+
+    Dali::Window handle( this );
+    mVisibilityChangedSignal.Emit( handle, false );
   }
 
   DALI_LOG_RELEASE_INFO( "Window (%p) Hide(): iconified = %d\n", this, mIconified );
@@ -563,6 +567,9 @@ void Window::OnIconifyChanged( bool iconified )
     {
       WindowVisibilityObserver* observer( mAdaptor );
       observer->OnWindowHidden();
+
+      Dali::Window handle( this );
+      mVisibilityChangedSignal.Emit( handle, false );
     }
 
     DALI_LOG_RELEASE_INFO( "Window (%p) Iconified: visible = %d\n", this, mVisible );
@@ -575,6 +582,9 @@ void Window::OnIconifyChanged( bool iconified )
     {
       WindowVisibilityObserver* observer( mAdaptor );
       observer->OnWindowShown();
+
+      Dali::Window handle( this );
+      mVisibilityChangedSignal.Emit( handle, true );
     }
 
     DALI_LOG_RELEASE_INFO( "Window (%p) Deiconified: visible = %d\n", this, mVisible );
@@ -599,6 +609,12 @@ void Window::OnOutputTransformed()
 void Window::OnDeleteRequest()
 {
   mDeleteRequestSignal.Emit();
+}
+
+void Window::OnTransitionEffectEvent( DevelWindow::EffectState state, DevelWindow::EffectType type )
+{
+  Dali::Window handle( this );
+  mTransitionEffectEventSignal.Emit( handle, state, type );
 }
 
 void Window::OnTouchPoint( Dali::Integration::Point& point, int timeStamp )
@@ -629,14 +645,14 @@ void Window::OnRotation( const RotationEvent& rotation )
 
   SurfaceResized();
 
-  mAdaptor->SurfaceResizePrepare( mSurface.get(), Adaptor::SurfaceSize( mRotationAngle, mWindowHeight ) );
+  mAdaptor->SurfaceResizePrepare( mSurface.get(), Adaptor::SurfaceSize( mWindowWidth, mWindowHeight ) );
 
   // Emit signal
   Dali::Window handle( this );
-  mResizedSignal.Emit( Dali::Window::WindowSize( mRotationAngle, mWindowHeight ) );
-  mResizeSignal.Emit( handle, Dali::Window::WindowSize( mRotationAngle, mWindowHeight ) );
+  mResizedSignal.Emit( Dali::Window::WindowSize( mWindowWidth, mWindowHeight ) );
+  mResizeSignal.Emit( handle, Dali::Window::WindowSize( mWindowWidth, mWindowHeight ) );
 
-  mAdaptor->SurfaceResizeComplete( mSurface.get(), Adaptor::SurfaceSize( mRotationAngle, mWindowHeight ) );
+  mAdaptor->SurfaceResizeComplete( mSurface.get(), Adaptor::SurfaceSize( mWindowWidth, mWindowHeight ) );
 }
 
 void Window::OnPause()
@@ -708,20 +724,20 @@ void Window::SetParent( Dali::Window& parent )
   if ( DALI_UNLIKELY( parent ) )
   {
     mParentWindow = parent;
-    Dali::Window grandParent = Dali::DevelWindow::GetParent( parent );
+    Dali::Window self = Dali::Window( this );
     // check circular parent window setting
-    if ( DALI_UNLIKELY( grandParent ) && mWindowBase->IsMatchedWindow( grandParent.GetNativeHandle() ) )
+    if ( Dali::DevelWindow::GetParent( parent ) == self )
     {
       Dali::DevelWindow::Unparent( parent );
     }
-    mWindowBase->SetParent( parent.GetNativeHandle() );
+    mWindowBase->SetParent( GetImplementation( mParentWindow ).mWindowBase );
   }
 }
 
 void Window::Unparent()
 {
-  Any parent;
-  mWindowBase->SetParent( parent );
+  mWindowBase->SetParent( nullptr );
+  mParentWindow.Reset();
 }
 
 Dali::Window Window::GetParent()
