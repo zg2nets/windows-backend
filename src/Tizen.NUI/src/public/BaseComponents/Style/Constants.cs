@@ -14,76 +14,81 @@
  * limitations under the License.
  *
  */
+
 using System.ComponentModel;
 
-namespace Tizen.NUI.Components
+namespace Tizen.NUI.BaseComponents
 {
     /// <summary>
-    /// The image view attributes class.
+    /// Enumeration for describing the states of the view.
     /// </summary>
+    /// <since_tizen> 6 </since_tizen>
     /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ImageAttributes : ViewAttributes
+    public enum ControlStates
     {
         /// <summary>
-        /// Construct ImageAttributes.
+        /// The normal state.
         /// </summary>
+        /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageAttributes() : base() { }
+        Normal,
         /// <summary>
-        /// Construct with specified attribute.
+        /// The focused state.
         /// </summary>
-        /// <param name="attributes">The specified ImageAttributes.</param>
+        /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageAttributes(ImageAttributes attributes) : base(attributes)
-        {
-            if (attributes == null)
-            {
-                return;
-            }
-
-            if (attributes.ResourceURL != null)
-            {
-                ResourceURL = attributes.ResourceURL.Clone() as StringSelector;
-            }
-
-            if (attributes.Border != null)
-            {
-                Border = attributes.Border.Clone() as RectangleSelector;
-            }
-        }
+        Focused,
         /// <summary>
-        /// Image URL.
+        /// The disabled state.
         /// </summary>
+        /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public StringSelector ResourceURL
-        {
-            get;
-            set;
-        }
+        Disabled,
         /// <summary>
-        /// Image border.
+        /// The Selected state.
         /// </summary>
+        /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public RectangleSelector Border
-        {
-            get;
-            set;
-        }
+        Selected,
         /// <summary>
-        /// Attributes's clone function.
+        /// The Pressed state.
         /// </summary>
-        /// <returns> Return the attributes clone.</returns>
+        /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override Attributes Clone()
-        {
-            return new ImageAttributes(this);
-        }
-
+        Pressed,
+        /// <summary>
+        /// The DisabledFocused state.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        DisabledFocused,
+        /// <summary>
+        /// The SelectedFocused state.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        SelectedFocused,
+        /// <summary>
+        /// The DisabledSelected state.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        DisabledSelected,
+        /// <summary>
+        /// Max all.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        Max
     }
 }
