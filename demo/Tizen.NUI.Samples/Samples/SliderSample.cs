@@ -75,21 +75,27 @@ namespace Tizen.NUI.Samples
 
                 Thumb = new ImageViewStyle
                 {
+                    Size = new Size(60, 60),
                     ResourceUrl = new Selector<string>
                     {
                         Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_slide_handler_normal.png",
                         Pressed = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_slide_handler_press.png",
                     },
-                },
-                ThumbBackground = new ImageViewStyle
-                {
-                    Size = new Size(60, 60),
-                    ResourceUrl = new Selector<string>
+                    BackgroundImage = new Selector<string>
                     {
                         Normal = "",
                         Pressed = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_slide_handler_effect.png",
                     }
-                }
+                },
+                //ThumbBackground = new ImageViewStyle
+                //{
+                //    Size = new Size(60, 60),
+                //    ResourceUrl = new Selector<string>
+                //    {
+                //        Normal = "",
+                //        Pressed = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_slide_handler_effect.png",
+                //    }
+                //}
             };
 
             slider2[0] = CreateByAttributes(attributes, 890, 300, 800, 50, 20, Slider.DirectionType.Horizontal);
@@ -176,7 +182,7 @@ namespace Tizen.NUI.Samples
                 Pressed = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_slide_handler_press.png",
             };
             source.Style.Thumb.Size = new Size(60, 60);
-            source.Style.ThumbBackground.ResourceUrl = new Selector<string>
+            source.Style.Thumb.BackgroundImage = new Selector<string>
             {
                 Normal = "",
                 Pressed = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_slide_handler_effect.png",

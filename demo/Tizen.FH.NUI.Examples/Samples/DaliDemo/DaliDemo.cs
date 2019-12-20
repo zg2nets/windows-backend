@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
-    public class DaliDemo : FHNUIApplication
+    public class DaliDemo : Tizen.FH.NUI.FHNUIApplication
     {
         public DaliDemo() : base()
         {
@@ -46,7 +46,7 @@ namespace Tizen.FH.NUI.Samples
 
             Assembly assembly = this.GetType().Assembly;
 
-            Type exampleType = assembly.GetType("Tizen.FH.NUI.Samples.IExample");
+            Type exampleType = assembly.GetType("Tizen.FH.NUI.Examples.IExample");
 
             foreach (Type type in assembly.GetTypes())
             {
@@ -55,7 +55,6 @@ namespace Tizen.FH.NUI.Samples
                     demo.AddExample(new Example(type.FullName, type.Name));
                 }
             }
-
             demo.SortAlphabetically(true);
 
             demo.Initialize();
@@ -131,16 +130,17 @@ namespace Tizen.FH.NUI.Samples
         protected override void OnCreate()
         {
             base.OnCreate();
+
             CreateDaliDemo();
 
-            backNavigation = new Tizen.FH.NUI.Controls.Navigation("Back");
+            backNavigation = new Tizen.FH.NUI.Components.Navigation("Back");
             backNavigation.PositionUsesPivotPoint = true;
             backNavigation.PivotPoint = PivotPoint.BottomLeft;
             backNavigation.ParentOrigin = ParentOrigin.BottomLeft;
             backNavigation.ItemTouchEvent += OnBackNaviTouchEvent;
             backNavigation.Hide();
 
-            Tizen.FH.NUI.Controls.Navigation.NavigationItemData backItem = new Tizen.FH.NUI.Controls.Navigation.NavigationItemData("WhiteBackItem");
+            Tizen.FH.NUI.Components.Navigation.NavigationDataItem backItem = new Tizen.FH.NUI.Components.Navigation.NavigationDataItem("WhiteBackItem");
             backNavigation.AddItem(backItem);
 
             Window.Instance.GetDefaultLayer().Add(backNavigation);
@@ -194,6 +194,6 @@ namespace Tizen.FH.NUI.Samples
 
         private Tizen.NUI.Timer timerForExit = new Tizen.NUI.Timer(10);
         private DaliTableView demo;
-        private Tizen.FH.NUI.Controls.Navigation backNavigation;
+        private Tizen.FH.NUI.Components.Navigation backNavigation;
     }
 }

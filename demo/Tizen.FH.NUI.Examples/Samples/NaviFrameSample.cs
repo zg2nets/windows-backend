@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using Tizen.FH.NUI.Controls;
+﻿
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class NaviFrame : IExample
     {
         private SampleLayout root;
-        private Tizen.NUI.Components.Button NextButton;
-        private Tizen.NUI.Components.Button BackButton;
-        private Controls.NaviFrame navi;
-        private Controls.Header h;
+        private Tizen.NUI.Components.DA.Button NextButton;
+        private Tizen.NUI.Components.DA.Button BackButton;
+        private Components.NaviFrame navi;
+        private Components.Header h;
         private TextLabel c;
         private int i;
 
@@ -24,11 +21,10 @@ namespace Tizen.FH.NUI.Samples
             root = new SampleLayout(false);
             root.HeaderText = "NaviFrame";
 
-            navi = new Controls.NaviFrame("DefaultNaviFrame");
-			navi.SetNotifier(new NaviItemLifecycle());
-            root.Add(navi);
+            navi = new Components.NaviFrame();
+            navi.SetNotifier(new NaviItemLifecycle(root));
 
-            BackButton = new Tizen.NUI.Components.Button()
+            BackButton = new Tizen.NUI.Components.DA.Button()
             {
                 Size2D = new Size2D(90, 60),
                 BackgroundColor = Color.Cyan,
@@ -36,13 +32,13 @@ namespace Tizen.FH.NUI.Samples
                 PointSize = 14,
             };
             BackButton.PositionUsesPivotPoint = true;
-            BackButton.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
-            BackButton.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+            BackButton.ParentOrigin = ParentOrigin.CenterLeft;
+            BackButton.PivotPoint = PivotPoint.CenterLeft;
             BackButton.ClickEvent += ClickPush;
 
             root.Add(BackButton);
             BackButton.RaiseToTop();
-            NextButton = new Tizen.NUI.Components.Button()
+            NextButton = new Tizen.NUI.Components.DA.Button()
             {
                 Text = "Pop",
                 Size2D = new Size2D(90, 60),
@@ -50,8 +46,8 @@ namespace Tizen.FH.NUI.Samples
                 PointSize = 14,
             };
             NextButton.PositionUsesPivotPoint = true;
-            NextButton.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
-            NextButton.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+            NextButton.ParentOrigin = ParentOrigin.CenterRight;
+            NextButton.PivotPoint = PivotPoint.CenterRight;
             NextButton.ClickEvent += ClickPop;
 
             root.Add(NextButton);
@@ -66,7 +62,6 @@ namespace Tizen.FH.NUI.Samples
             {
                 if (navi != null)
                 {
-                    root.Remove(navi);
                     navi.Dispose();
                 }
                 if (BackButton != null)
@@ -84,33 +79,47 @@ namespace Tizen.FH.NUI.Samples
             }
         }
 
-        private class NaviItemLifecycle : Controls.NaviFrame.Notifier
+        private class NaviItemLifecycle : Components.NaviFrame.Notifier
         {
-            public override void OnNaviItemCreated(Controls.NaviFrame.NaviItem item)
+            private View root;
+
+            public NaviItemLifecycle(View v)
+            {
+                root = v;
+            }
+
+            public override void OnNaviItemCreated(Components.NaviFrame.NaviItem item)
             {
                 // nothing
             }
 
-            public override void OnNaviItemDestroyed(Controls.NaviFrame.NaviItem item)
+            public override void OnNaviItemDestroyed(Components.NaviFrame.NaviItem item)
             {
                 if (item.Header != null)
                 {
+                    root.Remove(item.Header);
                     item.Header.Dispose();
                 }
 
                 if (item.Content != null)
                 {
+                    root.Remove(item.Content);
                     item.Content.Dispose();
                 }
             }
         }
 
-        private Tizen.FH.NUI.Controls.Header MakeHeader(string txt)
+        private Components.Header MakeHeader(string txt)
         {
-            Controls.Header head = new Controls.Header("DefaultHeader");
-            head.BackgroundColor = new Color(255, 255, 255, 0.7f);
-            head.HeaderText = "Title " + txt;
-
+            Components.Header head = new Components.Header("DefaultHeader");
+            head.BackgroundColor = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            head.Title = "Title " + txt;
+            head.Position = new Position(0, 0);
+            head.Size = new Size(1080, 128);
+            head.PositionUsesPivotPoint = true;
+            head.ParentOrigin = ParentOrigin.TopCenter;
+            head.PivotPoint = PivotPoint.TopCenter;
+            root.Add(head);
             return head;
         }
 
@@ -120,15 +129,19 @@ namespace Tizen.FH.NUI.Samples
             {
                 Text = txt,
                 PointSize = 90,
-                BackgroundColor = new Color(255, 255, 255, 0.7f),
+                BackgroundColor = new Color(1.0f, 1.0f, 1.0f, 0.7f),
                 HeightResizePolicy = ResizePolicyType.FillToParent,
                 WidthResizePolicy = ResizePolicyType.FillToParent,
             };
-
+            content.Position = new Position(0, 128);
+            content.Size = new Size(1080, 128);
+            content.HeightResizePolicy = ResizePolicyType.FillToParent;
+            content.WidthResizePolicy = ResizePolicyType.FillToParent;
+            root.Add(content);
             return content;
         }
 
-        private void ClickPush(object sender, Tizen.NUI.Components.Button.ClickEventArgs e)
+        private void ClickPush(object sender, Tizen.NUI.Components.DA.Button.ClickEventArgs e)
         {
             string head = "header" + i;
             string lable = "lable" + i;
@@ -141,7 +154,7 @@ namespace Tizen.FH.NUI.Samples
             }
         }
 
-        private void ClickPop(object sender, Tizen.NUI.Components.Button.ClickEventArgs e)
+        private void ClickPop(object sender, Tizen.NUI.Components.DA.Button.ClickEventArgs e)
         {
             if (navi != null)
             {

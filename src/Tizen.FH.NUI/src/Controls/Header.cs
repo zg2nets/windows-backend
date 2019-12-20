@@ -15,150 +15,121 @@
  *
  */
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
+using Tizen.NUI.Components.DA;
 
-namespace Tizen.FH.NUI.Controls
+namespace Tizen.FH.NUI.Components
 {
     /// <summary>
     /// The Header  is a component that contain a lable and a 1 pixel line  under it
     /// </summary>
     /// <since_tizen> 5.5 </since_tizen>
-    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.    
     public class Header : Control
     {
-        private HeaderAttributes headerAttribute;
-        private TextLabel headerTitle;
-        private View headerLine;
+        private TextLabel title;
+        private View bottomLine;
+
         /// <summary>
         /// Initializes a new instance of the Header class.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.       
         public Header() : base()
         {
-            Initialize();
         }
+
         /// <summary>
         /// Initializes a new instance of the Header class.
         /// </summary>
         /// <param name="style">Create Header by special style defined in UX.</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public Header(string style) : base(style)
         {
-            Initialize();
         }
+
         /// <summary>
         /// Initializes a new instance of the Header class.
         /// </summary>
-        /// <param name="attributes">Create Header by attributes customized by user.</param>
+        /// <param name="style">Create Header by attributes customized by user.</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Header(HeaderAttributes attributes) : base(attributes)
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public Header(HeaderStyle style) : base(style)
         {
-            Initialize();
         }
+
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public new HeaderStyle Style => ViewStyle as HeaderStyle;
+
         /// <summary>
         ///The text showed in the header
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public string HeaderText
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public string Title
         {
             get
             {
-                return headerAttribute?.TextAttributes?.Text?.All;
+                return Style?.Title?.Text?.All;
             }
             set
             {
-                if (value != null)
-                {
-                    CreateTextAttributes();
-                    if (headerAttribute.TextAttributes.Text == null)
-                    {
-                        headerAttribute.TextAttributes.Text = new StringSelector();
-                    }
-                    headerAttribute.TextAttributes.Text.All = value;
-
-                    RelayoutRequest();
-                }
+                Style.Title.Text = new Selector<string>() { All = value };
             }
         }
+
         /// <summary>
         ///The color of text showed in the header
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Color HeaderTextColor
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public Color TitleColor
         {
             get
             {
-                return headerAttribute?.TextAttributes?.TextColor?.All;
+                return Style?.Title?.TextColor?.All;
             }
             set
             {
-                if (value != null)
-                {
-                    CreateTextAttributes();
-                    if (headerAttribute.TextAttributes.TextColor == null)
-                    {
-                        headerAttribute.TextAttributes.TextColor = new ColorSelector();
-                    }
-                    headerAttribute.TextAttributes.TextColor.All = value;
-                    RelayoutRequest();
-                }
+                Style.Title.TextColor = new Selector<Color> { All = value };
             }
         }
+
         /// <summary>
         ///The color of one pixel line under the header
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Color LinebackgroundColor
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public Color BottomLineColor
         {
             get
             {
-                return headerAttribute?.LineAttributes?.BackgroundColor?.All;
+                return Style?.BottomLine?.BackgroundColor?.All;
             }
             set
             {
-                CreateLineAttributes();
-                if (headerAttribute.LineAttributes.BackgroundColor == null)
-                {
-                    headerAttribute.LineAttributes.BackgroundColor = new ColorSelector();
-                }
-                headerAttribute.LineAttributes.BackgroundColor.All = value;
-                RelayoutRequest();
+                Style.BottomLine.BackgroundColor = new Selector<Color> { All = value };
             }
         }
+
         /// <summary>
         /// Get Header attribues.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override Attributes GetAttributes()
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        protected override ViewStyle GetViewStyle()
         {
-            return new HeaderAttributes();
+            return new HeaderStyle();
         }
+
         /// <summary>
         /// Dispose Header and all children on it.
         /// </summary>
         /// <param name="type">Dispose type.</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void Dispose(DisposeTypes type)
         {
             if (disposed)
@@ -167,49 +138,35 @@ namespace Tizen.FH.NUI.Controls
             }
             if (type == DisposeTypes.Explicit)
             {
-                if (headerTitle != null)
-                {
-                    Remove(headerTitle);
-                    headerTitle.Dispose();
-                    headerTitle = null;
-                }
-                if (headerLine != null)
-                {
-                    Remove(headerLine);
-                    headerLine.Dispose();
-                    headerLine = null;
-                }
+                Utility.Dispose(title);
+                Utility.Dispose(bottomLine);
             }
             base.Dispose(type);
         }
-        /// <summary>
-        /// Update Header by attributes.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override void OnUpdate()
+
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public override void ApplyStyle(ViewStyle viewStyle)
         {
-            if (headerAttribute.TextAttributes != null)
+            base.ApplyStyle(viewStyle);
+
+            HeaderStyle style = viewStyle as HeaderStyle;
+            if (style != null)
             {
-                if (headerTitle== null)
+                if (title == null)
                 {
-                    headerTitle= new TextLabel
+                    title = new TextLabel
                     {
                         WidthResizePolicy = ResizePolicyType.FillToParent,
                         HeightResizePolicy = ResizePolicyType.FillToParent,
-                        HorizontalAlignment =   HorizontalAlignment.Center,
-                        VerticalAlignment =  VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
                     };
-                    this.Add(headerTitle);
+                    Add(title);
                 }
-                ApplyAttributes(headerTitle, headerAttribute.TextAttributes);
-            }
-            if (headerAttribute.LineAttributes != null)
-            {
-                if (headerLine == null)
+
+                if (bottomLine == null)
                 {
-                    headerLine = new View
+                    bottomLine = new View
                     {
                         WidthResizePolicy = ResizePolicyType.FillToParent,
                         Size = new Size(1080, 1),
@@ -217,38 +174,12 @@ namespace Tizen.FH.NUI.Controls
                         ParentOrigin = Tizen.NUI.ParentOrigin.BottomLeft,
                         PivotPoint = Tizen.NUI.PivotPoint.TopLeft
                     };
-                    this.Add(headerLine);
+                    Add(bottomLine);
                 }
-                ApplyAttributes(headerLine, headerAttribute.LineAttributes);
+
+                title.ApplyStyle(Style.Title);
+                bottomLine.ApplyStyle(Style.BottomLine);
             }
         }
-
-        private void CreateTextAttributes()
-        {
-            if (headerAttribute.TextAttributes == null)
-            {
-                headerAttribute.TextAttributes = new TextAttributes();
-            }
-        }
-
-        private void CreateLineAttributes()
-        {
-
-            if (headerAttribute.LineAttributes == null)
-            {
-                headerAttribute.LineAttributes = new ViewAttributes();
-            }
-        }
-
-        private void Initialize()
-        {
-            headerAttribute = attributes as HeaderAttributes;
-            if (headerAttribute == null)
-            {
-                throw new Exception("Header attribute parse error.");
-            }
-            ApplyAttributes(this, headerAttribute);
-        }
-     
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tizen.FH.FamilyBoard
 {
-    public class PictureWizard : IViewLifecycle
+    public class PictureWizard : ILifecycleObserver
     {
         private static PictureWizard instance = null;
 

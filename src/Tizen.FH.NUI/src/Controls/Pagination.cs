@@ -15,22 +15,18 @@
  *
  */
 using System;
-using System.ComponentModel;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
 using Tizen.NUI;
 
-namespace Tizen.FH.NUI.Controls
+namespace Tizen.FH.NUI.Components
 {
     /// <summary>
     /// Pagination shows the number of pages available and the currently active page.
     /// </summary>
     /// <since_tizen> 5.5 </since_tizen>
-    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class Pagination : Tizen.NUI.Components.Pagination
+    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.    
+    public class Pagination : Tizen.NUI.Components.DA.Pagination
     {
-        private PaginationAttributes paginationAttributes;
         private ImageView returnArrow;
         private ImageView nextArrow;
 
@@ -46,8 +42,7 @@ namespace Tizen.FH.NUI.Controls
         /// Creates a new instance of a Pagination.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public Pagination() : base()
         {
             Initialize();
@@ -57,26 +52,26 @@ namespace Tizen.FH.NUI.Controls
         /// Creates a new instance of a Pagination using style.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public Pagination(string style) : base(style)
         {
             Initialize();
         }
 
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public new PaginationStyle Style => ViewStyle as PaginationStyle;
+
         /// <summary>
         /// Select indicator changed event.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public event EventHandler<SelectChangeEventArgs> SelectChangeEvent
         {
             add
             {
                 selectChangeEventHandlers += value;
             }
-
             remove
             {
                 selectChangeEventHandlers -= value;
@@ -87,30 +82,20 @@ namespace Tizen.FH.NUI.Controls
         /// Gets or sets the resource of return arrow button.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public StringSelector ReturnArrowURLs
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public Selector<string> ReturnArrowUrl
         {
             get
             {
-                return paginationAttributes?.ReturnArrowAttributes?.ResourceURL;
+                return Style?.ReturnArrow?.ResourceUrl;
             }
             set
             {
-                if (value == null || paginationAttributes == null)
+                if (value == null || Style == null)
                 {
                     return;
                 }
-                if (paginationAttributes.ReturnArrowAttributes == null)
-                {
-                    paginationAttributes.ReturnArrowAttributes = new ImageAttributes
-                    {
-                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
-                        PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
-                        PositionUsesPivotPoint = true
-                    };
-                }
-                paginationAttributes.ReturnArrowAttributes.ResourceURL = value;
+                Style.ReturnArrow.ResourceUrl = value;
             }
         }
 
@@ -118,30 +103,20 @@ namespace Tizen.FH.NUI.Controls
         /// Gets or sets the resource of next arrow button.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public StringSelector NextArrowURLs
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public Selector<string> NextArrowUrl
         {
             get
             {
-                return paginationAttributes?.NextArrowAttributes?.ResourceURL;
+                return Style?.NextArrow?.ResourceUrl;
             }
             set
             {
-                if (value == null || paginationAttributes == null)
+                if (value == null || Style == null)
                 {
                     return;
                 }
-                if (paginationAttributes.NextArrowAttributes == null)
-                {
-                    paginationAttributes.NextArrowAttributes = new ImageAttributes
-                    {
-                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
-                        PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
-                        PositionUsesPivotPoint = true
-                    };
-                }
-                paginationAttributes.NextArrowAttributes.ResourceURL = value;
+                Style.NextArrow.ResourceUrl = value;
             }
         }
 
@@ -149,30 +124,20 @@ namespace Tizen.FH.NUI.Controls
         /// Gets or sets the size of return arrow button.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public Size ReturnArrowSize
         {
             get
             {
-                return paginationAttributes?.ReturnArrowAttributes?.Size;
+                return Style?.ReturnArrow?.Size;
             }
             set
             {
-                if (value == null || paginationAttributes == null)
+                if (value == null || Style == null)
                 {
                     return;
                 }
-                if (paginationAttributes.ReturnArrowAttributes == null)
-                {
-                    paginationAttributes.ReturnArrowAttributes = new ImageAttributes
-                    {
-                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
-                        PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
-                        PositionUsesPivotPoint = true
-                    };
-                }
-                paginationAttributes.ReturnArrowAttributes.Size = value;
+                Style.ReturnArrow.Size = value;
             }
         }
 
@@ -180,30 +145,20 @@ namespace Tizen.FH.NUI.Controls
         /// Gets or sets the size of next arrow button.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public Size NextArrowSize
         {
             get
             {
-                return paginationAttributes?.NextArrowAttributes?.Size;
+                return Style?.NextArrow?.Size;
             }
             set
             {
-                if (value == null || paginationAttributes == null)
+                if (value == null || Style == null)
                 {
                     return;
                 }
-                if (paginationAttributes.NextArrowAttributes == null)
-                {
-                    paginationAttributes.NextArrowAttributes = new ImageAttributes
-                    {
-                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
-                        PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
-                        PositionUsesPivotPoint = true
-                    };
-                }
-                paginationAttributes.NextArrowAttributes.Size = value;
+                Style.NextArrow.Size = value;
             }
         }
 
@@ -211,8 +166,7 @@ namespace Tizen.FH.NUI.Controls
         /// Gets or sets the count of the pages/indicators.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public new int IndicatorCount
         {
             get
@@ -226,7 +180,6 @@ namespace Tizen.FH.NUI.Controls
                     return;
                 }
                 indicatorCount = value;
-
                 LayoutUpdate();
             }
         }
@@ -235,8 +188,7 @@ namespace Tizen.FH.NUI.Controls
         /// Gets or sets the index of the select indicator.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public new int SelectedIndex
         {
             get
@@ -250,16 +202,12 @@ namespace Tizen.FH.NUI.Controls
                     return;
                 }
                 int previousIndex = selectedIndex;
-
                 selectedIndex = value;
-
                 LayoutUpdate();
-
                 SelectChangeEventArgs args = new SelectChangeEventArgs();
                 args.PreviousIndex = previousIndex;
                 args.CurrentIndex = selectedIndex;
                 OnSelectChangeEvent(this, args);
-
             }
         }
 
@@ -268,8 +216,7 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <param name="type">DisposeTypes</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void Dispose(DisposeTypes type)
         {
             if (disposed)
@@ -285,19 +232,8 @@ namespace Tizen.FH.NUI.Controls
                     tapGestureDetector.Dispose();
                     tapGestureDetector = null;
                 }
-
-                if (returnArrow != null)
-                {
-                    this.Remove(returnArrow);
-                    returnArrow.Dispose();
-                    returnArrow = null;
-                }
-                if (nextArrow != null)
-                {
-                    this.Remove(nextArrow);
-                    nextArrow.Dispose();
-                    nextArrow = null;
-                }
+                Utility.Dispose(returnArrow);
+                Utility.Dispose(nextArrow);
             }
 
             base.Dispose(type);
@@ -307,32 +243,10 @@ namespace Tizen.FH.NUI.Controls
         /// you can override it to create your own default attributes.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override Attributes GetAttributes()
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        protected override ViewStyle GetViewStyle()
         {
-            return new PaginationAttributes();
-        }
-
-        /// <summary>
-        /// you can override it to update your own resources.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            ApplyAttributes(returnArrow, paginationAttributes.ReturnArrowAttributes);
-            ApplyAttributes(nextArrow, paginationAttributes.NextArrowAttributes);
-
-            int maxCount = GetMaxCountOnePage();
-            if (maxCountOnePage != maxCount)
-            {
-                maxCountOnePage = maxCount;
-                LayoutUpdate();
-            }
+            return new PaginationStyle();
         }
 
         /// <summary>
@@ -341,8 +255,7 @@ namespace Tizen.FH.NUI.Controls
         /// <param name="source">TapGestureDetector</param>
         /// <param name="e">DetectedEventArgs</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void OnTapGestureDetected(object source, TapGestureDetector.DetectedEventArgs e)
         {
             if (e.View == returnArrow)
@@ -361,7 +274,7 @@ namespace Tizen.FH.NUI.Controls
             }
             else
             {
-                Vector2 selectIndicatorPosition = GetIndicatorPosition(selectedIndex % maxCountOnePage);
+                Position selectIndicatorPosition = GetIndicatorPosition(selectedIndex % maxCountOnePage);
                 if (e.TapGesture.LocalPoint.X < selectIndicatorPosition.X)
                 {
                     if (selectedIndex > 0)
@@ -369,7 +282,7 @@ namespace Tizen.FH.NUI.Controls
                         SelectedIndex = selectedIndex - 1;
                     }
                 }
-                else if (e.TapGesture.LocalPoint.X > selectIndicatorPosition.X + paginationAttributes.IndicatorSize.Width)
+                else if (e.TapGesture.LocalPoint.X > selectIndicatorPosition.X + Style.IndicatorSize.Width)
                 {
                     if (selectedIndex < indicatorCount - 1)
                     {
@@ -381,25 +294,21 @@ namespace Tizen.FH.NUI.Controls
 
         private void Initialize()
         {
-            paginationAttributes = attributes as PaginationAttributes;
-            if (paginationAttributes == null)
-            {
-                throw new Exception("Pagination attributes parse error.");
-            }
-
             returnArrow = new ImageView()
             {
                 Name = "ReturnArrow",
                 //BackgroundColor = Color.Cyan
             };
-            this.Add(returnArrow);
+            Add(returnArrow);
+            returnArrow.ApplyStyle(Style.ReturnArrow);
 
             nextArrow = new ImageView()
             {
                 Name = "NextArrow",
                 //BackgroundColor = Color.Cyan
             };
-            this.Add(nextArrow);
+            Add(nextArrow);
+            nextArrow.ApplyStyle(Style.NextArrow);
 
             tapGestureDetector = new TapGestureDetector();
             tapGestureDetector.Detected += OnTapGestureDetected;
@@ -409,6 +318,12 @@ namespace Tizen.FH.NUI.Controls
 
         private void LayoutUpdate()
         {
+            int maxCount = GetMaxCountOnePage();
+            if (maxCountOnePage != maxCount)
+            {
+                maxCountOnePage = maxCount;
+            }
+
             int pageCount = (indicatorCount + maxCountOnePage - 1) / maxCountOnePage;
             int pageIndex = selectedIndex / maxCountOnePage;
             if (pageIndex == pageCount - 1)
@@ -443,26 +358,29 @@ namespace Tizen.FH.NUI.Controls
         private int GetMaxCountOnePage()
         {
             int count = 10;
-            if (paginationAttributes != null)
+            if (Style != null)
             {
                 int returnArrowWidth = 0, nextArrowWidth = 0;
-                if (paginationAttributes.ReturnArrowAttributes != null && paginationAttributes.ReturnArrowAttributes.Size != null)
+                if (Style.ReturnArrow != null && Style.ReturnArrow.Size != null)
                 {
-                    returnArrowWidth = (int)paginationAttributes.ReturnArrowAttributes.Size.Width;
+                    returnArrowWidth = (int)Style.ReturnArrow.Size.Width;
                 }
-                if (paginationAttributes.NextArrowAttributes != null && paginationAttributes.NextArrowAttributes.Size != null)
+                if (Style.NextArrow != null && Style.NextArrow.Size != null)
                 {
-                    nextArrowWidth = (int)paginationAttributes.NextArrowAttributes.Size.Width;
+                    nextArrowWidth = (int)Style.NextArrow.Size.Width;
                 }
                 int indicatorWidth = 0, indicatorHeight = 0;
                 int indicatorSpacing = 0;
-                if (paginationAttributes.IndicatorSize != null)
+                if (Style.IndicatorSize != null)
                 {
-                    indicatorWidth = (int)paginationAttributes.IndicatorSize.Width;
-                    indicatorHeight = (int)paginationAttributes.IndicatorSize.Height;
+                    indicatorWidth = (int)Style.IndicatorSize.Width;
+                    indicatorHeight = (int)Style.IndicatorSize.Height;
                 }
-                indicatorSpacing = paginationAttributes.IndicatorSpacing;
-
+                indicatorSpacing = Style.IndicatorSpacing;
+                if (indicatorWidth + indicatorSpacing == 0)
+                {
+                    throw new ArithmeticException("width and space of indictor is 0.");
+                }
                 count = (int)((this.SizeWidth - returnArrowWidth - nextArrowWidth) / (indicatorWidth + indicatorSpacing));
             }
             return count;
@@ -478,26 +396,22 @@ namespace Tizen.FH.NUI.Controls
         /// SelectChange Event Arguments.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public class SelectChangeEventArgs : EventArgs
         {
             /// <summary>
             /// Previous select indicator index.
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             public int PreviousIndex;
 
             /// <summary>
             /// Previous select indicator index.
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             public int CurrentIndex;
         }
-
     }
 }

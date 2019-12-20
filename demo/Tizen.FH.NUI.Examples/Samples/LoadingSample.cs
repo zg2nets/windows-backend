@@ -1,14 +1,14 @@
 ﻿using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
+using Tizen.NUI.Components.DA;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class Loading : IExample
     {
         private TextLabel board1, board2, board;
-        private Tizen.NUI.Components.Button button1, button2;
-        private Tizen.NUI.Components.Loading loading1_1, loading2_1;  //1-style para 2-attributes;
+        private Tizen.NUI.Components.DA.Button button1, button2;
+        private Tizen.NUI.Components.DA.Loading loading1_1, loading2_1;  //1-style para 2-attributes;
         private SampleLayout root;
 
         public void Activate()
@@ -33,18 +33,18 @@ namespace Tizen.FH.NUI.Samples
                 }
             }
 
-            loading1_1 = new Tizen.NUI.Components.Loading("DefaultLoading");
+            loading1_1 = new Tizen.NUI.Components.DA.Loading("DefaultLoading");
             loading1_1.Position2D = new Position2D(100, 350);
             loading1_1.Size2D = new Size2D(100, 100);
 
             root.Add(loading1_1);
 
-            LoadingAttributes attr = new LoadingAttributes
+            LoadingStyle attr = new LoadingStyle
             {
-                ImageArray = imageArray,
+                Images = imageArray,
             };
 
-            loading2_1 = new Tizen.NUI.Components.Loading(attr);
+            loading2_1 = new Tizen.NUI.Components.DA.Loading(attr);
             loading2_1.Position2D = new Position2D(500, 350);
             loading2_1.Size2D = new Size2D(100, 100);
             root.Add(loading2_1);
@@ -97,7 +97,7 @@ namespace Tizen.FH.NUI.Samples
             board2.FocusGained += Board_FocusGained;
             board2.FocusLost += Board_FocusLost;
 
-            button1 = new Tizen.NUI.Components.Button();
+            button1 = new Tizen.NUI.Components.DA.Button();
             button1.PointSize = 14;
             button1.BackgroundColor = Color.Green;
             button1.Position2D = new Position2D(80, 500);
@@ -107,7 +107,7 @@ namespace Tizen.FH.NUI.Samples
             button1.Focusable = true;
             button1.ClickEvent += loading1FPSAdd;
 
-            button2 = new Tizen.NUI.Components.Button();
+            button2 = new Tizen.NUI.Components.DA.Button();
             button2.PointSize = 14;
             button2.BackgroundColor = Color.Green;
             button2.Position2D = new Position2D(200, 500);
@@ -130,12 +130,12 @@ namespace Tizen.FH.NUI.Samples
 
         private void loading1FPSAdd(object sender, global::System.EventArgs e)
         {
-            board.Text = "loading1_1 FrameRate: " + loading1_1.FrameRate.ToString();
+            board.Text = "loading1_1 FPS: " + loading1_1.FrameRate.ToString();
             loading1_1.FrameRate += 1;
         }
         private void loading1FPSMinus(object sender, global::System.EventArgs e)
         {
-            board.Text = "loading1_1 FrameRate: " + loading1_1.FrameRate.ToString();
+            board.Text = "loading1_1 FPS: " + loading1_1.FrameRate.ToString();
             loading1_1.FrameRate -= 1;
         }
 

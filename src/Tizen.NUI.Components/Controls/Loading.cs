@@ -35,14 +35,14 @@ namespace Tizen.NUI.Components
             var instance = (Loading)bindable;
             if (newValue != null)
             {
-                instance.loadingStyle.Images = (string[])newValue;
+                instance.Style.Images = (string[])newValue;
                 instance.imageVisual.URLS = new List<string>((string[])newValue);
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (Loading)bindable;
-            return instance.loadingStyle.Images;
+            return instance.Style.Images;
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -52,15 +52,17 @@ namespace Tizen.NUI.Components
             if (newValue != null)
             {
                 Size size = (Size)newValue;
-                instance.loadingStyle.Size = size;
-                //insbase.Size = value;
-                instance.imageVisual.Size = new Size2D((int)size.Width, (int)size.Height);
+                instance.Style.Size = size;
+                if (null != instance.imageVisual)
+                {
+                    instance.imageVisual.Size = new Size2D((int)size.Width, (int)size.Height);
+                }
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (Loading)bindable;
-            return instance.loadingStyle.Size;
+            return instance.Style.Size;
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -72,7 +74,7 @@ namespace Tizen.NUI.Components
                 int frameRate = (int)newValue;
                 if (0 != frameRate) //It will crash if 0 
                 {
-                    instance.loadingStyle.FrameRate.All = frameRate;
+                    instance.Style.FrameRate.All = frameRate;
                     instance.imageVisual.FrameDelay = 1000.0f / frameRate;
                 }
             }
@@ -80,10 +82,9 @@ namespace Tizen.NUI.Components
         defaultValueCreator: (bindable) =>
         {
             var instance = (Loading)bindable;
-            return instance.loadingStyle.FrameRate?.All ?? (int)(1000/16.6f);
+            return instance.Style.FrameRate?.All ?? (int)(1000/16.6f);
         });
 
-        private LoadingStyle loadingStyle = null;  // Loading Attributes
         private AnimatedImageVisual imageVisual = null;
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace Tizen.NUI.Components
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public LoadingStyle Style => loadingStyle;
+        public new LoadingStyle Style => ViewStyle as LoadingStyle;
 
         /// <summary>
         /// Gets or sets loading image resource array.
@@ -195,7 +196,7 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override ViewStyle GetAttributes()
+        protected override ViewStyle GetViewStyle()
         {
             return new LoadingStyle();
         }
@@ -207,7 +208,10 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         protected override void Dispose(DisposeTypes type)
         {
-            if (disposed) return;
+            if (disposed)
+            {
+                return;
+            }
 
             if (type == DisposeTypes.Explicit)
             {
@@ -223,12 +227,6 @@ namespace Tizen.NUI.Components
 
         private void Initialize()
         {
-            loadingStyle = controlStyle as LoadingStyle;
-            if (null == loadingStyle)
-            {
-                throw new Exception("Loading style parse error.");
-            }
-
             imageVisual = new AnimatedImageVisual()
             {
                 URLS = new List<string>(),
@@ -247,17 +245,17 @@ namespace Tizen.NUI.Components
 
         private void UpdateVisual()
         {
-            if (null != loadingStyle.Images)
+            if (null != Style.Images)
             {
-                imageVisual.URLS = new List<string>(loadingStyle.Images);
+                imageVisual.URLS = new List<string>(Style.Images);
             }
-            if (null != loadingStyle.FrameRate?.All && 0 != loadingStyle.FrameRate.All.Value)
+            if (null != Style.FrameRate?.All && 0 != Style.FrameRate.All.Value)
             {
-                imageVisual.FrameDelay = 1000.0f / (float)loadingStyle.FrameRate.All.Value;
+                imageVisual.FrameDelay = 1000.0f / (float)Style.FrameRate.All.Value;
             }
-            if (null != loadingStyle.LoadingSize)
+            if (null != Style.LoadingSize)
             {
-                imageVisual.Size = new Size2D((int)loadingStyle.LoadingSize.Width, (int)loadingStyle.LoadingSize.Height);
+                imageVisual.Size = new Size2D((int)Style.LoadingSize.Width, (int)Style.LoadingSize.Height);
             }
         }
     }

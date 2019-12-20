@@ -114,7 +114,7 @@ namespace Tizen.Applications
                     id = _transactionId++;
                 }
                 _handlerMap.TryAdd(id, action);
-                //Interop.Glib.IdleAdd(_wrapperHandler, (IntPtr)id);
+                Interop.Glib.IdleAdd(_wrapperHandler, (IntPtr)id);
             }
 
             private static bool Handler(IntPtr userData)

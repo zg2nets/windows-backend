@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
+using Tizen.NUI.Components.DA;
 
 namespace Tizen.FH.FamilyBoard
 {
-    public class FrameStyleChooser : IViewLifecycle
+    public class FrameStyleChooser : ILifecycleObserver
     {
         private View mRootView;
 
         // close
         private View mCloseView;
         private ImageView mCloseImageView;
-        private TapGestureDetector mCloseAreaTapGestureDetector;
+        private TapGestureDetector mCloseTapGestureDetector;
 
         // back, title, done
         private View mTitleRootView;
@@ -24,11 +24,25 @@ namespace Tizen.FH.FamilyBoard
 
         // preview
         private View mPreviewRootView;
-        private ImageView[] mPreviewImageViews;
-        private ImageView[] mPreviewFrameStyleImageViews;
+
+        private struct ImagePreview
+        {
+            public View view;
+            public ImageView image;
+            public Size2D size;
+            public ImageView framestyle;
+        }
+        ImagePreview[] mPreviewedImages;
+
         private int mCurrentPreviewIndex;
         private PanGestureDetector mPreviewPanGestureDetector;
         private int mLastPreviewPositionX;
+        private Animation mMoveAnimation;
+
+        // switch
+        private View mSliderShowView;
+        private TextLabel mSliderShowTextLabel;
+        private Switch mSliderShowSwitch;
 
         // frame style grid
         private View mFrameStyleRootView;
@@ -37,14 +51,15 @@ namespace Tizen.FH.FamilyBoard
         private FlexibleView.ViewHolder mLastCheckedFrameStyle;
 
         //
-        private Rectangle[] mFrameBorders = { new Rectangle(0, 0, 0, 0),
-                                        new Rectangle(0, 0, 0, 0),
-                                        new Rectangle(0, 0, 0, 0),
-                                        new Rectangle(7, 7, 7, 7),
-                                        new Rectangle(14, 14, 14, 14),
-                                        new Rectangle(10, 10, 10, 81),
-                                        new Rectangle(21, 21, 21, 21),
-                                        new Rectangle(21, 21, 21, 21)};
+        private Rectangle[] mFrameBorders = {
+                                        new Rectangle(25, 25, 25, 25),
+                                        new Rectangle(25, 25, 25, 25),
+                                        new Rectangle(25, 25, 25, 25),
+                                        new Rectangle(25, 25, 25, 25),
+                                        new Rectangle(25, 25, 25, 25),
+                                        new Rectangle(25, 25, 25, 25),
+                                        new Rectangle(25, 25, 25, 25),
+                                        new Rectangle(25, 25, 25, 25)};
 
         private readonly int SCREEN_WIDTH = 1080;
         private readonly int SCREEN_HEIGHT = 1920;
@@ -80,13 +95,14 @@ namespace Tizen.FH.FamilyBoard
             CreatePreview();
 
             CreateFrameStyleGrid();
+
+            ChooseFrameStyle(0, FB_PICTURE_FRAME_FRAME1_IMAGE);
         }
 
         public void Reactivate()
         {
             DestroyPreview();
             CreatePreview();
-            mCloseAreaTapGestureDetector.Attach(mCloseView);
         }
 
         public void Deactivate()
@@ -140,12 +156,12 @@ namespace Tizen.FH.FamilyBoard
                 mTitleRootView = null;
             }
 
-            if (mCloseAreaTapGestureDetector != null)
+            if (mCloseTapGestureDetector != null)
             {
-                mCloseAreaTapGestureDetector.Detected -= OnTapGestureDetected;
-                mCloseAreaTapGestureDetector.Detach(mCloseView);
-                mCloseAreaTapGestureDetector.Dispose();
-                mCloseAreaTapGestureDetector = null;
+                mCloseTapGestureDetector.Detected -= OnCloseTapGestureDetected;
+                mCloseTapGestureDetector.Detach(mCloseView);
+                mCloseTapGestureDetector.Dispose();
+                mCloseTapGestureDetector = null;
             }
 
             if (mCloseImageView != null)
@@ -180,11 +196,28 @@ namespace Tizen.FH.FamilyBoard
             int imageCount = ImageManager.Instance.ImageCount();
             for (int i = 0; i < imageCount; i++)
             {
-                //NPatchVisual patchVisual = new NPatchVisual();
-                //patchVisual.URL = style;
-                //patchVisual.Border = mFrameBorders[position];
-                //mPreviewFrameStyleImageViews[i].Background = patchVisual.OutputVisualMap;
-                //mPreviewFrameStyleImageViews[i].Show();
+                NPatchVisual patchVisual = new NPatchVisual()
+                {
+                    URL = style,
+                    Border = mFrameBorders[position],
+                };
+                mPreviewedImages[i].framestyle.Background = patchVisual.OutputVisualMap;
+
+                int width = mPreviewedImages[i].size.Width + mFrameBorders[position].X + mFrameBorders[position].Width;
+                int height = mPreviewedImages[i].size.Height + mFrameBorders[position].Y + mFrameBorders[position].Height;
+
+                if(width < height)
+                {
+                    mPreviewedImages[i].framestyle.Size2D = new Size2D(width + 15, height + 65);
+                    mPreviewedImages[i].framestyle.Position2D = new Position2D(2, 40);
+                }
+                else
+                {
+                    mPreviewedImages[i].framestyle.Size2D = new Size2D(width + 20, height + 45);
+                    mPreviewedImages[i].framestyle.Position2D = new Position2D(0, 27);
+                }
+
+                mPreviewedImages[i].framestyle.Show();
                 ImageManager.Instance.SetFrameStyle(i, style);
             }
         }
@@ -203,14 +236,14 @@ namespace Tizen.FH.FamilyBoard
             mCloseImageView.Size2D = new Size2D(40, 40);
             mCloseView.Add(mCloseImageView);
 
-            mCloseAreaTapGestureDetector = new TapGestureDetector();
-            mCloseAreaTapGestureDetector.Attach(mCloseView);
-            mCloseAreaTapGestureDetector.Detected += OnTapGestureDetected;
+            mCloseTapGestureDetector = new TapGestureDetector();
+            mCloseTapGestureDetector.Attach(mCloseView);
+            mCloseTapGestureDetector.Detected += OnCloseTapGestureDetected;
         }
 
-        private void OnTapGestureDetected(object source, TapGestureDetector.DetectedEventArgs e)
+        private void OnCloseTapGestureDetected(object source, TapGestureDetector.DetectedEventArgs e)
         {
-            ImageManager.Instance.RemoveAllImages();
+            ImageManager.Instance.RemoveAll();
             FamilyBoardApplication.Instance.RemoveView();
         }
 
@@ -263,13 +296,23 @@ namespace Tizen.FH.FamilyBoard
             mDoneButton.ClickEvent += OnDoneButtonClickEvent;
         }
 
+        private void OnBackButtonClickEvent(object sender, Button.ClickEventArgs e)
+        {
+            PictureWizard.Instance.Back();
+        }
+
+        private void OnDoneButtonClickEvent(object sender, Button.ClickEventArgs e)
+        {
+            FamilyBoardApplication.Instance.RemoveView();
+        }
+
         private void CreatePreview()
         {
             int imageCount = ImageManager.Instance.ImageCount();
 
             mPreviewRootView = new View();
-            mPreviewRootView.BackgroundColor = new Color(0.0f, 0.0f, 0.0f, 0.85f);
-            mPreviewRootView.Position2D = new Position2D(0, 405 + 164 - 300);
+            mPreviewRootView.BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 1.0f);
+            mPreviewRootView.Position2D = new Position2D(0, 405 + 164);
             mPreviewRootView.Size2D = new Size2D((SCREEN_WIDTH - 540) + (540 + 60) * imageCount - 60, 610);
             mRootView.Add(mPreviewRootView);
 
@@ -279,117 +322,181 @@ namespace Tizen.FH.FamilyBoard
 
             mCurrentPreviewIndex = 0;
 
-            mPreviewFrameStyleImageViews = new ImageView[imageCount];
+            mPreviewedImages = new ImagePreview[imageCount];
             for (int i = 0; i < imageCount; i++)
             {
-                mPreviewFrameStyleImageViews[i] = new ImageView();
+                // view
+                mPreviewedImages[i].view = new View();
+                mPreviewedImages[i].view.Position2D = new Position2D((SCREEN_WIDTH - 540) / 2 + i * (540 + 60), (610 - 540) / 2);
+                mPreviewedImages[i].view.Size2D = new Size2D(540, 540);
+                mPreviewRootView.Add(mPreviewedImages[i].view);
+
                 float opacity = 0.5f;
                 if (i == mCurrentPreviewIndex)
                 {
                     opacity = 1.0f;
                 }
-                mPreviewFrameStyleImageViews[i].Opacity = opacity;
 
-                //
-                mPreviewFrameStyleImageViews[i].Position2D = new Position2D((SCREEN_WIDTH - 540) / 2 + i * (540 + 60), (610 - 540) / 2);
-                mPreviewFrameStyleImageViews[i].Size2D = new Size2D(540, 540);
-                //mPreviewRootView.Add(mPreviewFrameStyleImageViews[i]);
-                mPreviewFrameStyleImageViews[i].Hide();
-            }
+                // image
+                mPreviewedImages[i].image = new ImageView();
+                mPreviewedImages[i].image.Color = new Color(opacity, opacity, opacity, 1.0f); ;
+                mPreviewedImages[i].image.ResourceUrl = ImageManager.Instance.GetThumbFile(i);
 
-            mPreviewImageViews = new ImageView[imageCount];
-
-            for (int i = 0; i < imageCount; i++)
-            {
-                mPreviewImageViews[i] = new ImageView();
-                float opacity = 0.5f;
-                if (i == mCurrentPreviewIndex)
+                Position pivot = PivotPoint.Center;
+                Position origin = ParentOrigin.Center;
+                int width = mPreviewedImages[i].image.NaturalSize2D.Width;
+                int height = mPreviewedImages[i].image.NaturalSize2D.Height;
+                if (width < height)
                 {
-                    opacity = 1.0f;
+                    width = 540 * width / height;
+                    height = 540;
+                    //pivot = PivotPoint.TopCenter;
+                    //origin = ParentOrigin.TopCenter;
                 }
-                mPreviewImageViews[i].Opacity = opacity;
+                else
+                {
+                    width = 540;
+                    height = 540 * height / width;
+                    //pivot = PivotPoint.CenterLeft;
+                    //origin = ParentOrigin.CenterLeft;
+                }
+
+                mPreviewedImages[i].size = new Size2D(width, height);
+
+                mPreviewedImages[i].image.Size2D = mPreviewedImages[i].size;
+                mPreviewedImages[i].image.PositionUsesPivotPoint = true;
+                mPreviewedImages[i].image.PivotPoint = pivot;
+                mPreviewedImages[i].image.ParentOrigin = origin;
+
+                // frame style
+                mPreviewedImages[i].framestyle = new ImageView();
+                mPreviewedImages[i].framestyle.Color = new Color(opacity, opacity, opacity, 1.0f);
+                mPreviewedImages[i].framestyle.Size2D = mPreviewedImages[i].size;
+                mPreviewedImages[i].framestyle.PositionUsesPivotPoint = true;
+                mPreviewedImages[i].framestyle.PivotPoint = pivot;
+                mPreviewedImages[i].framestyle.ParentOrigin = origin;
+                mPreviewedImages[i].view.Add(mPreviewedImages[i].framestyle);
+                mPreviewedImages[i].framestyle.Hide();
 
                 //
-                ImageVisual imageVisual = new ImageVisual()
-                {
-                    URL = ImageManager.Instance.GetImageFile(i),
-                    VisualFittingMode = VisualFittingModeType.FitKeepAspectRatio,
-                };
-                mPreviewImageViews[i].Image = imageVisual.OutputVisualMap;
-                mPreviewImageViews[i].Position2D = new Position2D((SCREEN_WIDTH - 540) / 2 + i * (540 + 60), (610 - 540) / 2);
-                mPreviewImageViews[i].Size2D = new Size2D(540, 540);
-                mPreviewRootView.Add(mPreviewImageViews[i]);
+                mPreviewedImages[i].view.Add(mPreviewedImages[i].image);
             }
         }
 
         private void OnPreviewTapGestureDetected(object source, PanGestureDetector.DetectedEventArgs e)
         {
+            int imageCount = ImageManager.Instance.ImageCount();
+
             switch (e.PanGesture.State)
             {
                 case Gesture.StateType.Started:
                     {
                         mLastPreviewPositionX = (int)mPreviewRootView.PositionX;
+                        if (mMoveAnimation != null && mMoveAnimation.State == Animation.States.Playing)
+                        {
+                            mMoveAnimation.Stop(Animation.EndActions.StopFinal);
+                        }
                         break;
                     }
-
                 case Gesture.StateType.Continuing:
                     {
-                        mPreviewRootView.PositionX += (int)e.PanGesture.Displacement.X;
+                        int deltaX = (int)e.PanGesture.Displacement.X;
+                        if (deltaX > 0) // move from left to right
+                        {
+                            if (mCurrentPreviewIndex <= 0)
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            if (mCurrentPreviewIndex >= imageCount - 1)
+                            {
+                                return;
+                            }
+                        }
+
+                        mPreviewRootView.PositionX += deltaX;
                         break;
                     }
                 case Gesture.StateType.Finished:
                     {
-                        int imageCount = ImageManager.Instance.ImageCount();
                         mPreviewRootView.PositionX += (int)e.PanGesture.Displacement.X;
                         float deltaX = mPreviewRootView.PositionX - mLastPreviewPositionX;
-                        if (Math.Abs(deltaX) < 200 / 2)
+                        if (Math.Abs(deltaX) < 300 / 2)
                         {
-                            mPreviewRootView.PositionX = mLastPreviewPositionX;
+                            if (mMoveAnimation == null)
+                            {
+                                mMoveAnimation = new Animation();
+                                mMoveAnimation.Duration = 300;
+                                mMoveAnimation.DefaultAlphaFunction = new AlphaFunction(AlphaFunction.BuiltinFunctions.EaseOutSquare);
+                                mMoveAnimation.Finished += OnMoveAnimationFinished;
+                            }
+
+                            mMoveAnimation.Clear();
+                            mMoveAnimation.AnimateTo(mPreviewRootView, "PositionX", mLastPreviewPositionX);
+                            mMoveAnimation.Play();
                         }
                         else
                         {
-                            if (deltaX < 0)
+                            if (deltaX < 0) // move from right to left
                             {
                                 mCurrentPreviewIndex++;
-                                if (mCurrentPreviewIndex >= imageCount)
+                                if (mCurrentPreviewIndex < imageCount)
                                 {
-                                    mPreviewRootView.PositionX = mLastPreviewPositionX;
-                                    mCurrentPreviewIndex = imageCount - 1;
-                                }
-                                else
-                                {
-                                    mPreviewRootView.PositionX = mLastPreviewPositionX - (540 + 60);
+                                    if (mMoveAnimation == null)
+                                    {
+                                        mMoveAnimation = new Animation();
+                                        mMoveAnimation.Duration = 300;
+                                        mMoveAnimation.DefaultAlphaFunction = new AlphaFunction(AlphaFunction.BuiltinFunctions.EaseOutSquare);
+                                        mMoveAnimation.Finished += OnMoveAnimationFinished;
+                                    }
+
+                                    mMoveAnimation.Clear();
+                                    mMoveAnimation.AnimateTo(mPreviewRootView, "PositionX", mLastPreviewPositionX - (540 + 60));
+                                    mMoveAnimation.Play();
                                 }
                             }
                             else
                             {
                                 mCurrentPreviewIndex--;
-                                if (mCurrentPreviewIndex < 0)
+                                if (mCurrentPreviewIndex >= 0)
                                 {
-                                    mPreviewRootView.PositionX = mLastPreviewPositionX;
-                                    mCurrentPreviewIndex = 0;
-                                }
-                                else
-                                {
-                                    mPreviewRootView.PositionX = mLastPreviewPositionX + (540 + 60);
-                                }
-                            }
-                        }
+                                    if (mMoveAnimation == null)
+                                    {
+                                        mMoveAnimation = new Animation();
+                                        mMoveAnimation.Duration = 300;
+                                        mMoveAnimation.DefaultAlphaFunction = new AlphaFunction(AlphaFunction.BuiltinFunctions.EaseOutSquare);
+                                        mMoveAnimation.Finished += OnMoveAnimationFinished;
+                                    }
 
-                        // update opacity.
-                        for (int i = 0; i < imageCount; i++)
-                        {
-                            if (i == mCurrentPreviewIndex)
-                            {
-                                mPreviewImageViews[i].Opacity = 1.0f;
-                            }
-                            else
-                            {
-                                mPreviewImageViews[i].Opacity = 0.5f;
+                                    mMoveAnimation.Clear();
+                                    mMoveAnimation.AnimateTo(mPreviewRootView, "PositionX", mLastPreviewPositionX + (540 + 60));
+                                    mMoveAnimation.Play();
+                                }
                             }
                         }
                         break;
                     }
+            }
+        }
+
+        private void OnMoveAnimationFinished(object sender, EventArgs e)
+        {
+            // update opacity.
+            int imageCount = ImageManager.Instance.ImageCount();
+            for (int i = 0; i < imageCount; i++)
+            {
+                if (i == mCurrentPreviewIndex)
+                {
+                    mPreviewedImages[i].framestyle.Color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    mPreviewedImages[i].image.Color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+                else
+                {
+                    mPreviewedImages[i].framestyle.Color = new Color(0.5f, 0.5f, 0.5f, 1.0f);
+                    mPreviewedImages[i].image.Color = new Color(0.5f, 0.5f, 0.5f, 1.0f);
+                }
             }
         }
 
@@ -397,13 +504,16 @@ namespace Tizen.FH.FamilyBoard
         {
             mCurrentPreviewIndex = 0;
 
-            for(int i = 0; i < mPreviewImageViews.Length; i++)
+            for (int i = 0; i < mPreviewedImages.Length; i++)
             {
-                mPreviewRootView.Remove(mPreviewImageViews[i]);
-                mPreviewImageViews[i].Dispose();
-                mPreviewImageViews[i] = null;
+                //
+
+                //
+                mPreviewRootView.Remove(mPreviewedImages[i].view);
+                mPreviewedImages[i].view.Dispose();
+                mPreviewedImages[i].view = null;
             }
-            mPreviewImageViews = null;
+            mPreviewedImages = null;
 
             if (mPreviewRootView != null)
             {
@@ -416,16 +526,42 @@ namespace Tizen.FH.FamilyBoard
         private void CreateFrameStyleGrid()
         {
             mFrameStyleRootView = new View();
-            mFrameStyleRootView.Position2D = new Position2D(0, 405 + 610 + 164 - 400);
+            mFrameStyleRootView.Position2D = new Position2D(0, 405 + 610 + 164);
             mFrameStyleRootView.Size2D = new Size2D(SCREEN_WIDTH, SCREEN_HEIGHT - 405 - 610 - 164);
             mFrameStyleRootView.BackgroundColor = new Color(0.2f, 0.2f, 0.2f, 1.0f);
             mRootView.Add(mFrameStyleRootView);
 
+            // switch
+            mSliderShowView = new View();
+            mSliderShowView.Position2D = new Position2D(0, 0);
+            mSliderShowView.Size2D = new Size2D(SCREEN_WIDTH, 88);
+            //mFrameStyleRootView.Add(mSliderShowView);
+
+            mSliderShowTextLabel = new TextLabel();
+            mSliderShowTextLabel.Text = "Create Slidershow";
+            mSliderShowTextLabel.FontFamily = "SamsungOneUI 500";
+            mSliderShowTextLabel.PointSize = 30;
+            mSliderShowTextLabel.TextColor = new Color((float)0xff / 0xff, (float)0xff / 0xff, (float)0xff / 0xff, 1.0f);
+            mSliderShowTextLabel.Size2D = new Size2D(SCREEN_WIDTH - 44 - 80 - 20 - 40, 88);
+            mSliderShowTextLabel.PositionUsesPivotPoint = true;
+            mSliderShowTextLabel.PivotPoint = PivotPoint.CenterLeft;
+            mSliderShowTextLabel.ParentOrigin = ParentOrigin.CenterLeft;
+            mSliderShowTextLabel.HorizontalAlignment = HorizontalAlignment.End;
+            mSliderShowTextLabel.VerticalAlignment = VerticalAlignment.Center;
+            mSliderShowView.Add(mSliderShowTextLabel);
+
+            mSliderShowSwitch = new Switch("Switch");
+            mSliderShowSwitch.Position2D = new Position2D(SCREEN_WIDTH - 44 - 80 - 40, (88 - 50) / 2 - 4);
+            mSliderShowSwitch.Size2D = new Size2D(80 + 20, 50);
+            mSliderShowView.Add(mSliderShowSwitch);
+
+            mSliderShowSwitch.SelectedEvent += OnSliderShowSwitchSelectedEvent;
+
             // grid
             mFrameStyleGrid = new FlexibleView();
             mFrameStyleGrid.Name = "Frame Style Grid";
-            mFrameStyleGrid.Position2D = new Position2D(0, 164);
-            mFrameStyleGrid.Size2D = new Size2D(SCREEN_WIDTH, SCREEN_HEIGHT - 405 - 164);
+            mFrameStyleGrid.Position2D = new Position2D(0, 88 + 25);
+            mFrameStyleGrid.Size2D = new Size2D(SCREEN_WIDTH, SCREEN_HEIGHT - 405 - 610 - 164 - 88 - 25);
             mFrameStyleGrid.Padding = new Extents(54, 54, 0, 0);
             mFrameStyleGrid.ItemClickEvent += OnGridItemClickEvent;
             mFrameStyleRootView.Add(mFrameStyleGrid);
@@ -447,15 +583,20 @@ namespace Tizen.FH.FamilyBoard
             mFrameStyleGrid.SetLayoutManager(layoutManager);
         }
 
-        private void OnBackButtonClickEvent(object sender, Button.ClickEventArgs e)
+        private void OnSliderShowSwitchSelectedEvent(object source, Switch.SelectEventArgs e)
         {
-            mCloseAreaTapGestureDetector.Detach(mCloseView);
-            PictureWizard.Instance.Back();
-        }
-
-        private void OnDoneButtonClickEvent(object sender, Button.ClickEventArgs e)
-        {
-            FamilyBoardApplication.Instance.RemoveView();
+            Switch sliderSwitch = source as Switch;
+            if (sliderSwitch != null)
+            {
+                if (sliderSwitch.IsSelected)
+                {
+                    mPreviewRootView.Hide();
+                }
+                else
+                {
+                    mPreviewRootView.Show();
+                }
+            }
         }
 
         private void OnGridItemClickEvent(object sender, FlexibleView.ItemClickEventArgs e)
@@ -690,7 +831,7 @@ namespace Tizen.FH.FamilyBoard
                 else
                 {
                     listItemView.Margin = new Extents(0, 0, 0, 0);
-                }      
+                }
             }
             else
             {

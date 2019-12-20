@@ -19,35 +19,29 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
 
-namespace Tizen.FH.NUI.Controls
+namespace Tizen.FH.NUI.Components
 {
     /// <summary>
-    /// The NaviFrame is a component that contain head content and view content
+    /// The NaviFrame could manage head and content views
     /// </summary>
     /// <since_tizen> 5.5 </since_tizen>
-    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class NaviFrame : Control
+    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.    
+    public class NaviFrame
     {
         private List<NaviItem> pushStack = new List<NaviItem>();
-        private NaviFrameAttributes naviframeAttributes;
-        private View headerView;
-        private View contentView;
         private NaviItem currentItem;
         private NaviItem prevItem;
         private Animation fadeInOutAnimation;
         private bool popFlag;
-        private float startcur, endcur, endpre;
+        private float startPositionOfCurrentItem, endPositionOfCurrentItem, endPositionOfPrevItem;
         private Notifier mNotifier;
 
         /// <summary>
         /// NaviItem is a wrapper for header and content views.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public class NaviItem
         {
             public NaviItem(View header, View content)
@@ -71,8 +65,7 @@ namespace Tizen.FH.NUI.Controls
         /// Notifier is to notify lifecycle of NaviItem.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public abstract class Notifier
         {
             /// <summary>
@@ -88,7 +81,7 @@ namespace Tizen.FH.NUI.Controls
             /// <summary>
             /// Called when NaviItem will be destroyed.
             /// </summary>
-            /// <param name="viewType">The view type of the new View</param>
+            /// <param name="item">The view type of the new View</param>
             /// <since_tizen> 6 </since_tizen>
             /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
             public virtual void OnNaviItemDestroyed(NaviItem item)
@@ -100,44 +93,44 @@ namespace Tizen.FH.NUI.Controls
         /// Initializes a new instance of the NaviFrame class.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public NaviFrame() : base()
         {
             Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the NaviFrame class.
+        /// Dispose NaviFrame and all children on it.
         /// </summary>
-	    /// <param name="style">Create NaviFrame by special style defined in UX.</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public NaviFrame(string style) : base(style)
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public void Dispose()
         {
-            Initialize();
-        }
+            if (fadeInOutAnimation != null)
+            {
+                if (fadeInOutAnimation.State == Animation.States.Playing)
+                {
+                    fadeInOutAnimation.Finished -= OnFadeInOutAnimationFinished;
+                    fadeInOutAnimation.Stop();
+                }
+                fadeInOutAnimation.Dispose();
+                fadeInOutAnimation = null;
+            }
 
-        /// <summary>
-        /// Initializes a new instance of the NaviFrame class.
-        /// </summary>
-        /// <param name="attributes">Create NaviFrame by attributes customized by user.</param>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public NaviFrame(NaviFrameAttributes attributes) : base(attributes)
-        {
-            Initialize();
+            for (int i = 0; i < pushStack.Count; i++)
+            {
+                DestroyNaviItem(pushStack[i]);
+                pushStack[i] = null;
+            }
+            pushStack.Clear();
         }
 
         /// <summary>
         /// Set a notifier for NaviItem.
         /// </summary>
-        /// <param name="notifier">lifecycle of NaviItem</param>
+        /// <param name="notifier">lifecycle notifier of NaviItem</param>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public void SetNotifier(Notifier notifier)
         {
             mNotifier = notifier;
@@ -147,8 +140,7 @@ namespace Tizen.FH.NUI.Controls
         /// Item count in navi list.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public int Count
         {
             get
@@ -163,8 +155,7 @@ namespace Tizen.FH.NUI.Controls
         /// <param name="header"> the header view of the naviframe item.</param>
         /// <param name="content"> the content view of the naviframe item.</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public void NaviFrameItemPush(View header,View content)
         {
             StopFadeInOutAnimation();
@@ -188,8 +179,7 @@ namespace Tizen.FH.NUI.Controls
         /// Pop the top item of the naviframe and also delete it
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public void NaviFrameItemPop()
         {
             StopFadeInOutAnimation();
@@ -202,114 +192,17 @@ namespace Tizen.FH.NUI.Controls
             ShowNaviItem(currentItem);
 
             PlayFadeInOutAnimation(true);
-
-            NaviItem result = pushStack[pushStack.Count - 1];
             pushStack.RemoveAt(pushStack.Count - 1);
-        }
-
-	/// <summary>
-        /// Get NaviFrame attribues.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override Attributes GetAttributes()
-        {
-            return new NaviFrameAttributes();
-        }
-
-        /// <summary>
-        /// Dispose NaviFrame and all children on it.
-        /// </summary>
-        /// <param name="type">Dispose type.</param>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override void Dispose(DisposeTypes type)
-        {
-            if (disposed)
-            {
-                return;
-            }
-
-            if (type == DisposeTypes.Explicit)
-            {
-                if (fadeInOutAnimation != null)
-                {
-                    if (fadeInOutAnimation.State == Animation.States.Playing)
-                    {
-                        fadeInOutAnimation.Stop();
-                    }
-                    fadeInOutAnimation.Dispose();
-                    fadeInOutAnimation = null;
-                }
-
-                for (int i = 0; i < pushStack.Count; i++)
-                {
-                    DestroyNaviItem(pushStack[i]);
-                    pushStack[i] = null;
-                }
-                pushStack.Clear();
-               
-                if (headerView != null)
-                {
-                    Remove(headerView);
-                    headerView.Dispose();
-                    headerView = null;
-                }
-
-                if (contentView != null)
-                {
-                    Remove(contentView);
-                    contentView.Dispose();
-                    contentView = null;
-                }
-            }
-
-            base.Dispose(type);
-        }
-
-        /// <summary>
-        /// Update NaviFrame by attributes.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override void OnUpdate()
-        {
-            if(naviframeAttributes.NaviHeaderAttributes != null)
-            {
-                ApplyAttributes(headerView, naviframeAttributes.NaviHeaderAttributes);
-            }
-
-            if (naviframeAttributes.ContentAttributes != null)
-            {
-                ApplyAttributes(contentView, naviframeAttributes.ContentAttributes);
-            }
         }
        
         private void Initialize()
         {
-            naviframeAttributes = attributes as NaviFrameAttributes;
-            if (naviframeAttributes == null)
-            {
-                throw new Exception("Fail to get the NaviFrame attributes.");
-            }
-
-            ClippingMode = ClippingModeType.ClipToBoundingBox;
             popFlag = false;
             fadeInOutAnimation = new Animation(300);
-            fadeInOutAnimation.Finished += OnFadeInOutFinish;
-
-            headerView = new View();
-            Add(headerView);
-            contentView = new View();
-            Add(contentView);
-
-            ApplyAttributes(this, naviframeAttributes);
+            fadeInOutAnimation.Finished += OnFadeInOutAnimationFinished;
         }
 
-        private void OnFadeInOutFinish(object sender, EventArgs e)
+        private void OnFadeInOutAnimationFinished(object sender, EventArgs e)
         {
             if (popFlag)
             {
@@ -330,7 +223,6 @@ namespace Tizen.FH.NUI.Controls
                 {
                     fadeInOutAnimation.Stop();
                 }
-
                 fadeInOutAnimation.Clear();
             }
 
@@ -344,7 +236,7 @@ namespace Tizen.FH.NUI.Controls
                 HideNaviItem(prevItem);
             }
 
-            SetNaviItemPositionX(currentItem, endcur);
+            SetNaviItemPositionX(currentItem, endPositionOfCurrentItem);
         }
 
         private void PlayFadeInOutAnimation(bool nextflag)
@@ -353,40 +245,40 @@ namespace Tizen.FH.NUI.Controls
             {
                 if (nextflag)
                 {
-                    startcur = prevItem.Content.SizeWidth * (-1);
-                    endcur = 0;
+                    startPositionOfCurrentItem = prevItem.Content.SizeWidth * (-1);
+                    endPositionOfCurrentItem = 0;
                 }
                 else
                 {
-                    startcur = prevItem.Content.SizeWidth;
-                    endcur = 0;
+                    startPositionOfCurrentItem = prevItem.Content.SizeWidth;
+                    endPositionOfCurrentItem = 0;
                 }
 
-                startcur = startcur / 2;
+                startPositionOfCurrentItem = startPositionOfCurrentItem / 2;
 
-                SetNaviItemPositionX(currentItem, startcur);
+                SetNaviItemPositionX(currentItem, startPositionOfCurrentItem);
                 currentItem.Content.Opacity = 1.0f;
                 currentItem.Header.Opacity = 1.0f;
 
                 //flickAnimation.AnimateTo(currentItem.contentView, "Opacity", 1.0f);
                 //flickAnimation.AnimateTo(currentItem.header, "Opacity", 1.0f);
-                fadeInOutAnimation.AnimateTo(currentItem.Content, "PositionX", endcur);
-                fadeInOutAnimation.AnimateTo(currentItem.Header, "PositionX", endcur);
+                fadeInOutAnimation.AnimateTo(currentItem.Content, "PositionX", endPositionOfCurrentItem);
+                fadeInOutAnimation.AnimateTo(currentItem.Header, "PositionX", endPositionOfCurrentItem);
             }
            
             if (prevItem != null)
             {
                 if (nextflag)
                 {
-                    endpre = prevItem.Content.SizeWidth;
+                    endPositionOfPrevItem = prevItem.Content.SizeWidth;
                 }
                 else
                 {
-                    endpre = prevItem.Content.SizeWidth * (-1);
+                    endPositionOfPrevItem = prevItem.Content.SizeWidth * (-1);
                 }
 
-                startcur = 0;
-                endpre = endpre / 2;
+                startPositionOfCurrentItem = 0;
+                endPositionOfPrevItem = endPositionOfPrevItem / 2;
 
                 ShowNaviItem(prevItem);
 
@@ -397,8 +289,8 @@ namespace Tizen.FH.NUI.Controls
 
                 fadeInOutAnimation.AnimateTo(prevItem.Content, "Opacity", 0f);
                 fadeInOutAnimation.AnimateTo(prevItem.Header, "Opacity", 0f);
-                fadeInOutAnimation.AnimateTo(prevItem.Content, "PositionX", endpre);
-                fadeInOutAnimation.AnimateTo(prevItem.Header, "PositionX", endpre);
+                fadeInOutAnimation.AnimateTo(prevItem.Content, "PositionX", endPositionOfPrevItem);
+                fadeInOutAnimation.AnimateTo(prevItem.Header, "PositionX", endPositionOfPrevItem);
             }
 
             fadeInOutAnimation.Play();
@@ -409,8 +301,6 @@ namespace Tizen.FH.NUI.Controls
             if (header == null || content == null)
                 return null;
 
-            headerView.Add(header);
-            contentView.Add(content);
             NaviItem item = new NaviItem(header, content);
 
             if (mNotifier != null)
@@ -425,9 +315,6 @@ namespace Tizen.FH.NUI.Controls
         {
             if (item == null)
                 return;
-
-            contentView.Remove(item.Content);
-            headerView.Remove(item.Header);
 
             if (mNotifier != null)
             {

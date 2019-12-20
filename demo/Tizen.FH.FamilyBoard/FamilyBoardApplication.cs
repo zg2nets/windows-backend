@@ -16,6 +16,7 @@
  */
 using System;
 using System.Collections.Generic;
+using Tizen.FH.NUI;
 using Tizen.NUI;
 
 namespace Tizen.FH.FamilyBoard
@@ -26,18 +27,18 @@ namespace Tizen.FH.FamilyBoard
         {
             //return Applications.Application.Current.DirectoryInfo.Resource + "/images/";
 
-            return "E:/graphics/myCommonUI/CommonUI/demo/Tizen.FH.FamilyBoard/res" + "/images/";
+            return @"../../../demo/Tizen.FH.FamilyBoard/res/images/";
         }
     }
 
-    public class FamilyBoardApplication : NUIApplication
+    public class FamilyBoardApplication : FHNUIApplication
     {
         public delegate string SWIGStringDelegate(string message);
 
         private static FamilyBoardApplication instance = null;
 
-        private IViewLifecycle main_view = null;
-        private Stack<IViewLifecycle> view_stack = new Stack<IViewLifecycle>();
+        private ILifecycleObserver main_view = null;
+        private Stack<ILifecycleObserver> view_stack = new Stack<ILifecycleObserver>();
 
         public static FamilyBoardApplication Instance
         {
@@ -59,6 +60,7 @@ namespace Tizen.FH.FamilyBoard
         {
             base.OnCreate();
             Window.Instance.BackgroundColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            Window.Instance.KeyEvent += Instance_KeyEvent;
 
             main_view = CreateView("Main");
         }
@@ -68,9 +70,18 @@ namespace Tizen.FH.FamilyBoard
             base.OnTerminate();
         }
 
-        public IViewLifecycle CreateView(string view_name)
+        public void ChangeMainBackground()
         {
-            IViewLifecycle view = null;
+            FamilyBoardMain fb = main_view as FamilyBoardMain;
+            if (fb != null)
+            {
+                fb.ChangeBackground();
+            }
+        }
+
+        public ILifecycleObserver CreateView(string view_name)
+        {
+            ILifecycleObserver view = null;
 
             if (view_name.Equals("Main"))
             {
@@ -79,6 +90,18 @@ namespace Tizen.FH.FamilyBoard
             else if (view_name.Equals("Picture Wizard"))
             {
                 view = PictureWizard.Instance;
+            }
+            else if (view_name.Equals("Stickers"))
+            {
+                view = new StickerChooser();
+            }
+            else if (view_name.Equals("Text"))
+            {
+                view = new TextChooser();
+            }
+            else if (view_name.Equals("Background Image"))
+            {
+                view = new BackgroundImageChooser();
             }
             else
             {
@@ -93,7 +116,7 @@ namespace Tizen.FH.FamilyBoard
 
         public void RemoveView()
         {
-            IViewLifecycle lastView = view_stack.Pop();
+            ILifecycleObserver lastView = view_stack.Pop();
             lastView.Deactivate();
 
             if (view_stack.Count == 0)
@@ -101,8 +124,19 @@ namespace Tizen.FH.FamilyBoard
                 Environment.Exit(0);
             }
 
-            IViewLifecycle currentView = view_stack.Peek();
+            ILifecycleObserver currentView = view_stack.Peek();
             currentView.Reactivate();
+        }
+		
+		private void Instance_KeyEvent(object sender, Window.KeyEventArgs e)
+        {
+            if (e.Key.State == Key.StateType.Up)
+            {
+                if (e.Key.KeyPressedName == "Escape" || e.Key.KeyPressedName == "XF86Back" || e.Key.KeyPressedName == "BackSpace")
+                {
+                    RemoveView();
+                }
+            }
         }
 
         [global::System.Runtime.InteropServices.DllImport("libcapi-appfw-app-common.so.0", EntryPoint = "RegisterCreateStringCallback")]

@@ -36,6 +36,7 @@ namespace Tizen.NUI.Samples
             root = new View()
             {
                 Size2D = new Size2D(1920, 1080),
+                BackgroundColor = Color.White,
             };
             window.Add(root);
 
@@ -61,14 +62,14 @@ namespace Tizen.NUI.Samples
             dropDown.Style.Button.Text.FontFamily = "SamsungOneUI 500";
             dropDown.Style.Button.Icon.ResourceUrl = CommonResource.GetFHResourcePath() + "6. List/list_ic_dropdown.png";
             dropDown.Style.Button.Icon.Size = new Size(48, 48);
-            dropDown.Space.Start = 56;
+            dropDown.Style.Button.IconRelativeOrientation = Button.IconOrientation.Right;
+            dropDown.Style.Button.PositionX = 56;
             dropDown.SpaceBetweenButtonTextAndIcon = 8;
             dropDown.Style.ListBackgroundImage.ResourceUrl = CommonResource.GetFHResourcePath() + "10. Drop Down/dropdown_bg.png";
             dropDown.Style.ListBackgroundImage.Border = new Rectangle(51, 51, 51, 51);
+            dropDown.Style.ListBackgroundImage.Size = new Size(360, 500);
             dropDown.ListMargin.Start = 20;
             dropDown.ListMargin.Top = 20;
-            dropDown.BackgroundColor = new Color(1, 1, 1, 1);
-            dropDown.ListSize = new Size(360, 500);
             dropDown.ListPadding = new Extents(4, 4, 4, 4);
             root.Add(dropDown);
 
@@ -76,7 +77,7 @@ namespace Tizen.NUI.Samples
             {
                 DropDown.DropDownDataItem item = new DropDown.DropDownDataItem();
                 item.Size = new Size(360, 96);
-                item.BackgroundColorSelector = new Selector<Color>
+                item.BackgroundColor= new Selector<Color>
                 {
                     Pressed = new Color(0, 0, 0, 0.4f),
                     Other = new Color(1, 1, 1, 0),
@@ -133,19 +134,12 @@ namespace Tizen.NUI.Samples
 
             DropDownStyle attrs = new DropDownStyle
             {
-                HeaderText= new TextLabelStyle
+                HeaderText = new TextLabelStyle
                 {
                     Text = new Selector<string> { All = "TitleArea" },
                     PointSize = new Selector<float?> { All = 28 },
                     TextColor = new Selector<Color> { All = new Color(0, 0, 0, 1) },
                     FontFamily = "SamsungOneUI 500C",
-                    PositionUsesPivotPoint = true,
-                    ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft,
-                    PivotPoint = Tizen.NUI.PivotPoint.TopLeft,
-                    WidthResizePolicy = ResizePolicyType.FillToParent,
-                    HeightResizePolicy = ResizePolicyType.FillToParent,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
                 },
 
                 Button = new ButtonStyle
@@ -156,39 +150,24 @@ namespace Tizen.NUI.Samples
                         PointSize = new Selector<float?> { All = 20 },
                         TextColor = new Selector<Color> { All = new Color(0, 0, 0, 1) },
                         FontFamily = "SamsungOneUI 500",
-                        PositionUsesPivotPoint = true,
-                        ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft,
-                        PivotPoint = Tizen.NUI.PivotPoint.TopLeft,
-                        WidthResizePolicy = ResizePolicyType.UseNaturalSize,
-                        HeightResizePolicy = ResizePolicyType.FillToParent,
-                        Position = new Position(0, 0),
-                        HorizontalAlignment = HorizontalAlignment.Begin,
-                        VerticalAlignment = VerticalAlignment.Center,
                     },
-                    Icon = new ImageViewStyle
+                    Icon = new ImageControlStyle
                     {
                         Size = new Size(48, 48),
                         ResourceUrl = new Selector<string> { All = CommonResource.GetFHResourcePath() + "6. List/list_ic_dropdown.png" },
-                        PositionUsesPivotPoint = true,
-                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
-                        PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
                     },
+                    IconRelativeOrientation = Button.IconOrientation.Right,
+                    PositionX = 56,
                 },
-                ListBackgroundImage= new ImageViewStyle
+                ListBackgroundImage = new ImageViewStyle
                 {
                     ResourceUrl = new Selector<string> { All = CommonResource.GetFHResourcePath() + "10. Drop Down/dropdown_bg.png" },
                     Border = new Selector<Rectangle> { All = new Rectangle(51, 51, 51, 51) },
-                    PositionUsesPivotPoint = true,
-                    ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft,
-                    PivotPoint = Tizen.NUI.PivotPoint.TopLeft,
-                    WidthResizePolicy = ResizePolicyType.FitToChildren,
-                    HeightResizePolicy = ResizePolicyType.FitToChildren,
+                    Size = new Size(360, 500),
                 },
-                Space = new Extents(56, 0, 0, 0),
                 SpaceBetweenButtonTextAndIcon = 8,
                 ListMargin = new Extents(20, 0, 20, 0),
                 BackgroundColor = new Selector<Color> { All = new Color(1, 1, 1, 1) },
-                ListSize = new Size(360, 500),
                 ListPadding = new Extents(4, 4, 4, 4),
             };
 
@@ -204,13 +183,13 @@ namespace Tizen.NUI.Samples
                     Pressed = new Color(0, 0, 0, 0.4f),
                     Other = new Color(1, 1, 1, 0),
                 },
-                Text= new TextLabelStyle
+                Text = new TextLabelStyle
                 {
                     PointSize = new Selector<float?> { All = 18 },
                     FontFamily = "SamsungOne 500",
                     Position = new Position(28, 0),
                 },
-                CheckImage= new ImageViewStyle
+                CheckImage = new ImageViewStyle
                 {
                     Size = new Size(40, 40),
                     ResourceUrl = new Selector<string> { All = CommonResource.GetFHResourcePath() + "10. Drop Down/dropdown_checkbox_on.png" },

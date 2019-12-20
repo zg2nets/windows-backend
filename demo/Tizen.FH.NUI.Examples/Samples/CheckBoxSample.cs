@@ -1,8 +1,8 @@
 ﻿using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
+using Tizen.NUI.Components.DA;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
 
     public class CheckBox : IExample
@@ -15,7 +15,7 @@ namespace Tizen.FH.NUI.Samples
         private uint colNum;
         private uint rowNum;
 
-        private Tizen.NUI.Components.CheckBoxGroup[] group;
+        private CheckBoxGroup[] group;
 
         private static string[] styles = new string[]
         {
@@ -81,7 +81,7 @@ namespace Tizen.FH.NUI.Samples
                 group[j - 1] = new CheckBoxGroup();
                 for (uint i = 1; i < rowNum; i++)
                 {
-                    Tizen.NUI.Components.CheckBox checkBox = new Tizen.NUI.Components.CheckBox("CheckBox");
+                    Tizen.NUI.Components.DA.CheckBox checkBox = new Tizen.NUI.Components.DA.CheckBox("CheckBox");
                     checkBox.Size2D = new Size2D(48, 48);
                     if (i == 3)
                     {
@@ -118,12 +118,12 @@ namespace Tizen.FH.NUI.Samples
 
         private void CheckBoxSelectedEvent(object sender, SelectButton.SelectEventArgs e)
         {
-            Tizen.NUI.Components.CheckBox obj = sender as Tizen.NUI.Components.CheckBox;
+            Tizen.NUI.Components.DA.CheckBox obj = sender as Tizen.NUI.Components.DA.CheckBox;
             for (uint i = 0; i < rowNum; i++)
             {
                 for (uint j = 0; j < colNum; j++)
                 {
-                    Tizen.NUI.Components.CheckBox child = table.GetChildAt(new TableView.CellPosition(i, j)) as Tizen.NUI.Components.CheckBox;
+                    Tizen.NUI.Components.DA.CheckBox child = table.GetChildAt(new TableView.CellPosition(i, j)) as Tizen.NUI.Components.DA.CheckBox;
                     if (child != null)
                     {
                         //child.Text = child.IsSelected.ToString();

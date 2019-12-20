@@ -31,7 +31,6 @@ namespace Tizen.NUI.Components
         private ImageView trackImage;
         private ImageView thumbImage;
         private Animation handlerAni = null;
-        private SwitchStyle switchStyle;
 
         /// <summary>
         /// Creates a new instance of a Switch.
@@ -74,7 +73,7 @@ namespace Tizen.NUI.Components
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new SwitchStyle Style => switchStyle;
+        public new SwitchStyle Style => ViewStyle as SwitchStyle;
 
         /// <summary>
         /// Background image's resource url in Switch.
@@ -86,23 +85,18 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return switchStyle?.Track?.ResourceUrl?.All;
+                return Style?.Track?.ResourceUrl?.All;
             }
             set
             {
-                if (value != null)
+                if (null != value && null != Style?.Track)
                 {
-                    //CreateSwitchBackgroundImageAttributes();
-                    if (switchStyle.Track.ResourceUrl == null)
-                    {
-                        switchStyle.Track.ResourceUrl = new StringSelector();
-                    }
-                    switchStyle.Track.ResourceUrl.All = value;
-                    //RelayoutRequest();
+                    Style.Track.ResourceUrl = value;
                 }
             }
         }
 
+        private StringSelector switchBackgroundImageURLSelector = new StringSelector();
         /// <summary>
         /// Background image's resource url selector in Switch.
         /// </summary>
@@ -111,16 +105,11 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return (StringSelector)switchStyle?.Track?.ResourceUrl;
+                return switchBackgroundImageURLSelector;
             }
             set
             {
-                if (value != null)
-                {
-                    //CreateSwitchBackgroundImageAttributes();
-                    switchStyle.Track.ResourceUrl = value.Clone() as StringSelector;
-                    //RelayoutRequest();
-                }
+                switchBackgroundImageURLSelector.Clone(value);
             }
         }
 
@@ -132,23 +121,18 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return switchStyle?.Thumb?.ResourceUrl?.All;
+                return Style?.Thumb?.ResourceUrl?.All;
             }
             set
             {
-                if (value != null)
+                if (null != value && null != Style?.Thumb)
                 {
-                    //CreateSwitchHandlerImageAttributes();
-                    if (switchStyle.Thumb.ResourceUrl == null)
-                    {
-                        switchStyle.Thumb.ResourceUrl = new StringSelector();
-                    }
-                    switchStyle.Thumb.ResourceUrl.All = value;
-                    //RelayoutRequest();
+                    Style.Thumb.ResourceUrl = value;
                 }
             }
         }
 
+        private StringSelector switchHandlerImageURLSelector = new StringSelector();
         /// <summary>
         /// Handler image's resource url selector in Switch.
         /// </summary>
@@ -157,16 +141,11 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return (StringSelector)switchStyle?.Thumb?.ResourceUrl;
+                return switchHandlerImageURLSelector;
             }
             set
             {
-                if (value != null)
-                {
-                    //CreateSwitchHandlerImageAttributes();
-                    switchStyle.Thumb.ResourceUrl = value.Clone() as StringSelector;
-                    //RelayoutRequest();
-                }
+                switchHandlerImageURLSelector.Clone(value);
             }
         }
 
@@ -178,13 +157,14 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return switchStyle?.Thumb?.Size ?? new Size(0, 0);
+                return Style?.Thumb?.Size;
             }
             set
             {
-                //CreateSwitchHandlerImageAttributes();
-                switchStyle.Thumb.Size = value;
-                //RelayoutRequest();
+                if (null != Style?.Thumb)
+                {
+                    Style.Thumb.Size = value;
+                }
             }
         }
 
@@ -272,20 +252,14 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override ViewStyle GetAttributes()
+        protected override ViewStyle GetViewStyle()
         {
             return new SwitchStyle();
         }
 
         private void Initialize()
         {
-            switchStyle = controlStyle as SwitchStyle;
-            if (null == switchStyle)
-            {
-                throw new Exception("Switch style parse error.");
-            }
-
-            switchStyle.IsSelectable = true;
+            Style.IsSelectable = true;
             handlerAni = new Animation(aniTime);
             trackImage = new ImageView()
             {
@@ -297,7 +271,7 @@ namespace Tizen.NUI.Components
                 Name = "SwitchBackgroundImage",
             };
             Add(trackImage);
-            trackImage.ApplyStyle(switchStyle.Track);
+            trackImage.ApplyStyle(Style.Track);
 
             thumbImage = new ImageView()
             {
@@ -307,7 +281,7 @@ namespace Tizen.NUI.Components
                 Name = "SwitchHandlerImage",
             };
             trackImage.Add(thumbImage);
-            thumbImage.ApplyStyle(switchStyle.Thumb);
+            thumbImage.ApplyStyle(Style.Thumb);
         }
 
         /// <summary>
@@ -318,12 +292,10 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         protected override void OnThemeChangedEvent(object sender, StyleManager.ThemeChangeEventArgs e)
         {
-            SwitchStyle tempAttributes = StyleManager.Instance.GetAttributes(style) as SwitchStyle;
+            SwitchStyle tempAttributes = StyleManager.Instance.GetViewStyle(style) as SwitchStyle;
             if (null != tempAttributes)
             {
-                switchStyle.CopyFrom(tempAttributes);
-                controlStyle = switchStyle;
-                //RelayoutRequest();
+                Style.CopyFrom(tempAttributes);
             }
         }
 

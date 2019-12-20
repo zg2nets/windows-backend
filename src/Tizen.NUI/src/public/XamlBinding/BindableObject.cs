@@ -96,7 +96,7 @@ namespace Tizen.NUI.Binding
                 BindablePropertyChangedEventDict.Add(bindableProperty.PropertyName, propertyChangedListener);
             }
 
-            propertyChangedListener.PropertyChanged += eventHandler;
+            propertyChangedListener.RegisterListnerHandler(eventHandler);
         }
 
         internal void RemovePropertyChangeListener(BindableProperty bindableProperty, PropertyChangedEventHandler propertyChangedEventHandler)
@@ -106,18 +106,44 @@ namespace Tizen.NUI.Binding
 
             if (null != propertyChangedListener)
             {
-                propertyChangedListener.PropertyChanged -= propertyChangedEventHandler;
+                propertyChangedListener.UnRegisterListnerHandler(propertyChangedEventHandler);
+
+                if (0 == propertyChangedListener.ListenerCount)
+                {
+                    BindablePropertyChangedEventDict.Remove(bindableProperty.PropertyName);
+                }
             }
         }
 
         private class PropertyChangedListener
         {
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            public void PropertyHasChanged(string propertyName)
+            internal void PropertyHasChanged(string propertyName)
             {
                 PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(propertyName));
             }
+
+            internal void RegisterListnerHandler(PropertyChangedEventHandler propertyChangedEventHandler)
+            {
+                PropertyChanged += propertyChangedEventHandler;
+                listenerCount++;
+            }
+
+            internal void UnRegisterListnerHandler(PropertyChangedEventHandler propertyChangedEventHandler)
+            {
+                PropertyChanged -= propertyChangedEventHandler;
+                listenerCount--;
+            }
+
+            private int listenerCount = 0;
+            internal int ListenerCount
+            {
+                get
+                {
+                    return listenerCount;
+                }
+            }
+
+            private event PropertyChangedEventHandler PropertyChanged;
         }
 
         private Dictionary<string, PropertyChangedListener> BindablePropertyChangedEventDict = new Dictionary<string, PropertyChangedListener>();

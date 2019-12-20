@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tizen.NUI;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class ContactCardLayoutInfo
     {

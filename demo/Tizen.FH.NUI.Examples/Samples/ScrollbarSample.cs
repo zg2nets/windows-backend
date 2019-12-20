@@ -1,13 +1,13 @@
 ﻿using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
+using Tizen.NUI.Components.DA;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class Scrollbar : IExample
     {
         private TextLabel board1, board2;
-        private Tizen.NUI.Components.Button button1, button2, button3, button4;
+        private Tizen.NUI.Components.DA.Button button1, button2, button3, button4;
         private ScrollBar scrollBar1, scrollBar2;
         private ScrollBar daScrollBar1, daScrollBar2;
         private SampleLayout root;
@@ -53,16 +53,16 @@ namespace Tizen.FH.NUI.Samples
             scrollBar1.ThumbColor = Color.Black;
             root.Add(scrollBar1);
 
-            ScrollBarAttributes attr = new ScrollBarAttributes
+            ScrollBarStyle attr = new ScrollBarStyle
             {
-                TrackImageAttributes = new ImageAttributes
+                Track = new ImageViewStyle
                 {
                     BackgroundColor = new ColorSelector
                     {
                         All = new Color(0.43f, 0.43f, 0.43f, 0.1f),
                     }
                 },
-                ThumbImageAttributes = new ImageAttributes
+                Thumb = new ImageViewStyle
                 {
                     BackgroundColor = new ColorSelector
                     {
@@ -111,7 +111,7 @@ namespace Tizen.FH.NUI.Samples
             root.Add(board2);
             board2.Focusable = true;
 
-            button1 = new Tizen.NUI.Components.Button();
+            button1 = new Tizen.NUI.Components.DA.Button();
             button1.PointSize = 14;
             button1.BackgroundColor = Color.Green;
             button1.Position2D = new Position2D(100, 500);
@@ -121,7 +121,7 @@ namespace Tizen.FH.NUI.Samples
             button1.Focusable = true;
             button1.ClickEvent += Scroll1Add;
 
-            button2 = new Tizen.NUI.Components.Button();
+            button2 = new Tizen.NUI.Components.DA.Button();
             button2.PointSize = 14;
             button2.BackgroundColor = Color.Green;
             button2.Position2D = new Position2D(200, 500);
@@ -131,7 +131,7 @@ namespace Tizen.FH.NUI.Samples
             button2.Focusable = true;
             button2.ClickEvent += Scroll1Minus;
 
-            button3 = new Tizen.NUI.Components.Button();
+            button3 = new Tizen.NUI.Components.DA.Button();
             button3.PointSize = 14;
             button3.BackgroundColor = Color.Green;
             button3.Position2D = new Position2D(450, 500);
@@ -141,7 +141,7 @@ namespace Tizen.FH.NUI.Samples
             button3.Focusable = true;
             button3.ClickEvent += Scroll2Add;
 
-            button4 = new Tizen.NUI.Components.Button();
+            button4 = new Tizen.NUI.Components.DA.Button();
             button4.PointSize = 14;
             button4.BackgroundColor = Color.Green;
             button4.Position2D = new Position2D(550, 500);

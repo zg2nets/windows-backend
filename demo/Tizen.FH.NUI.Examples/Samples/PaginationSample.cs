@@ -1,17 +1,17 @@
 ﻿using System;
-using Tizen.FH.NUI.Controls;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
+    using Components = Tizen.FH.NUI.Components;
     public class Pagination : IExample
     {
         private SampleLayout root;
 
-        private Controls.Pagination DAPagination1;
-        private Controls.Pagination DAPagination2;
-        private Controls.Pagination DAPagination3;
+        private Tizen.FH.NUI.Components.Pagination DAPagination1;
+        private Tizen.FH.NUI.Components.Pagination DAPagination2;
+        private Tizen.FH.NUI.Components.Pagination DAPagination3;
 
         private readonly int PAGE_COUNT = 14;
 
@@ -22,7 +22,7 @@ namespace Tizen.FH.NUI.Samples
             root.HeaderText = "Pagination";
 
             ///////////////////////////////////////////////Create by Style//////////////////////////////////////////////////////////
-            DAPagination1 = new Controls.Pagination("DefaultPagination");
+            DAPagination1 = new Tizen.FH.NUI.Components.Pagination("DefaultPagination");
             DAPagination1.Name = "DAAppPagination1";
             DAPagination1.Position2D = new Position2D(200, 50);
             DAPagination1.Size2D = new Size2D(400, 30);
@@ -34,7 +34,7 @@ namespace Tizen.FH.NUI.Samples
 
             DAPagination1.SelectChangeEvent += DAPagination_SelectChangeEvent;
 
-            DAPagination2 = new Controls.Pagination("DefaultPagination");
+            DAPagination2 = new Components.Pagination("DefaultPagination");
             DAPagination2.Name = "DAAppPagination2";
             DAPagination2.Position2D = new Position2D(200, 150);
             DAPagination2.Size2D = new Size2D(230, 30);
@@ -48,21 +48,24 @@ namespace Tizen.FH.NUI.Samples
 
 
             ///////////////////////////////////////////////Create by Properties//////////////////////////////////////////////////////////
-            DAPagination3 = new Controls.Pagination();
+            DAPagination3 = new Tizen.FH.NUI.Components.Pagination();
             DAPagination3.Name = "DAAppPagination3";
             DAPagination3.Position2D = new Position2D(200, 250);
             DAPagination3.Size2D = new Size2D(400, 30);
             DAPagination3.BackgroundColor = new Color(1.0f, 1.0f, 1.0f, 0.6f);
             DAPagination3.IndicatorSize = new Size(26, 26);
-            DAPagination3.IndicatorBackgroundURL = CommonResource.GetFHResourcePath() + "9. Controller/pagination_ic_nor.png";
-            DAPagination3.IndicatorSelectURL = CommonResource.GetFHResourcePath() + "9. Controller/pagination_ic_sel.png";
+            DAPagination3.IndicatorImageURL = new Selector<string>
+            {
+                Normal = CommonResource.GetFHResourcePath() + "9. Controller/pagination_ic_nor.png",
+                Selected = CommonResource.GetFHResourcePath() + "9. Controller/pagination_ic_sel.png"
+            };
             DAPagination3.IndicatorSpacing = 8;
-            DAPagination3.ReturnArrowURLs = new Tizen.NUI.Components.StringSelector
+            DAPagination3.ReturnArrowUrl = new Selector<string>
             {
                 All = CommonResource.GetFHResourcePath() + "9. Controller/pagination_ic_return.png"
             };
             DAPagination3.ReturnArrowSize = new Size(26, 26);
-            DAPagination3.NextArrowURLs = new Tizen.NUI.Components.StringSelector
+            DAPagination3.NextArrowUrl = new Selector<string>
             {
                 All = CommonResource.GetFHResourcePath() + "9. Controller/pagination_ic_next.png"
             };
@@ -73,12 +76,11 @@ namespace Tizen.FH.NUI.Samples
             root.Add(DAPagination3);
 
             DAPagination3.SelectChangeEvent += DAPagination_SelectChangeEvent;
-
         }
 
-        private void DAPagination_SelectChangeEvent(object sender, Controls.Pagination.SelectChangeEventArgs e)
+        private void DAPagination_SelectChangeEvent(object sender, Tizen.FH.NUI.Components.Pagination.SelectChangeEventArgs e)
         {
-            Controls.Pagination pagination = sender as Controls.Pagination;
+            Tizen.FH.NUI.Components.Pagination pagination = sender as Tizen.FH.NUI.Components.Pagination;
 
             Console.WriteLine($"{pagination?.Name} Select index changed from {e.PreviousIndex} to {e.CurrentIndex}");
         }

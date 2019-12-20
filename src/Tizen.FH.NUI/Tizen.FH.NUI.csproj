@@ -63,7 +63,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tizen.NUI.Components\Tizen.NUI.Components.csproj" />
+    <ProjectReference Include="..\Tizen.NUI.Components.DA\Tizen.NUI.Components.DA.csproj" />
     <ProjectReference Include="..\Tizen.NUI\Tizen.NUI.csproj" />
   </ItemGroup>
 

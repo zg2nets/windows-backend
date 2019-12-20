@@ -36,7 +36,7 @@ namespace Tizen.NUI.Components
             var instance = (Popup)bindable;
             if (newValue != null)
             {
-                instance.popupStyle.Buttons.Size.Height = (int)newValue;
+                instance.Style.Buttons.Size.Height = (int)newValue;
                 instance.btGroup.Itemheight = (int)newValue;
                 instance.UpdateView();
             }
@@ -44,7 +44,7 @@ namespace Tizen.NUI.Components
         defaultValueCreator: (bindable) =>
         {
             var instance = (Popup)bindable;
-            return instance.popupStyle?.Buttons?.Size?.Height ?? 0;
+            return (int)(instance.Style?.Buttons?.Size?.Height ?? 0);
         });
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -54,19 +54,18 @@ namespace Tizen.NUI.Components
             var instance = (Popup)bindable;
             if (newValue != null)
             {
-                if (instance.popupStyle.Buttons.Text.PointSize == null)
+                if (instance.Style.Buttons.Text.PointSize == null)
                 {
-                    instance.popupStyle.Buttons.Text.PointSize = new Selector<float?>();
+                    instance.Style.Buttons.Text.PointSize = new Selector<float?>();
                 }
-                instance.popupStyle.Buttons.Text.PointSize.All = (float)newValue;
+                instance.Style.Buttons.Text.PointSize.All = (float)newValue;
                 instance.btGroup.ItemPointSize = (float)newValue;
-                instance.UpdateView();
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (Popup)bindable;
-            return instance.popupStyle?.Buttons?.Text?.PointSize?.All ?? 0;
+            return instance.Style?.Buttons?.Text?.PointSize?.All ?? 0;
         });
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -76,15 +75,14 @@ namespace Tizen.NUI.Components
             var instance = (Popup)bindable;
             if (newValue != null)
             {
-                instance.popupStyle.Buttons.Text.FontFamily = (string)newValue;
+                instance.Style.Buttons.Text.FontFamily = (string)newValue;
                 instance.btGroup.ItemFontFamily = (string)newValue;
-                instance.UpdateView();
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (Popup)bindable;
-            return instance.popupStyle?.Buttons?.Text?.FontFamily;
+            return instance.Style?.Buttons?.Text?.FontFamily.All;
         });
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -94,18 +92,18 @@ namespace Tizen.NUI.Components
             var instance = (Popup)bindable;
             if (newValue != null)
             {  
-                if (instance.popupStyle.Buttons.Text.TextColor == null)
+                if (instance.Style.Buttons.Text.TextColor == null)
                 {
-                    instance.popupStyle.Buttons.Text.TextColor = new Selector<Color>();
+                    instance.Style.Buttons.Text.TextColor = new Selector<Color>();
                 }
-                instance.popupStyle.Buttons.Text.TextColor.All = (Color)newValue;
+                instance.Style.Buttons.Text.TextColor.All = (Color)newValue;
                 instance.btGroup.ItemTextColor = (Color)newValue;
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (Popup)bindable;
-            return instance.popupStyle?.Buttons?.Text?.TextColor?.All;
+            return instance.Style?.Buttons?.Text?.TextColor?.All;
         });
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -115,14 +113,14 @@ namespace Tizen.NUI.Components
             var instance = (Popup)bindable;
             if (newValue != null)
             {
-                instance.popupStyle.Buttons.Overlay.BackgroundColor = (Selector<Color>)newValue;
-                instance.btGroup.ItemBackgroundColorSelector = (Selector<Color>)newValue;
+                instance.Style.Buttons.Overlay.BackgroundColor = (Selector<Color>)newValue;
+                instance.btGroup.OverLayBackgroundColorSelector = (Selector<Color>)newValue;
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (Popup)bindable;
-            return instance.popupStyle?.Buttons?.Overlay?.BackgroundColor;
+            return instance.Style?.Buttons?.Overlay?.BackgroundColor;
         });
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -132,15 +130,14 @@ namespace Tizen.NUI.Components
             var instance = (Popup)bindable;
             if (newValue != null)
             {
-                instance.popupStyle.Buttons.Text.HorizontalAlignment = (HorizontalAlignment)newValue;
+                instance.Style.Buttons.Text.HorizontalAlignment = (HorizontalAlignment)newValue;
                 instance.btGroup.ItemTextAlignment = (HorizontalAlignment)newValue;
-                instance.UpdateView();
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (Popup)bindable;
-            return instance.popupStyle?.Buttons?.Text?.HorizontalAlignment ?? HorizontalAlignment.Center;
+            return instance.Style?.Buttons?.Text?.HorizontalAlignment ?? HorizontalAlignment.Center;
         });
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -150,18 +147,18 @@ namespace Tizen.NUI.Components
             var instance = (Popup)bindable;
             if (newValue != null)
             {
-                if (instance.popupStyle.Buttons.Background.ResourceUrl == null)
+                if (instance.Style.Buttons.BackgroundImage == null)
                 {
-                    instance.popupStyle.Buttons.Background.ResourceUrl = new Selector<string>();
+                    instance.Style.Buttons.BackgroundImage = new Selector<string>();
                 }
-                instance.btGroup.ItemBackground = (string)newValue;
-                instance.popupStyle.Buttons.Background.ResourceUrl.All = (string)newValue;
+                instance.btGroup.ItemBackgroundImageUrl = (string)newValue;
+                instance.Style.Buttons.BackgroundImage = (string)newValue;
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (Popup)bindable;
-            return instance.popupStyle?.Buttons?.Background?.ResourceUrl?.All;
+            return instance.Style?.Buttons?.BackgroundImage?.All;
         });
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -171,23 +168,63 @@ namespace Tizen.NUI.Components
             var instance = (Popup)bindable;
             if (newValue != null)
             {
-                if (instance.popupStyle.Buttons.Background.Border == null)
+                if (instance.Style.Buttons.BackgroundImageBorder == null)
                 {
-                    instance.popupStyle.Buttons.Background.Border = new Selector<Rectangle>();
+                    instance.Style.Buttons.BackgroundImageBorder = new Selector<Rectangle>();
                 }
-                instance.popupStyle.Buttons.Background.Border.All = (Rectangle)newValue;
+                instance.Style.Buttons.BackgroundImageBorder = (Rectangle)newValue;
                 instance.btGroup.ItemBackgroundBorder = (Rectangle)newValue;
-                instance.UpdateView();
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (Popup)bindable;
-            return instance.popupStyle?.Buttons?.Background?.Border?.All;
+            return instance.Style?.Buttons?.BackgroundImageBorder?.All;
+        });
+
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty ButtonShadowProperty = BindableProperty.Create("ButtonShadow", typeof(string), typeof(Popup), string.Empty, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var instance = (Popup)bindable;
+            if (newValue != null)
+            {
+                if (instance.Style.Buttons.Shadow.ResourceUrl == null)
+                {
+                    instance.Style.Buttons.Shadow.ResourceUrl = new Selector<string>();
+                }
+                instance.btGroup.ItemShadowUrl = (string)newValue;
+                instance.Style.Buttons.Shadow.ResourceUrl = (string)newValue;
+            }
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            var instance = (Popup)bindable;
+            return instance.Style?.Buttons?.Shadow?.ResourceUrl?.All;
+        });
+
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty ButtonShadowBorderProperty = BindableProperty.Create("ButtonShadowBorder", typeof(Rectangle), typeof(Popup), new Rectangle(0, 0, 0, 0), propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var instance = (Popup)bindable;
+            if (newValue != null)
+            {
+                if (instance.Style.Buttons.Shadow.Border == null)
+                {
+                    instance.Style.Buttons.Shadow.Border = new Selector<Rectangle>();
+                }
+                instance.btGroup.ItemShadowBorder = (Rectangle)newValue;
+                instance.Style.Buttons.Shadow.Border = (Rectangle)newValue;
+            }
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            var instance = (Popup)bindable;
+            return instance.Style?.Buttons?.Shadow?.Border?.All;
         });
 
         private TextLabel titleText;
-        private PopupStyle popupStyle;
         private ButtonGroup btGroup = null;
         private Window window = null;
 
@@ -235,12 +272,15 @@ namespace Tizen.NUI.Components
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void AddButton(string buttonText)
-        {   
-            Button btn = new Button(popupStyle.Buttons);
-            btn.Style.Text.Text = buttonText;
-            btn.ClickEvent += ButtonClickEvent;
-            btGroup.AddItem(btn);
-            UpdateView();
+        {
+            if (Style.Buttons != null)
+            {
+                Button btn = new Button(Style.Buttons);
+                btn.Style.Text.Text = buttonText;
+                btn.ClickEvent += ButtonClickEvent;
+                btGroup.AddItem(btn);
+                UpdateView();
+            }
         }
 
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -254,27 +294,38 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void AddButton(string buttonText, ButtonStyle style)
         {
-            if (popupStyle.Buttons != null && style != null)
+            if (Style.Buttons != null && style != null)
             {
-                popupStyle.Buttons.CopyFrom(style);
+                Style.Buttons.CopyFrom(style);
+                AddButton(buttonText);
             }
-            AddButton(buttonText);
         }
 
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        Button GetButton(int index)
+        public Button GetButton(int index)
         {
-            return btGroup.GetButton(index);
+            return btGroup.GetItem(index);
         }
 
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        void RemoveButton(int index)
+        public void RemoveButton(int index)
         {
             btGroup.RemoveItem(index);
         }
-		
+
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void AddContentText(View childView)
+        {
+            if (null != ContentView)
+            {
+                ContentView.Add(childView);
+            }
+            UpdateView();
+        }
+
         /// <summary>
         /// An event for the button clicked signal which can be used to subscribe or unsubscribe the event handler provided by the user.<br />
         /// </summary>
@@ -283,7 +334,7 @@ namespace Tizen.NUI.Components
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public PopupStyle Style => popupStyle;
+        public new PopupStyle Style => ViewStyle as PopupStyle;
 
         /// <summary>
         /// Title text string in Popup.
@@ -293,17 +344,17 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return popupStyle?.Title?.Text?.All;
+                return Style?.Title?.Text?.All;
             }
             set
             {
                 if (value != null)
                 {
-                    if (popupStyle.Title.Text == null)
+                    if (Style.Title.Text == null)
                     {
-                        popupStyle.Title.Text = new StringSelector();
+                        Style.Title.Text = new Selector<string>();
                     }
-                    popupStyle.Title.Text.All = value;
+                    Style.Title.Text.All = value;
                 }
             }
         }
@@ -316,15 +367,15 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return popupStyle?.Title?.PointSize?.All ?? 0;
+                return Style?.Title?.PointSize?.All ?? 0;
             }
             set
             {
-                if (popupStyle.Title.PointSize == null)
+                if (Style.Title.PointSize == null)
                 {
-                    popupStyle.Title.PointSize = new FloatSelector();
+                    Style.Title.PointSize = new Selector<float?>();
                 }
-                popupStyle.Title.PointSize.All = value;
+                Style.Title.PointSize.All = value;
             }
         }
 
@@ -336,15 +387,15 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return popupStyle?.Title?.TextColor?.All;
+                return Style?.Title?.TextColor?.All;
             }
             set
             {
-                if (popupStyle.Title.TextColor == null)
+                if (Style.Title.TextColor == null)
                 {
-                    popupStyle.Title.TextColor = new ColorSelector();
+                    Style.Title.TextColor = new Selector<Color>();
                 }
-                popupStyle.Title.TextColor.All = value;
+                Style.Title.TextColor.All = value;
             }
         }
 
@@ -356,11 +407,11 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return popupStyle?.Title?.HorizontalAlignment ?? HorizontalAlignment.Center;
+                return Style?.Title?.HorizontalAlignment ?? HorizontalAlignment.Center;
             }
             set
             {
-                popupStyle.Title.HorizontalAlignment = value;
+                Style.Title.HorizontalAlignment = value;
             }
         }
 
@@ -372,11 +423,11 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return popupStyle?.Title?.Position ?? new Position(0, 0, 0);
+                return Style?.Title?.Position ?? new Position(0, 0, 0);
             }
             set
             {
-                popupStyle.Title.Position = value;
+                Style.Title.Position = value;
             }
         }
 
@@ -388,11 +439,11 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return (int)(popupStyle?.Title?.Size?.Height ?? 0);
+                return (int)(Style?.Title?.Size?.Height ?? 0);
             }
             set
             {
-                popupStyle.Title.Size.Height = value;
+                Style.Title.Size.Height = value;
             }
         }
 
@@ -564,6 +615,43 @@ namespace Tizen.NUI.Components
         }
 
         /// <summary>
+        /// Button shadow's resource url in Popup.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string ButtonShadow
+        {
+            get
+            {
+                return (string)GetValue(ButtonShadowProperty);
+            }
+            set
+            {
+                SetValue(ButtonShadowProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Button shadow's border in Popup.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Rectangle ButtonShadowBorder
+        {
+            get
+            {
+
+                return (Rectangle)GetValue(ButtonShadowBorderProperty);
+            }
+            set
+            {
+                SetValue(ButtonShadowBorderProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Set button text by index.
         /// </summary>
         /// <param name="index">Button index.</param>
@@ -636,8 +724,17 @@ namespace Tizen.NUI.Components
         public override void ApplyStyle(ViewStyle viewStyle)
         {
             base.ApplyStyle(viewStyle);
-
-            PopupStyle popupStyle = viewStyle as PopupStyle;
+            PopupStyle ppStyle = viewStyle as PopupStyle;
+            if (null != ppStyle)
+            {
+                if (null == titleText)
+                {
+                    titleText = new TextLabel();
+                    Add(titleText);
+                }
+                titleText.RaiseToTop();
+                titleText.ApplyStyle(ppStyle.Title);
+            }
         }
 
         /// <summary>
@@ -646,16 +743,9 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override ViewStyle GetAttributes()
+        protected override ViewStyle GetViewStyle()
         {
-            if (null == popupStyle)
-            {
-                return new PopupStyle();
-            }
-            else
-            {
-                return popupStyle;
-            }
+            return new PopupStyle();
         }
 
         /// <summary>
@@ -666,23 +756,20 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         protected override void OnThemeChangedEvent(object sender, StyleManager.ThemeChangeEventArgs e)
         {
-            PopupStyle tempAttributes = StyleManager.Instance.GetAttributes(style) as PopupStyle;
+            PopupStyle tempAttributes = StyleManager.Instance.GetViewStyle(style) as PopupStyle;
             if (tempAttributes != null)
             {
-                popupStyle.CopyFrom(tempAttributes);
-                RelayoutRequest();
+                string strSaveTitleText = TitleText;
+                Style.CopyFrom(tempAttributes);
+                Style.Title.Text = strSaveTitleText;
+                UpdateView();
             }
         }
 
         private void Initialize()
         {
-            popupStyle = controlStyle as PopupStyle;
-            if (popupStyle == null)
-            {
-                throw new Exception("Popup style parse error.");
-            }
-
             LeaveRequired = true;
+            PropertyChanged += PopupAttributesPropertyChanged;
 
             // ContentView
             ContentView = new View()
@@ -695,9 +782,12 @@ namespace Tizen.NUI.Components
             ContentView.RaiseToTop();
 
             // Title
-            titleText = new TextLabel();
-            Add(titleText);
-            titleText.ApplyStyle(popupStyle.Title);
+            if (null == titleText)
+            {
+                titleText = new TextLabel();
+                titleText.RaiseToTop();
+                Add(titleText);
+            }
 
             // Button
             btGroup = new ButtonGroup(this);
@@ -705,18 +795,20 @@ namespace Tizen.NUI.Components
 
         private void UpdateView()
         {
-            btGroup.UpdateButton();
+            UpdateShadowExtens();
+            btGroup.UpdateButton(Style.Buttons);
             UpdateContentView();
+            UpdateTitle();
         }
 
         private void ButtonClickEvent(object sender, Button.ClickEventArgs e)
         {
-            if (PopupButtonClickEvent != null && btGroup.itemGroup != null)
+            if (PopupButtonClickEvent != null && btGroup.Count > 0)
             {
                 Button button = sender as Button;
                 for (int i = 0; i < btGroup.Count; i++)
                 {
-                    if (button == btGroup.itemGroup[i])
+                    if (button == GetButton(i))
                     {
                         ButtonClickEventArgs args = new ButtonClickEventArgs();
                         args.ButtonIndex = i;
@@ -726,27 +818,56 @@ namespace Tizen.NUI.Components
             }
         }
 
+        private void PopupAttributesPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals("LayoutDirection"))
+            {
+                btGroup.UpdateButton(Style.Buttons);
+            }
+        }
+
         private void UpdateContentView()
         {
             int titleX = 0;
             int titleY = 0;
             int titleH = 0;
-            if (popupStyle.Title.Size != null)
+            int buttonH = 0;
+            string strText = Style.Title.Text.All;
+            if ((strText != null && strText != "") && Style.Title.Size != null)
             {
                 titleH = (int)titleText.Size.Height;
             }
-            if (popupStyle.Title.Position != null)
-            {
-                titleX = (int)popupStyle.Title.Position.X;
-                titleY = (int)popupStyle.Title.Position.Y;
-            }
-            int buttonH = (int)popupStyle.Buttons.Size.Height;
 
+            if ((strText != null && strText != "") && Style.Title.Position != null)
+            {
+                titleX = (int)Style.Title.Position.X;
+                titleY = (int)Style.Title.Position.Y;
+            }
+
+            if (btGroup.Count != 0)
+            {
+                buttonH = (int)Style.Buttons.Size.Height;
+            }
             ContentView.Size = new Size(Size.Width - titleX * 2, Size.Height - titleY - titleH - buttonH);
             ContentView.Position = new Position(titleX, titleY + titleH);
             ContentView.RaiseToTop();
         }
 
+        private void UpdateShadowExtens()
+        {
+            if (Style.ShadowExtents != null)
+            {
+                Style.Shadow.Size = new Size(Size.Width + Style.ShadowExtents.Start + Style.ShadowExtents.End, Size.Height + Style.ShadowExtents.Top + Style.ShadowExtents.Bottom);
+            }
+        }
+
+        private void UpdateTitle()
+        {
+            if (titleText != null && Style.Title.Text.All != "" && Style.Title.Size != null)
+            {
+                titleText.RaiseToTop();
+            }
+        }
         /// <summary>
         /// ButtonClickEventArgs is a class to record button click event arguments which will sent to user.
         /// </summary>

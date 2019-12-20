@@ -1,20 +1,20 @@
-﻿using Tizen.FH.NUI.Controls;
+﻿using Tizen.FH.NUI.Components;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
-using StyleManager = Tizen.NUI.Components.StyleManager;
+using Tizen.NUI.Components.DA;
+using StyleManager = Tizen.NUI.Components.DA.StyleManager;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class SampleLayout : ImageView
     {
-        private Controls.Header LayoutHeader;
+        private Components.Header LayoutHeader;
 
         private bool isThemeButtonVisible = true;
-        private Tizen.NUI.Components.Button UtilityButton;
-        private Tizen.NUI.Components.Button FoodButton;
-        private Tizen.NUI.Components.Button FamilyButton;
-        private Tizen.NUI.Components.Button KitchenButton;
+        private Tizen.NUI.Components.DA.Button UtilityButton;
+        private Tizen.NUI.Components.DA.Button FoodButton;
+        private Tizen.NUI.Components.DA.Button FamilyButton;
+        private Tizen.NUI.Components.DA.Button KitchenButton;
 
         private View Content;
         private View LayoutContent;
@@ -22,12 +22,11 @@ namespace Tizen.FH.NUI.Samples
         {
             get
             {
-                return LayoutHeader.HeaderText;
+                return LayoutHeader.Title;
             }
-
             set
             {
-                LayoutHeader.HeaderText = value;
+                LayoutHeader.Title = value;
             }
         }
 
@@ -42,7 +41,7 @@ namespace Tizen.FH.NUI.Samples
         {
             Size2D = new Size2D(Window.Instance.Size.Width, Window.Instance.Size.Height);
             //Window.Instance.Add(this);
-            LayoutHeader = new Controls.Header("DefaultHeader");
+            LayoutHeader = new Tizen.FH.NUI.Components.Header("DefaultHeader");
             LayoutHeader.PositionY = 0;
 
             LayoutContent = new View
@@ -60,28 +59,24 @@ namespace Tizen.FH.NUI.Samples
 
             if (isThemeButtonVisiable)
             {
-                ButtonAttributes buttonAttributes = new ButtonAttributes
+                ButtonStyle buttonAttributes = new ButtonStyle
                 {
                     IsSelectable = true,
-                    BackgroundImageAttributes = new ImageAttributes
+                    BackgroundImage =  new StringSelector { All = CommonResource.GetFHResourcePath() + "3. Button/rectangle_point_btn_normal.png" },
+                    BackgroundImageBorder = new RectangleSelector { All = new Rectangle(5, 5, 5, 5) },
+                    Shadow = new ImageViewStyle
                     {
-                        ResourceURL = new StringSelector { All = CommonResource.GetFHResourcePath() + "3. Button/rectangle_point_btn_normal.png" },
+                        ResourceUrl = new StringSelector { All = CommonResource.GetFHResourcePath() + "3. Button/rectangle_btn_shadow.png" },
                         Border = new RectangleSelector { All = new Rectangle(5, 5, 5, 5) }
                     },
 
-                    ShadowImageAttributes = new ImageAttributes
+                    Overlay = new ImageViewStyle
                     {
-                        ResourceURL = new StringSelector { All = CommonResource.GetFHResourcePath() + "3. Button/rectangle_btn_shadow.png" },
-                        Border = new RectangleSelector { All = new Rectangle(5, 5, 5, 5) }
-                    },
-
-                    OverlayImageAttributes = new ImageAttributes
-                    {
-                        ResourceURL = new StringSelector { Pressed = CommonResource.GetFHResourcePath() + "3. Button/rectangle_btn_press_overlay.png", Other = "" },
+                        ResourceUrl = new StringSelector { Pressed = CommonResource.GetFHResourcePath() + "3. Button/rectangle_btn_press_overlay.png", Other = "" },
                         Border = new RectangleSelector { All = new Rectangle(5, 5, 5, 5) },
                     },
 
-                    TextAttributes = new TextAttributes
+                    Text = new TextLabelStyle
                     {
                         PointSize = new FloatSelector { All = 30 },
                         HorizontalAlignment = HorizontalAlignment.Center,
@@ -96,31 +91,31 @@ namespace Tizen.FH.NUI.Samples
                     }
                 };
 
-                UtilityButton = new Tizen.NUI.Components.Button(buttonAttributes);
+                UtilityButton = new Tizen.NUI.Components.DA.Button(buttonAttributes);
                 UtilityButton.Size2D = new Size2D(200, 80);
                 UtilityButton.Position2D = new Position2D(56, 32);
                 UtilityButton.Text = "Utility";
                 UtilityButton.ClickEvent += UtilityButton_ClickEvent;
                 LayoutContent.Add(UtilityButton);
 
-                buttonAttributes.BackgroundImageAttributes.ResourceURL.All = CommonResource.GetFHResourcePath() + "3. Button/[Button] App Primary Color/rectangle_point_btn_normal_ec7510.png";
-                FoodButton = new Tizen.NUI.Components.Button(buttonAttributes);
+                buttonAttributes.BackgroundImage.All = CommonResource.GetFHResourcePath() + "3. Button/[Button] App Primary Color/rectangle_point_btn_normal_ec7510.png";
+                FoodButton = new Tizen.NUI.Components.DA.Button(buttonAttributes);
                 FoodButton.Size2D = new Size2D(200, 80);
                 FoodButton.Position2D = new Position2D(312, 32);
                 FoodButton.Text = "Food";
                 FoodButton.ClickEvent += FoodButton_ClickEvent;
                 LayoutContent.Add(FoodButton);
 
-                buttonAttributes.BackgroundImageAttributes.ResourceURL.All = CommonResource.GetFHResourcePath() + "3. Button/[Button] App Primary Color/rectangle_point_btn_normal_24c447.png";
-                FamilyButton = new Tizen.NUI.Components.Button(buttonAttributes);
+                buttonAttributes.BackgroundImage.All = CommonResource.GetFHResourcePath() + "3. Button/[Button] App Primary Color/rectangle_point_btn_normal_24c447.png";
+                FamilyButton = new Tizen.NUI.Components.DA.Button(buttonAttributes);
                 FamilyButton.Size2D = new Size2D(200, 80);
                 FamilyButton.Position2D = new Position2D(578, 32);
                 FamilyButton.Text = "Family";
                 FamilyButton.ClickEvent += FamilyButton_ClickEvent;
                 LayoutContent.Add(FamilyButton);
 
-                buttonAttributes.BackgroundImageAttributes.ResourceURL.All = CommonResource.GetFHResourcePath() + "3. Button/[Button] App Primary Color/rectangle_point_btn_normal_9762d9.png";
-                KitchenButton = new Tizen.NUI.Components.Button(buttonAttributes);
+                buttonAttributes.BackgroundImage.All = CommonResource.GetFHResourcePath() + "3. Button/[Button] App Primary Color/rectangle_point_btn_normal_9762d9.png";
+                KitchenButton = new Tizen.NUI.Components.DA.Button(buttonAttributes);
                 KitchenButton.Size2D = new Size2D(200, 80);
                 KitchenButton.Position2D = new Position2D(834, 32);
                 KitchenButton.Text = "Kitchen";
@@ -137,32 +132,22 @@ namespace Tizen.FH.NUI.Samples
             //this.ResourceUrl = CommonResource.GetFHResourcePath() + "0. BG/background_default_overlay.png";
         }
 
-        public void AttachSearchBar(Controls.SearchBar searchBar)
-        {
-            LayoutHeader.HeaderText = "";
-            searchBar.WidthResizePolicy = ResizePolicyType.FillToParent;
-            searchBar.SizeHeight = 92;
-            searchBar.PositionY = 16;
-            LayoutHeader.Add(searchBar);
-            //LayoutHeader.PositionY = 100;
-        }
-
-        private void KitchenButton_ClickEvent(object sender, Tizen.NUI.Components.Button.ClickEventArgs e)
+        private void KitchenButton_ClickEvent(object sender, Tizen.NUI.Components.DA.Button.ClickEventArgs e)
         {
             StyleManager.Instance.Theme = "Kitchen";
         }
 
-        private void FamilyButton_ClickEvent(object sender, Tizen.NUI.Components.Button.ClickEventArgs e)
+        private void FamilyButton_ClickEvent(object sender, Tizen.NUI.Components.DA.Button.ClickEventArgs e)
         {
             StyleManager.Instance.Theme = "Family";
         }
 
-        private void FoodButton_ClickEvent(object sender, Tizen.NUI.Components.Button.ClickEventArgs e)
+        private void FoodButton_ClickEvent(object sender, Tizen.NUI.Components.DA.Button.ClickEventArgs e)
         {
             StyleManager.Instance.Theme = "Food";
         }
 
-        private void UtilityButton_ClickEvent(object sender, Tizen.NUI.Components.Button.ClickEventArgs e)
+        private void UtilityButton_ClickEvent(object sender, Tizen.NUI.Components.DA.Button.ClickEventArgs e)
         {
             StyleManager.Instance.Theme = "Utility";
         }

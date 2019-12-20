@@ -14,18 +14,17 @@
  * limitations under the License.
  *
  */
-using System.ComponentModel;
 using Tizen.NUI;
+using Tizen.NUI.BaseComponents;
 
-namespace Tizen.FH.NUI
+namespace Tizen.FH.NUI.Components
 {
     /// <summary>
     /// Utility class.
     /// </summary>
     /// <since_tizen> 5.5 </since_tizen>
-    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class Utility
+    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.    
+    internal class Utility
     {
         /// <summary>
         /// Transfer color value(#rgb) to Color.
@@ -33,8 +32,7 @@ namespace Tizen.FH.NUI
         /// <param name="hex">rgb value</param>
         /// <param name="a">alpha value</param>
         /// <returns>Transfered color</returns>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public static Color Hex2Color(int hex, float a)
         {
             float r = 0, g = 0, b = 0;
@@ -43,6 +41,25 @@ namespace Tizen.FH.NUI
             r = (hex >> 16 & 0xff) / 255.0f;
 
             return new Color(r, g, b, a);
+        }
+
+        /// <summary>
+        /// Dispose the child view.
+        /// </summary>
+        /// <param name="child">a view would be disposed.</param>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public static void Dispose(View child)
+        {
+            View parent = child?.GetParent() as View;
+            if (child != null)
+            {
+                if (parent != null)
+                {
+                    parent.Remove(child);
+                }
+                child.Dispose();
+                child = null;
+            }
         }
     }
 }

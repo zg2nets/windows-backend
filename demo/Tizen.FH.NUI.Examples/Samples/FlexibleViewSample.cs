@@ -1,10 +1,10 @@
 ﻿using System;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
+using Tizen.NUI.Components.DA;
 using System.Collections.Generic;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class ListItemData
     {
@@ -52,7 +52,7 @@ namespace Tizen.FH.NUI.Samples
         }
     }
 
-    public class ListBridge : Tizen.NUI.Components.FlexibleView.Adapter
+    public class ListBridge : Tizen.NUI.Components.DA.FlexibleView.Adapter
     {
         private List<ListItemData> mDatas;
 
@@ -73,15 +73,15 @@ namespace Tizen.FH.NUI.Samples
             NotifyItemRemoved(position);
         }
 
-        public override Tizen.NUI.Components.FlexibleView.ViewHolder OnCreateViewHolder(int viewType)
+        public override Tizen.NUI.Components.DA.FlexibleView.ViewHolder OnCreateViewHolder(int viewType)
         {
-            Tizen.NUI.Components.FlexibleView.ViewHolder viewHolder = new Tizen.NUI.Components.FlexibleView.ViewHolder(new ListItemView());
+            Tizen.NUI.Components.DA.FlexibleView.ViewHolder viewHolder = new Tizen.NUI.Components.DA.FlexibleView.ViewHolder(new ListItemView());
             //Console.WriteLine($"OnCreateViewHolder... viewType: {viewType} viewID: {viewHolder.ItemView.ID}");
 
             return viewHolder;
         }
 
-        public override void OnBindViewHolder(Tizen.NUI.Components.FlexibleView.ViewHolder holder, int position)
+        public override void OnBindViewHolder(Tizen.NUI.Components.DA.FlexibleView.ViewHolder holder, int position)
         {
             //Console.WriteLine($"OnBindItemView... position: {position}");
             ListItemData listItemData = mDatas[position];
@@ -102,7 +102,7 @@ namespace Tizen.FH.NUI.Samples
                 listItemView.BackgroundColor = Color.Yellow;
         }
 
-        public override void OnDestroyViewHolder(Tizen.NUI.Components.FlexibleView.ViewHolder holder)
+        public override void OnDestroyViewHolder(Tizen.NUI.Components.DA.FlexibleView.ViewHolder holder)
         {
             //Console.WriteLine($"OnDestroyViewHolder... viewID: {holder.ItemView?.ID}");
             if (holder.ItemView != null)
@@ -116,9 +116,9 @@ namespace Tizen.FH.NUI.Samples
             return mDatas.Count;
         }
 
-        public override void OnFocusChange(Tizen.NUI.Components.FlexibleView flexibleView, int previousFocus, int currentFocus)
+        public override void OnFocusChange(Tizen.NUI.Components.DA.FlexibleView flexibleView, int previousFocus, int currentFocus)
         {
-            Tizen.NUI.Components.FlexibleView.ViewHolder previousFocusView = flexibleView.FindViewHolderForAdapterPosition(previousFocus);
+            Tizen.NUI.Components.DA.FlexibleView.ViewHolder previousFocusView = flexibleView.FindViewHolderForAdapterPosition(previousFocus);
             if (previousFocusView != null)
             {
                 //Console.WriteLine($"previousFocus {previousFocus.AdapterPosition}");
@@ -130,7 +130,7 @@ namespace Tizen.FH.NUI.Samples
                 //previousFocus.SizeHeight = 60;
                 //NotifyItemChanged(previousFocus.AdapterPosition);
             }
-            Tizen.NUI.Components.FlexibleView.ViewHolder currentFocusView = flexibleView.FindViewHolderForAdapterPosition(currentFocus);
+            Tizen.NUI.Components.DA.FlexibleView.ViewHolder currentFocusView = flexibleView.FindViewHolderForAdapterPosition(currentFocus);
             if (currentFocusView != null)
             {
                 //Console.WriteLine($"currentFocus {currentFocus.AdapterPosition}");
@@ -141,12 +141,12 @@ namespace Tizen.FH.NUI.Samples
             }
         }
 
-        public override void OnViewAttachedToWindow(Tizen.NUI.Components.FlexibleView.ViewHolder holder)
+        public override void OnViewAttachedToWindow(Tizen.NUI.Components.DA.FlexibleView.ViewHolder holder)
         {
             //Console.WriteLine($"+Attached: {holder.AdapterPosition}");
         }
 
-        public override void OnViewDetachedFromWindow(Tizen.NUI.Components.FlexibleView.ViewHolder holder)
+        public override void OnViewDetachedFromWindow(Tizen.NUI.Components.DA.FlexibleView.ViewHolder holder)
         {
             //Console.WriteLine($" --Detached: {holder.AdapterPosition}");
         }
@@ -156,8 +156,8 @@ namespace Tizen.FH.NUI.Samples
     public class FlexibleView : IExample
     {
         private SampleLayout root;
-        private Tizen.NUI.Components.FlexibleView flexibleView1;
-        private Tizen.NUI.Components.FlexibleView flexibleView2;
+        private Tizen.NUI.Components.DA.FlexibleView flexibleView1;
+        private Tizen.NUI.Components.DA.FlexibleView flexibleView2;
         private ListBridge adapter;
 
         private ScrollBar scrollBar1;
@@ -169,7 +169,7 @@ namespace Tizen.FH.NUI.Samples
             root = new SampleLayout(false);
             root.HeaderText = "FlexibleView";
 
-            flexibleView1 = new Tizen.NUI.Components.FlexibleView();
+            flexibleView1 = new Tizen.NUI.Components.DA.FlexibleView();
             flexibleView1.Name = "FlexibleView1";
             flexibleView1.Position2D = new Position2D(300, 20);
             flexibleView1.Size2D = new Size2D(400, 450);
@@ -198,7 +198,7 @@ namespace Tizen.FH.NUI.Samples
             flexibleView1.AttachScrollBar(scrollBar1);
 
 
-            flexibleView2 = new Tizen.NUI.Components.FlexibleView();
+            flexibleView2 = new Tizen.NUI.Components.DA.FlexibleView();
             flexibleView2.Name = "FlexibleView2";
             flexibleView2.Position2D = new Position2D(150, 520);
             flexibleView2.Size2D = new Size2D(700, 200);
