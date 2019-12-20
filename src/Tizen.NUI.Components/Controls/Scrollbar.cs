@@ -34,14 +34,14 @@ namespace Tizen.NUI.Components
             var instance = (ScrollBar)bindable;
             if (newValue != null)
             {
-                instance.scrollBarStyle.Direction = (DirectionType?)newValue;
+                instance.Style.Direction = (DirectionType?)newValue;
                 instance.UpdateValue();
             }
         },
         defaultValueCreator: (bindable) =>
         {
             var instance = (ScrollBar)bindable;
-            return instance.scrollBarStyle.Direction;
+            return instance.Style.Direction;
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -107,7 +107,7 @@ namespace Tizen.NUI.Components
             var instance = (ScrollBar)bindable;
             if (newValue != null)
             {
-                instance.scrollBarStyle.Duration = (uint)newValue;
+                instance.Style.Duration = (uint)newValue;
                 if (instance.scrollAniPlayer != null)
                 {
                     instance.scrollAniPlayer.Duration = (int)newValue;
@@ -117,10 +117,9 @@ namespace Tizen.NUI.Components
         defaultValueCreator: (bindable) =>
         {
             var instance = (ScrollBar)bindable;
-            return instance.scrollBarStyle.Duration;
+            return instance.Style.Duration;
         });
 
-        private ScrollBarStyle scrollBarStyle;
         private ImageView trackImage;
         private ImageView thumbImage;
         private Animation scrollAniPlayer = null;
@@ -186,7 +185,7 @@ namespace Tizen.NUI.Components
         #region public property 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ScrollBarStyle Style => scrollBarStyle;
+        public new ScrollBarStyle Style => ViewStyle as ScrollBarStyle;
 
         /// <summary>
         /// The property to get/set the direction of the ScrollBar.
@@ -226,22 +225,13 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                if (scrollBarStyle.Thumb.Size == null)
-                {
-                    scrollBarStyle.Thumb.Size = new Size();
-                }
-                return scrollBarStyle.Thumb.Size;
+                return Style?.Thumb?.Size;
             }
             set
             {
-                if (scrollBarStyle.Thumb.Size == null)
+                if (null != Style?.Thumb)
                 {
-                    scrollBarStyle.Thumb.Size = new Size();
-                }
-                if (thumbImage != null)
-                {
-                    scrollBarStyle.Thumb.Size.Width = value.Width;
-                    scrollBarStyle.Thumb.Size.Height = value.Height;
+                    Style.Thumb.Size = value;
                     RelayoutRequest();
                 }
             }
@@ -255,19 +245,15 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return scrollBarStyle.Track.ResourceUrl.All;
+                return Style?.Track?.ResourceUrl?.All;
             }
             set
             {
-                if (trackImage != null)
+                if (null != Style?.Track)
                 {
-                    if (scrollBarStyle.Track.ResourceUrl == null)
-                    {
-                        scrollBarStyle.Track.ResourceUrl = new StringSelector();
-                    }
-                    scrollBarStyle.Track.ResourceUrl.All = value;
+                    Style.Track.ResourceUrl = value;
+                    RelayoutRequest();
                 }
-                RelayoutRequest();
             }
         }
 
@@ -279,19 +265,15 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return scrollBarStyle.Track.BackgroundColor?.All;
+                return Style?.Track?.BackgroundColor?.All;
             }
             set
             {
-                if (scrollBarStyle.Track.BackgroundColor == null)
+                if (null != Style?.Track)
                 {
-                    scrollBarStyle.Track.BackgroundColor = new ColorSelector { All = value };
+                    Style.Track.BackgroundColor = value;
+                    RelayoutRequest();
                 }
-                else
-                {
-                    scrollBarStyle.Track.BackgroundColor.All = value;
-                }
-                RelayoutRequest();
             }
         }
 
@@ -303,19 +285,15 @@ namespace Tizen.NUI.Components
         {
             get
             {
-                return scrollBarStyle.Thumb.BackgroundColor?.All;
+                return Style?.Thumb?.BackgroundColor?.All;
             }
             set
             {
-                if(scrollBarStyle.Thumb.BackgroundColor == null)
+                if(null != Style?.Thumb)
                 {
-                    scrollBarStyle.Thumb.BackgroundColor = new ColorSelector { All = value };
+                    Style.Thumb.BackgroundColor = value;
+                    RelayoutRequest();
                 }
-                else
-                {
-                    scrollBarStyle.Thumb.BackgroundColor.All = value;
-                }
-                RelayoutRequest();
             }
         }
 
@@ -479,16 +457,9 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override ViewStyle GetAttributes()
+        protected override ViewStyle GetViewStyle()
         {
-            if (null == scrollBarStyle)
-            {
-                return new ScrollBarStyle();
-            }
-            else
-            {
-                return scrollBarStyle;
-            }
+            return new ScrollBarStyle();
         }
 
         /// <summary>
@@ -499,22 +470,16 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         protected override void OnThemeChangedEvent(object sender, StyleManager.ThemeChangeEventArgs e)
         {
-            ScrollBarStyle tempStyle = StyleManager.Instance.GetAttributes(style) as ScrollBarStyle;
+            ScrollBarStyle tempStyle = StyleManager.Instance.GetViewStyle(style) as ScrollBarStyle;
             if (tempStyle != null)
             {
-                scrollBarStyle.CopyFrom(tempStyle);
+                Style.CopyFrom(tempStyle);
                 UpdateValue();
             }
         }
 
         private void Initialize()
         {
-            scrollBarStyle = this.controlStyle as ScrollBarStyle;
-            if (null == scrollBarStyle)
-            {
-                throw new Exception("ScrollBar style parse error.");
-            }
-
             this.Focusable = false;
 
             trackImage = new ImageView
@@ -527,7 +492,7 @@ namespace Tizen.NUI.Components
                 PivotPoint = Tizen.NUI.PivotPoint.CenterLeft
             };
             this.Add(trackImage);
-            trackImage.ApplyStyle(scrollBarStyle.Track);
+            trackImage.ApplyStyle(Style.Track);
 
             thumbImage = new ImageView
             {
@@ -539,7 +504,7 @@ namespace Tizen.NUI.Components
                 PivotPoint = Tizen.NUI.PivotPoint.CenterLeft
             };
             this.Add(thumbImage);
-            thumbImage.ApplyStyle(scrollBarStyle.Thumb);
+            thumbImage.ApplyStyle(Style.Thumb);
 
             scrollAniPlayer = new Animation(334);
             scrollAniPlayer.DefaultAlphaFunction = new AlphaFunction(AlphaFunction.BuiltinFunctions.Linear);
@@ -562,18 +527,18 @@ namespace Tizen.NUI.Components
             float height = (float)Size2D.Height;
             float thumbW = 0.0f;
             float thumbH = 0.0f;
-            if (scrollBarStyle.Thumb.Size == null)
+            if (Style.Thumb.Size == null)
             {
                 return;
             }
             else
             {
-                thumbW = scrollBarStyle.Thumb.Size.Width;
-                thumbH = scrollBarStyle.Thumb.Size.Height;
+                thumbW = Style.Thumb.Size.Width;
+                thumbH = Style.Thumb.Size.Height;
             }
             float ratio = (float)(curValue - minValue) / (float)(maxValue - minValue);
 
-            if (scrollBarStyle.Direction == DirectionType.Horizontal)
+            if (Style.Direction == DirectionType.Horizontal)
             {
                 if (LayoutDirection == ViewLayoutDirectionType.RTL)
                 {
@@ -635,12 +600,9 @@ namespace Tizen.NUI.Components
         private DirectionType CurrentDirection()
         {
             DirectionType dir = DirectionType.Horizontal;
-            if (null != scrollBarStyle)
+            if (null != Style.Direction)
             {
-                if (null != scrollBarStyle.Direction)
-                {
-                    dir = scrollBarStyle.Direction.Value;
-                }
+                dir = Style.Direction.Value;
             }
             return dir;
         }

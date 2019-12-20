@@ -1,7 +1,7 @@
 ﻿
 namespace Tizen.FH.FamilyBoard
 {
-    public interface IViewLifecycle
+    public interface ILifecycleObserver
     {
         void Activate();
 

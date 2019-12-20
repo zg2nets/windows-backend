@@ -17,38 +17,34 @@
 using System;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
-using System.ComponentModel;
+using Tizen.NUI.Components.DA;
 
-namespace Tizen.FH.NUI.Controls
+namespace Tizen.FH.NUI.Components
 {
     /// <summary>
     /// ListItem is a component which is the item of list
     /// </summary>
     /// <since_tizen> 5.5 </since_tizen>
-    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ListItem : Tizen.NUI.Components.Control
+    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.    
+    public class ListItem : Control
     {
         private View textRootView = null;
         private TextLabel mainTextLabel = null;
         private TextLabel[] subTextLabelArray = null;
         private ImageView dividerView = null;
-        private View leftItemRootView = null;
-        private View rightItemRootView = null;
-        private ImageView leftIcon = null;
-        private ImageView rightIcon = null;
-        private TextLabel rightText = null;
-
-        private ListItemAttributes listItemAttrs = null;
+        private View startItemRootView = null;
+        private View endItemRootView = null;
+        private ImageView startIcon = null;
+        private ImageView endIcon = null;
+        private TextLabel endText = null;
 
         private uint subTextCount = 0;
-        private uint? leftSpace = null;
-        private uint? rightSpace = null;
-        private uint? spaceBetweenLeftItemAndText = null;
-        private uint? spaceBetweenRightItemAndText = null;
-        private Size leftItemRootSize = null;
-        private Size rightItemRootSize = null;
+        private uint? startSpace = null;
+        private uint? endSpace = null;
+        private uint? spaceBetweenStartItemAndText = null;
+        private uint? spaceBetweenEndItemAndText = null;
+        private Size startItemRootSize = null;
+        private Size endItemRootSize = null;
 
         private bool isSelected = false;
         private bool isEnabled = true;
@@ -58,23 +54,23 @@ namespace Tizen.FH.NUI.Controls
         private StyleTypes styleType = StyleTypes.None;
         private CheckBox checkBoxObj = null;
         private Switch switchObj = null;
+
         /// <summary>
         /// Initializes a new instance of the ListItem class.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public ListItem() : base()
         {
             Initialize();
         }
+
         /// <summary>
         /// Initializes a new instance of the ListItem class.
         /// </summary>
         /// <param name="style">Create Header by special style defined in UX.</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public ListItem(string style) : base(style)
         {
             Initialize();
@@ -84,23 +80,20 @@ namespace Tizen.FH.NUI.Controls
         /// Type for item align style
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public enum ItemAlignTypes
         {
             /// <summary>
             /// Icon type for item align style
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             Icon,
             /// <summary>
             /// Check Icon type for item align style
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             CheckIcon
         }
 
@@ -108,37 +101,32 @@ namespace Tizen.FH.NUI.Controls
         /// Type for group index style
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public enum GroupIndexTypes
         {
             /// <summary>
             /// Have no group index style
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             None,
             /// <summary>
             /// Drop down type for group index style
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             DropDown,
             /// <summary>
             /// Next type for group index style
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             Next,
             /// <summary>
             /// Switch type for group index style
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             Switch
         }
 
@@ -146,74 +134,67 @@ namespace Tizen.FH.NUI.Controls
         /// Type for style
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public enum StyleTypes
         {
             /// <summary>
             /// have no  style type
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             None,
             /// <summary>
             /// default style type
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             Default,
             /// <summary>
             /// mutil sub text style type
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             MultiSubText,
             /// <summary>
             /// effect style type
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             Effect,
             /// <summary>
             /// item align style type
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             ItemAlign,
             /// <summary>
             /// next depth style type
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             NextDepth,
             /// <summary>
             /// group index style type
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             GroupIndex,
             /// <summary>
             /// drop down style type
             /// </summary>
             /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             DropDown
         }
+
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public new ListItemStyle Style => ViewStyle as ListItemStyle;
 
         /// <summary>
         /// Property for type in item align style, only useful in ItemAlignListItem style
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public ItemAlignTypes ItemAlignType
         {
             set
@@ -234,8 +215,7 @@ namespace Tizen.FH.NUI.Controls
         /// Property for type in group index style, only useful in GroupIndexListItem style
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public GroupIndexTypes GroupIndexType
         {
             set
@@ -245,11 +225,6 @@ namespace Tizen.FH.NUI.Controls
                     return;
                 }
                 groupIndexType = value;
-                if (styleType == StyleTypes.GroupIndex)
-                {
-                    ApplyMainTextAttributes();
-                    RelayoutComponents();
-                }
             }
         }
 
@@ -257,8 +232,7 @@ namespace Tizen.FH.NUI.Controls
         /// Property for selected state
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public bool StateSelectedEnabled
         {
             get
@@ -280,8 +254,7 @@ namespace Tizen.FH.NUI.Controls
         /// Property for enabled state
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public bool StateEnabled
         {
             get
@@ -303,15 +276,14 @@ namespace Tizen.FH.NUI.Controls
         /// Property for the content of the main textlabel
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public string MainText
         {
             get
             {
                 if (mainTextLabel != null)
                 {
-                    return mainTextLabel.Text;
+                    return mainTextLabel?.Text;
                 }
                 return null;
             }
@@ -329,43 +301,30 @@ namespace Tizen.FH.NUI.Controls
         /// Property for the content of the main textlabel
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public float MainTextPointSize
         {
             get
             {
                 if (styleType == StyleTypes.GroupIndex && groupIndexType == GroupIndexTypes.None)
                 {
-                    return listItemAttrs?.MainText2Attributes?.PointSize?.All ?? 0;
+                    return Style?.MainText2?.PointSize?.All ?? 0;
                 }
                 else
                 {
-                    return listItemAttrs?.MainTextAttributes?.PointSize?.All ?? 0;
+                    return Style?.MainText?.PointSize?.All ?? 0;
                 }
             }
             set
             {
-                CreateMainTextAttributesIfNecessary();
-
                 if (styleType == StyleTypes.GroupIndex && groupIndexType == GroupIndexTypes.None)
                 {
-                    if (listItemAttrs.MainText2Attributes.PointSize == null)
-                    {
-                        listItemAttrs.MainText2Attributes.PointSize = new FloatSelector();
-                    }
-                    listItemAttrs.MainText2Attributes.PointSize.All = value;
+                    Style.MainText2.PointSize = new Selector<float?>() { All = value };
                 }
                 else
                 {
-                    if (listItemAttrs.MainTextAttributes.PointSize == null)
-                    {
-                        listItemAttrs.MainTextAttributes.PointSize = new FloatSelector();
-                    }
-                    listItemAttrs.MainTextAttributes.PointSize.All = value;
+                    Style.MainText.PointSize = new Selector<float?>() { All = value };
                 }
-
-                RelayoutTextComponents();
             }
         }
 
@@ -373,25 +332,16 @@ namespace Tizen.FH.NUI.Controls
         /// Property for the content of the sub textlabel
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public float SubTextPointSize
         {
             get
             {
-                return listItemAttrs?.SubTextAttributes?.PointSize?.All ?? 0;
+                return Style?.SubText?.PointSize?.All ?? 0;
             }
             set
             {
-                CreateSubTextAttributesIfNecessary();
-
-                if (listItemAttrs.SubTextAttributes.PointSize == null)
-                {
-                    listItemAttrs.SubTextAttributes.PointSize = new FloatSelector();
-                }
-                listItemAttrs.SubTextAttributes.PointSize.All = value;
-
-                RelayoutTextComponents();
+                Style.SubText.PointSize = new Selector<float?>() { All = value };
             }
         }
 
@@ -399,8 +349,7 @@ namespace Tizen.FH.NUI.Controls
         /// Property for the count of the sub textlabel
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public uint SubTextCount
         {
             get
@@ -423,8 +372,7 @@ namespace Tizen.FH.NUI.Controls
         /// Property for the string array of the array of the sub textlabel
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public string[] SubTextContentArray
         {
             set
@@ -453,8 +401,7 @@ namespace Tizen.FH.NUI.Controls
         /// Property for the enabled state of the divider
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public bool StateDividerEnabled
         {
             set
@@ -474,52 +421,49 @@ namespace Tizen.FH.NUI.Controls
         }
 
         /// <summary>
-        /// Property for the left space
+        /// Property for the start space
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public uint LeftSpace
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public uint StartSpace
         {
             set
             {
-                if (leftSpace == value)
+                if (startSpace == value)
                 {
                     return;
                 }
-                leftSpace = value;
+                startSpace = value;
                 RelayoutTextComponents();
-                RelayoutLeftItemRootView();
+                RelayoutStartItemRootView();
             }
         }
 
         /// <summary>
-        /// Property for the right space
+        /// Property for the end space
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public uint RightSpace
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public uint EndSpace
         {
             set
             {
-                if (rightSpace == value)
+                if (endSpace == value)
                 {
                     return;
                 }
-                rightSpace = value;
+                endSpace = value;
                 RelayoutTextComponents();
-                RelayoutRightItemRootView();
+                RelayoutEndItemRootView();
             }
         }
 
         /// <summary>
-        /// Property for the size of the left item root view
+        /// Property for the size of the start item root view
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Size LeftItemRootViewSize
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public Size StartItemRootViewSize
         {
             set
             {
@@ -527,19 +471,18 @@ namespace Tizen.FH.NUI.Controls
                 {
                     return;
                 }
-                leftItemRootSize = value;
-                ResizeLeftItemRootView();
+                startItemRootSize = value;
+                ResizeStartItemRootView();
                 RelayoutTextComponents();
             }
         }
 
         /// <summary>
-        /// Property for the size of the right item root view
+        /// Property for the size of the end item root view
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Size RightItemRootViewSize
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public Size EndItemRootViewSize
         {
             set
             {
@@ -547,132 +490,119 @@ namespace Tizen.FH.NUI.Controls
                 {
                     return;
                 }
-                rightItemRootSize = value;
-                ResizeRightItemRootView();
+                endItemRootSize = value;
+                ResizeEndItemRootView();
                 RelayoutTextComponents();
             }
         }
 
         /// <summary>
-        /// Property for the space between left item and text
+        /// Property for the space between start item and text
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public uint SpaceBetweenLeftItemAndText
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public uint SpaceBetweenStartItemAndText
         {
             set
             {
-                if (spaceBetweenLeftItemAndText == value)
+                if (spaceBetweenStartItemAndText == value)
                 {
                     return;
                 }
-                spaceBetweenLeftItemAndText = value;
+                spaceBetweenStartItemAndText = value;
                 RelayoutTextComponents();
             }
         }
 
         /// <summary>
-        /// Property for the space between right item and text
+        /// Property for the space between end item and text
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public uint SpaceBetweenRightItemAndText
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public uint SpaceBetweenEndItemAndText
         {
             set
             {
-                if (spaceBetweenRightItemAndText == value)
+                if (spaceBetweenEndItemAndText == value)
                 {
                     return;
                 }
-                spaceBetweenRightItemAndText = value;
+                spaceBetweenEndItemAndText = value;
                 RelayoutTextComponents();
             }
         }
 
         /// <summary>
-        /// Property for the resource url of the left icon, only useful in ItemAlign style in icon type
+        /// Property for the resource url of the start icon, only useful in ItemAlign style in icon type
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public string LeftIconURL
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public string StartIconURL
         {
             set
             {
-                InitializeLeftIcon();
-                if (listItemAttrs != null)
+                InitializeStartIcon();
+
+                if (startIcon != null)
                 {
-                    ApplyAttributes(leftIcon, listItemAttrs.LeftIconAttributes);
-                }
-                if (leftIcon != null)
-                {
-                    leftIcon.ResourceUrl = value;
+                    startIcon.ResourceUrl = value;
                 }
             }
         }
 
         /// <summary>
-        /// Property for the content of the right text, only useful in ItemAlign style in CheckIcon type
+        /// Property for the content of the end text, only useful in ItemAlign style in CheckIcon type
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public string RightText
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public string EndText
         {
             set
             {
-                InitializeRightText();
-                if (listItemAttrs != null)
+                InitializeEndText();
+                if (endText != null)
                 {
-                    ApplyAttributes(rightText, listItemAttrs.RightTextAttributes);
-                }
-                if (rightText != null)
-                {
-                    rightText.Text = value;
+                    endText.Text = value;
                 }
             }
         }
 
         /// <summary>
-        /// Function for user to add object to the left item root view customized
+        /// Function for user to add object to the start item root view customized
         /// </summary>
         /// <param name="obj"> The object will be added </param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void BindObjectToLeft(object obj)
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public void BindObjectToStart(object obj)
         {
-            if (leftItemRootView == null || obj == null)
+            if (startItemRootView == null || obj == null)
             {
                 return;
             }
-            leftItemRootView.Add(obj as View);
+            startItemRootView.Add(obj as View);
         }
 
         /// <summary>
-        /// Function for user to add object to the right item root view customized
+        /// Function for user to add object to the end item root view customized
         /// </summary>
         /// <param name="obj"> The object will be added </param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void BindObjectToRight(object obj)
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public void BindObjectToEnd(object obj)
         {
-            if (rightItemRootView == null || obj == null)
+            if (endItemRootView == null || obj == null)
             {
                 return;
             }
-            rightItemRootView.Add(obj as View);
+            endItemRootView.Add(obj as View);
         }
+
         /// <summary>
         /// Dispose List Item and all children on it.
         /// </summary>
         /// <param name="type">Dispose type.</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void Dispose(DisposeTypes type)
         {
             if (disposed)
@@ -681,198 +611,96 @@ namespace Tizen.FH.NUI.Controls
             }
             if (type == DisposeTypes.Explicit)
             {
-                this.TouchEvent -= OnTouchEvent;
-
-                if (mainTextLabel != null)
-                {
-                    if (textRootView != null)
-                    {
-                        textRootView.Remove(mainTextLabel);
-                    }
-                    mainTextLabel.Dispose();
-                    mainTextLabel = null;
-                }
+                TouchEvent -= OnTouchEvent;
+                Utility.Dispose(mainTextLabel);
                 if (subTextLabelArray != null)
                 {
                     for (int i = 0; i < subTextCount; ++i)
                     {
                         if (subTextLabelArray[i] != null)
                         {
-                            if (textRootView != null)
-                            {
-                                textRootView.Remove(subTextLabelArray[i]);
-                            }
-                            subTextLabelArray[i].Dispose();
-                            subTextLabelArray[i] = null;
+                            Utility.Dispose(subTextLabelArray[i]);
                         }
                     }
                     subTextLabelArray = null;
                 }
-                if (textRootView != null)
+                Utility.Dispose(textRootView);
+                Utility.Dispose(dividerView);
+                Utility.Dispose(startIcon);
+                Utility.Dispose(endIcon);
+                Utility.Dispose(endText);
+                Utility.Dispose(checkBoxObj);
+                Utility.Dispose(switchObj);
+                if (startItemRootView != null)
                 {
-                    this.Remove(textRootView);
-                    textRootView.Dispose();
-                    textRootView = null;
-                }
-                if (dividerView != null)
-                {
-                    this.Remove(dividerView);
-                    dividerView.Dispose();
-                    dividerView = null;
-                }
-                if (leftIcon != null)
-                {
-                    if (leftItemRootView != null)
-                    {
-                        leftItemRootView.Remove(leftIcon);
-                    }
-                    leftIcon.Dispose();
-                    leftIcon = null;
-                }
-                if (rightIcon != null)
-                {
-                    if (rightItemRootView != null)
-                    {
-                        rightItemRootView.Remove(rightIcon);
-                    }
-                    rightIcon.Dispose();
-                    rightIcon = null;
-                }
-                if (rightText != null)
-                {
-                    if (rightItemRootView != null)
-                    {
-                        rightItemRootView.Remove(rightText);
-                    }
-                    rightText.Dispose();
-                    rightText = null;
-                }
-                if (checkBoxObj != null)
-                {
-                    if (leftItemRootView != null)
-                    {
-                        leftItemRootView.Remove(checkBoxObj);
-                    }
-                    checkBoxObj.Dispose();
-                    checkBoxObj = null;
-                }
-                if (switchObj != null)
-                {
-                    if (rightItemRootView != null)
-                    {
-                        rightItemRootView.Remove(switchObj);
-                    }
-                    switchObj.Dispose();
-                    switchObj = null;
-                }
-                if (leftItemRootView != null)
-                {
-                    uint childCount = leftItemRootView.ChildCount;
+                    uint childCount = startItemRootView.ChildCount;
                     for (uint i = 0; i < childCount; ++i)
                     {
-                        View childObj = leftItemRootView.GetChildAt(i);
+                        View childObj = startItemRootView.GetChildAt(i);
                         if (childObj != null)
                         {
-                            leftItemRootView.Remove(childObj);
-                            childObj.Dispose();
-                            childObj = null;
+                            Utility.Dispose(childObj);
                         }
                     }
-                    this.Remove(leftItemRootView);
-                    leftItemRootView.Dispose();
-                    leftItemRootView = null;
+                    Utility.Dispose(startItemRootView);
                 }
-                if (rightItemRootView != null)
+                if (endItemRootView != null)
                 {
-                    uint childCount = rightItemRootView.ChildCount;
+                    uint childCount = endItemRootView.ChildCount;
                     for (uint i = 0; i < childCount; ++i)
                     {
-                        View childObj = rightItemRootView.GetChildAt(i);
+                        View childObj = endItemRootView.GetChildAt(i);
                         if (childObj != null)
                         {
-                            rightItemRootView.Remove(childObj);
-                            childObj.Dispose();
-                            childObj = null;
+                            Utility.Dispose(childObj);
                         }
                     }
-                    this.Remove(rightItemRootView);
-                    rightItemRootView.Dispose();
-                    rightItemRootView = null;
+                    Utility.Dispose(endItemRootView);
                 }
             }
             base.Dispose(type);
         }
+
         /// <summary>
         /// Get List Item attribues.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override Attributes GetAttributes()
+        
+        protected override ViewStyle GetViewStyle()
         {
-            return new ListItemAttributes();
+            return new ListItemStyle();
         }
+
         /// <summary>
         /// Update List Item by attributes.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         protected override void OnUpdate()
         {
             CurrentStyleType();
-            ApplyAttributes(this, listItemAttrs);
-            ApplyMainTextAttributes();
-            ApplySubTextAttributes();
-            ApplyAttributes(dividerView, listItemAttrs.DividerViewAttributes);
-            ApplyAttributes(leftItemRootView, listItemAttrs.LeftItemRootViewAttributes);
-            ApplyAttributes(rightItemRootView, listItemAttrs.RightItemRootViewAttributes);
-            ApplyAttributes(leftIcon, listItemAttrs.LeftIconAttributes);
-            ApplyAttributes(rightIcon, listItemAttrs.RightIconAttributes);
-            ApplyAttributes(rightText, listItemAttrs.RightTextAttributes);
             RelayoutComponents();
             OnLayoutDirectionChanged();
         }
 
-        private void ApplyMainTextAttributes()
-        {
-            if (listItemAttrs == null)
-            {
-                return;
-            }
-            if (styleType == StyleTypes.GroupIndex && groupIndexType == GroupIndexTypes.None)
-            {
-                ApplyAttributes(mainTextLabel, listItemAttrs.MainText2Attributes);
-            }
-            else
-            {
-                ApplyAttributes(mainTextLabel, listItemAttrs.MainTextAttributes);
-            }
-        }
-
         private void Initialize()
         {
-            listItemAttrs = attributes as ListItemAttributes;
-            if (listItemAttrs == null)
+            textRootView = new View()
             {
-                throw new Exception("ListItem attributes parse error.");
-            }
-            if (textRootView == null)
-            {
-                textRootView = new View()
-                {
-                    ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
-                    PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
-                    PositionUsesPivotPoint = true
-                };
-                this.Add(textRootView);
-            }
-            if (listItemAttrs.MainTextAttributes != null && mainTextLabel == null)
+                ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
+                PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
+                PositionUsesPivotPoint = true
+            };
+            this.Add(textRootView);
+
+            if (Style.MainText != null)
             {
                 mainTextLabel = new TextLabel();
                 textRootView.Add(mainTextLabel);
+                mainTextLabel.ApplyStyle(Style.MainText);
             }
-            if (listItemAttrs.DividerViewAttributes != null && dividerView == null)
+            if (Style.DividerLine != null)
             {
                 dividerView = new ImageView()
                 {
@@ -881,34 +709,37 @@ namespace Tizen.FH.NUI.Controls
                     PositionUsesPivotPoint = true
                 };
                 this.Add(dividerView);
+                dividerView.ApplyStyle(Style.DividerLine);
             }
-            if (listItemAttrs.LeftItemRootViewAttributes != null && leftItemRootView == null)
+            if (Style.StartItemRoot != null)
             {
-                leftItemRootView = new View()
+                startItemRootView = new View()
                 {
                     ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
                     PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
                     PositionUsesPivotPoint = true
                 };
-                this.Add(leftItemRootView);
+                this.Add(startItemRootView);
+                startItemRootView.ApplyStyle(Style.StartItemRoot);
             }
-            if (listItemAttrs.RightItemRootViewAttributes != null && rightItemRootView == null)
+            if (Style.EndItemRoot != null)
             {
-                rightItemRootView = new View()
+                endItemRootView = new View()
                 {
                     ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
                     PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
                     PositionUsesPivotPoint = true
                 };
-                this.Add(rightItemRootView);
+                this.Add(endItemRootView);
+                endItemRootView.ApplyStyle(Style.EndItemRoot);
             }
-            InitializeRightIcon();
+            InitializeEndIcon();
             this.TouchEvent += OnTouchEvent;
         }
 
         private void OnLayoutDirectionChanged()
         {
-            if (listItemAttrs == null)
+            if (Style == null)
             {
                 return;
             }
@@ -922,8 +753,10 @@ namespace Tizen.FH.NUI.Controls
                         subTextLabelArray[i].HorizontalAlignment = HorizontalAlignment.Begin;
                     }
                 }
-                if (listItemAttrs.SubTextAttributes != null)
-                    listItemAttrs.SubTextAttributes.HorizontalAlignment = HorizontalAlignment.Begin;
+                if (Style.SubText != null)
+                {
+                    Style.SubText.HorizontalAlignment = HorizontalAlignment.Begin;
+                }
                 if (textRootView)
                 {
                     textRootView.LayoutDirection = ViewLayoutDirectionType.LTR;
@@ -935,43 +768,47 @@ namespace Tizen.FH.NUI.Controls
                 {
                     if (styleType == StyleTypes.GroupIndex && groupIndexType == GroupIndexTypes.None)
                     {
-                        if(listItemAttrs.MainText2Attributes != null)
-                            listItemAttrs.MainText2Attributes.HorizontalAlignment = HorizontalAlignment.Begin;
+                        if (Style.MainText2 != null)
+                        {
+                            Style.MainText2.HorizontalAlignment = HorizontalAlignment.Begin;
+                        }
                     }
                     else
                     {
-                        if(listItemAttrs.MainTextAttributes != null)
-                           listItemAttrs.MainTextAttributes.HorizontalAlignment = HorizontalAlignment.Begin;
+                        if (Style.MainText != null)
+                        {
+                            Style.MainText.HorizontalAlignment = HorizontalAlignment.Begin;
+                        }
                     }
                     mainTextLabel.LayoutDirection = ViewLayoutDirectionType.LTR;
                     mainTextLabel.HorizontalAlignment = HorizontalAlignment.Begin;
                 }
 
-                if (leftItemRootView)
+                if (startItemRootView)
                 {
-                    if(listItemAttrs.LeftItemRootViewAttributes != null)
+                    if(Style.StartItemRoot != null)
                     {
-                        listItemAttrs.LeftItemRootViewAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
-                        listItemAttrs.LeftItemRootViewAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
-                        listItemAttrs.LeftItemRootViewAttributes.PositionUsesPivotPoint = true;
+                        Style.StartItemRoot.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
+                        Style.StartItemRoot.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+                        Style.StartItemRoot.PositionUsesPivotPoint = true;
                     }
-                    leftItemRootView.LayoutDirection = ViewLayoutDirectionType.LTR;
-                    leftItemRootView.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
-                    leftItemRootView.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
-                    leftItemRootView.PositionUsesPivotPoint = true;
+                    startItemRootView.LayoutDirection = ViewLayoutDirectionType.LTR;
+                    startItemRootView.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
+                    startItemRootView.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+                    startItemRootView.PositionUsesPivotPoint = true;
                 }
-                if(rightItemRootView)
+                if(endItemRootView)
                 {
-                    if(listItemAttrs.RightItemRootViewAttributes != null)
+                    if(Style.EndItemRoot != null)
                     {
-                        listItemAttrs.RightItemRootViewAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
-                        listItemAttrs.RightItemRootViewAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
-                        listItemAttrs.RightItemRootViewAttributes.PositionUsesPivotPoint = true;
+                        Style.EndItemRoot.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
+                        Style.EndItemRoot.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+                        Style.EndItemRoot.PositionUsesPivotPoint = true;
                     }
-                    rightItemRootView.LayoutDirection = ViewLayoutDirectionType.LTR;
-                    rightItemRootView.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
-                    rightItemRootView.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
-                    rightItemRootView.PositionUsesPivotPoint = true;
+                    endItemRootView.LayoutDirection = ViewLayoutDirectionType.LTR;
+                    endItemRootView.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
+                    endItemRootView.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+                    endItemRootView.PositionUsesPivotPoint = true;
                 }
             }
             else
@@ -984,8 +821,10 @@ namespace Tizen.FH.NUI.Controls
                         subTextLabelArray[i].HorizontalAlignment = HorizontalAlignment.End;
                     }
                 }
-                if(listItemAttrs.SubTextAttributes !=null )
-                    listItemAttrs.SubTextAttributes.HorizontalAlignment = HorizontalAlignment.End;
+                if (Style.SubText != null)
+                {
+                    Style.SubText.HorizontalAlignment = HorizontalAlignment.End;
+                }
                 if (textRootView)
                 {
                     textRootView.LayoutDirection = ViewLayoutDirectionType.RTL;
@@ -997,42 +836,46 @@ namespace Tizen.FH.NUI.Controls
                 {
                     if (styleType == StyleTypes.GroupIndex && groupIndexType == GroupIndexTypes.None)
                     {
-                        if(listItemAttrs.MainText2Attributes != null)
-                            listItemAttrs.MainText2Attributes.HorizontalAlignment = HorizontalAlignment.End;
+                        if (Style.MainText2 != null)
+                        {
+                            Style.MainText2.HorizontalAlignment = HorizontalAlignment.End;
+                        }
                     }
                     else
                     {
-                        if(listItemAttrs.MainTextAttributes != null)
-                            listItemAttrs.MainTextAttributes.HorizontalAlignment = HorizontalAlignment.End;
+                        if (Style.MainText != null)
+                        {
+                            Style.MainText.HorizontalAlignment = HorizontalAlignment.End;
+                        }
                     }
                     mainTextLabel.LayoutDirection = ViewLayoutDirectionType.RTL;
                     mainTextLabel.HorizontalAlignment = HorizontalAlignment.End;
                 }
-                if (leftItemRootView)
+                if (startItemRootView)
                 {
-                    if (listItemAttrs.LeftItemRootViewAttributes != null)
+                    if (Style.StartItemRoot != null)
                     {
-                        listItemAttrs.LeftItemRootViewAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
-                        listItemAttrs.LeftItemRootViewAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
-                        listItemAttrs.LeftItemRootViewAttributes.PositionUsesPivotPoint = true;
+                        Style.StartItemRoot.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
+                        Style.StartItemRoot.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+                        Style.StartItemRoot.PositionUsesPivotPoint = true;
                     }
-                    leftItemRootView.LayoutDirection = ViewLayoutDirectionType.RTL;
-                    leftItemRootView.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
-                    leftItemRootView.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
-                    leftItemRootView.PositionUsesPivotPoint = true;
+                    startItemRootView.LayoutDirection = ViewLayoutDirectionType.RTL;
+                    startItemRootView.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
+                    startItemRootView.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+                    startItemRootView.PositionUsesPivotPoint = true;
                 }
-                if (rightItemRootView)
+                if (endItemRootView)
                 {
-                    if (listItemAttrs.RightItemRootViewAttributes != null)
+                    if (Style.EndItemRoot != null)
                     {
-                        listItemAttrs.RightItemRootViewAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
-                        listItemAttrs.RightItemRootViewAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
-                        listItemAttrs.RightItemRootViewAttributes.PositionUsesPivotPoint = true;
+                        Style.EndItemRoot.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
+                        Style.EndItemRoot.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+                        Style.EndItemRoot.PositionUsesPivotPoint = true;
                     }
-                    rightItemRootView.LayoutDirection = ViewLayoutDirectionType.RTL;
-                    rightItemRootView.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
-                    rightItemRootView.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
-                    rightItemRootView.PositionUsesPivotPoint = true;
+                    endItemRootView.LayoutDirection = ViewLayoutDirectionType.RTL;
+                    endItemRootView.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
+                    endItemRootView.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+                    endItemRootView.PositionUsesPivotPoint = true;
                 }
             }
         }
@@ -1054,64 +897,62 @@ namespace Tizen.FH.NUI.Controls
             }
         }
 
-        private void InitializeLeftIcon()
+        private void InitializeStartIcon()
         {
-            if (listItemAttrs.LeftIconAttributes != null && leftIcon == null && leftItemRootView != null)
+            if (Style.StartIcon != null && startIcon == null && startItemRootView != null)
             {
-                leftIcon = new ImageView()
+                startIcon = new ImageView()
                 {
                     WidthResizePolicy = ResizePolicyType.FillToParent,
                     HeightResizePolicy = ResizePolicyType.FillToParent
                 };
-                leftItemRootView.Add(leftIcon);
+                startItemRootView.Add(startIcon);
             }
         }
 
-        private void InitializeRightIcon()
+        private void InitializeEndIcon()
         {
-            if (listItemAttrs.RightIconAttributes != null && rightIcon == null && rightItemRootView != null)
+            if (Style.EndIcon != null && endItemRootView != null)
             {
-                rightIcon = new ImageView()
+                endIcon = new ImageView()
                 {
                     WidthResizePolicy = ResizePolicyType.FillToParent,
                     HeightResizePolicy = ResizePolicyType.FillToParent
                 };
-                rightItemRootView.Add(rightIcon);
+                endItemRootView.Add(endIcon);
+                endIcon.ApplyStyle(Style.EndIcon);
             }
         }
 
-        private void InitializeRightText()
+        private void InitializeEndText()
         {
-            if (listItemAttrs.RightTextAttributes != null && rightText == null && rightItemRootView != null)
+            if (Style.EndText != null && endItemRootView != null)
             {
-                rightText = new TextLabel()
+                endText = new TextLabel()
                 {
                     WidthResizePolicy = ResizePolicyType.FillToParent,
                     HeightResizePolicy = ResizePolicyType.FillToParent
                 };
-                rightItemRootView.Add(rightText);
+                endItemRootView.Add(endText);
+                endText.ApplyStyle(Style.EndText);
             }
         }
 
         private void ApplySubTextAttributes()
         {
-            if (subTextCount == 0 || subTextLabelArray == null || listItemAttrs == null)
+            if (subTextCount == 0 || subTextLabelArray == null || Style == null)
             {
                 return;
-            }
-            for (int i = 0; i < subTextCount; ++i)
-            {
-                ApplyAttributes(subTextLabelArray[i], listItemAttrs.SubTextAttributes);
             }
         }
 
         private void RelayoutComponents()
         {
             RelayoutTextComponents();
-            ResizeLeftItemRootView();
-            RelayoutLeftItemRootView();
-            ResizeRightItemRootView();
-            RelayoutRightItemRootView();
+            ResizeStartItemRootView();
+            RelayoutStartItemRootView();
+            ResizeEndItemRootView();
+            RelayoutEndItemRootView();
             RelayoutDivider();
 
             UpdateTypeForItemAlignStyle();
@@ -1145,7 +986,7 @@ namespace Tizen.FH.NUI.Controls
             }
             if (textRootView != null)
             {
-                int testrootx = LeftSpaceValue() + LeftItemRootViewWidth() + SpaceBetweenLeftItemAndTextValue();
+                int testrootx = StartSpaceValue() + StartItemRootViewWidth() + SpaceBetweenStartItemAndTextValue();
                 textRootView.Size = new Size(rootWidth, heightSum);
                 if (this.LayoutDirection == ViewLayoutDirectionType.LTR)
                     textRootView.Position = new Position(testrootx, 0);
@@ -1161,69 +1002,69 @@ namespace Tizen.FH.NUI.Controls
                 return;
             }
             Size size = this.Size;
-            dividerView.Size = new Size(size.Width - LeftSpaceValue() - RightSpaceValue(), DividerSize().Height);
+            dividerView.Size = new Size(size.Width - StartSpaceValue() - EndSpaceValue(), DividerSize().Height);
         }
 
-        private void ResizeLeftItemRootView()
+        private void ResizeStartItemRootView()
         {
-            if (leftItemRootView == null || leftItemRootSize == null)
+            if (startItemRootView == null || startItemRootSize == null)
             {
                 return;
             }
-            leftItemRootView.Size = leftItemRootSize;
+            startItemRootView.Size = startItemRootSize;
         }
 
-        private void RelayoutLeftItemRootView()
+        private void RelayoutStartItemRootView()
         {
-            if (leftItemRootView == null)
+            if (startItemRootView == null)
             {
                 return;
             }
-            int leftspace = LeftSpaceValue();
+            int startSpace = StartSpaceValue();
             if (this.LayoutDirection == ViewLayoutDirectionType.LTR)
-                leftItemRootView.Position = new Position(leftspace, 0);
+                startItemRootView.Position = new Position(startSpace, 0);
             else
-                leftItemRootView.Position = new Position(-leftspace, 0);
+                startItemRootView.Position = new Position(-startSpace, 0);
         }
 
-        private void ResizeRightItemRootView()
+        private void ResizeEndItemRootView()
         {
-            if (rightItemRootView == null || rightItemRootSize == null)
+            if (endItemRootView == null || endItemRootSize == null)
             {
                 return;
             }
-            rightItemRootView.Size = rightItemRootSize;
+            endItemRootView.Size = endItemRootSize;
         }
 
-        private void RelayoutRightItemRootView()
+        private void RelayoutEndItemRootView()
         {
-            if (rightItemRootView == null)
+            if (endItemRootView == null)
             {
                 return;
             }
-            int rightspace = RightSpaceValue();
+            int endSpace = EndSpaceValue();
             if (this.LayoutDirection == ViewLayoutDirectionType.LTR)
-                rightItemRootView.Position = new Position(-rightspace, 0);
+                endItemRootView.Position = new Position(-endSpace, 0);
             else
-                rightItemRootView.Position = new Position(rightspace, 0);
+                endItemRootView.Position = new Position(endSpace, 0);
         }
 
         private int TextRootViewWidth()
         {
             int width = 0;
-            int leftPartSpace = 0;
-            if (leftItemRootView != null)
+            int startPartSpace = 0;
+            if (startItemRootView != null)
             {
-                leftPartSpace = LeftItemRootViewWidth() + SpaceBetweenLeftItemAndTextValue();
+                startPartSpace = StartItemRootViewWidth() + SpaceBetweenStartItemAndTextValue();
             }
-            int rightPartSpace = 0;
+            int endPartSpace = 0;
             if (styleType == StyleTypes.ItemAlign)
             {
                 if (itemAlignType == ItemAlignTypes.CheckIcon)
                 {
-                    if (rightItemRootView != null)
+                    if (endItemRootView != null)
                     {
-                        rightPartSpace = RightItemRootViewWidth() + SpaceBetweenRightItemAndTextValue();
+                        endPartSpace = EndItemRootViewWidth() + SpaceBetweenEndItemAndTextValue();
                     }
                 }
                 else if (itemAlignType == ItemAlignTypes.Icon)
@@ -1239,121 +1080,123 @@ namespace Tizen.FH.NUI.Controls
                 }
                 else
                 {
-                    if (rightItemRootView != null)
+                    if (endItemRootView != null)
                     {
-                        rightPartSpace = RightItemRootViewWidth();
+                        endPartSpace = EndItemRootViewWidth();
                     }
                 }
             }
             else
             {
-                if (rightItemRootView != null)
+                if (endItemRootView != null)
                 {
-                    rightPartSpace = RightItemRootViewWidth() + SpaceBetweenRightItemAndTextValue();
+                    endPartSpace = EndItemRootViewWidth() + SpaceBetweenEndItemAndTextValue();
                 }
             }
 
-            width = (int)(this.Size.Width - LeftSpaceValue() - RightSpaceValue() - leftPartSpace - rightPartSpace);
+            width = (int)(this.Size.Width - StartSpaceValue() - EndSpaceValue() - startPartSpace - endPartSpace);
             return width;
         }
 
-        private int LeftSpaceValue()
+        private int StartSpaceValue()
         {
             int space = 0;
-            if (leftSpace != null)
+            if (startSpace != null)
             {
-                space = (int)leftSpace.Value;
+                space = (int)startSpace.Value;
             }
             else
             {
-                if (listItemAttrs != null && listItemAttrs.LeftSpace != null)
+                if (Style != null && Style.StartSpace != null)
                 {
-                    space = (int)listItemAttrs.LeftSpace.Value;
+                    space = (int)Style.StartSpace.Value;
                 }
             }
             return space;
         }
 
-        private int RightSpaceValue()
+        private int EndSpaceValue()
         {
             int space = 0;
-            if (rightSpace != null)
+            if (endSpace != null)
             {
-                space = (int)rightSpace.Value;
+                space = (int)endSpace.Value;
             }
             else
             {
-                if (listItemAttrs != null && listItemAttrs.RightSpace != null)
+                if (Style != null && Style.EndSpace != null)
                 {
-                    space = (int)listItemAttrs.RightSpace.Value;
+                    space = (int)Style.EndSpace.Value;
                 }
             }
             return space;
         }
 
-        private int SpaceBetweenLeftItemAndTextValue()
+        private int SpaceBetweenStartItemAndTextValue()
         {
             int space = 0;
-            if (spaceBetweenLeftItemAndText != null)
+            if (spaceBetweenStartItemAndText != null)
             {
-                space = (int)spaceBetweenLeftItemAndText.Value;
+                space = (int)spaceBetweenStartItemAndText.Value;
             }
             else
             {
-                if (listItemAttrs != null && listItemAttrs.SpaceBetweenLeftItemAndText != null)
+                if (Style != null && Style.SpaceBetweenStartItemAndText != null)
                 {
-                    space = (int)listItemAttrs.SpaceBetweenLeftItemAndText.Value;
+                    space = (int)Style.SpaceBetweenStartItemAndText.Value;
                 }
             }
             return space;
         }
 
-        private int SpaceBetweenRightItemAndTextValue()
+        private int SpaceBetweenEndItemAndTextValue()
         {
             int space = 0;
-            if (spaceBetweenRightItemAndText != null)
+            if (spaceBetweenEndItemAndText != null)
             {
-                space = (int)spaceBetweenRightItemAndText.Value;
+                space = (int)spaceBetweenEndItemAndText.Value;
             }
             else
             {
-                if (listItemAttrs != null && listItemAttrs.SpaceBetweenRightItemAndText != null)
+                if (Style != null && Style.SpaceBetweenEndItemAndText != null)
                 {
-                    space = (int)listItemAttrs.SpaceBetweenRightItemAndText.Value;
+                    space = (int)Style.SpaceBetweenEndItemAndText.Value;
                 }
             }
             return space;
         }
 
-        private int LeftItemRootViewWidth()
+        private int StartItemRootViewWidth()
         {
             int width = 0;
-            if (leftItemRootSize != null)
+            if (startItemRootSize != null)
             {
-                width = (int)leftItemRootSize.Width;
+                width = (int)startItemRootSize.Width;
             }
             else
             {
-                if (listItemAttrs != null && listItemAttrs.LeftItemRootViewAttributes != null && listItemAttrs.LeftItemRootViewAttributes.Size != null)
+                if (Style != null && Style.StartItemRoot != null
+                    && Style.StartItemRoot.Size != null)
                 {
-                    width = (int)listItemAttrs.LeftItemRootViewAttributes.Size.Width;
+                    width = (int)Style.StartItemRoot.Size.Width;
                 }
             }
             return width;
         }
 
-        private int RightItemRootViewWidth()
+        private int EndItemRootViewWidth()
         {
             int width = 0;
-            if (rightItemRootSize != null)
+            if (endItemRootSize != null)
             {
-                width = (int)rightItemRootSize.Width;
+                width = (int)endItemRootSize.Width;
             }
             else
             {
-                if (listItemAttrs != null && listItemAttrs.RightItemRootViewAttributes != null && listItemAttrs.RightItemRootViewAttributes.Size != null)
+                if (Style != null && Style.EndItemRoot != null
+                    && Style.EndItemRoot.Size != null)
                 {
-                    width = (int)listItemAttrs.RightItemRootViewAttributes.Size.Width;
+                    width = (int)Style.EndItemRoot.Size.Width;
                 }
             }
             return width;
@@ -1362,9 +1205,10 @@ namespace Tizen.FH.NUI.Controls
         private Size DividerSize()
         {
             Size size = new Size(0, 0);
-            if (listItemAttrs != null && listItemAttrs.DividerViewAttributes != null && listItemAttrs.DividerViewAttributes.Size != null)
+            if (Style != null && Style.DividerLine != null
+                && Style.DividerLine.Size != null)
             {
-                size = listItemAttrs.DividerViewAttributes.Size;
+                size = Style.DividerLine.Size;
             }
             return size;
         }
@@ -1372,7 +1216,6 @@ namespace Tizen.FH.NUI.Controls
         private bool OnTouchEvent(object source, TouchEventArgs e)
         {
             PointStateType state = e.Touch.GetState(0);
-            Console.WriteLine("Hi, tommy! Touch state is " + state + ", isEnabled = " + isEnabled);
             if (!isEnabled)
             {
                 return false;
@@ -1392,103 +1235,103 @@ namespace Tizen.FH.NUI.Controls
 
         private void UpdateTypeForItemAlignStyle()
         {
-            if (styleType != StyleTypes.ItemAlign || listItemAttrs == null)
+            if (styleType != StyleTypes.ItemAlign || Style == null)
             {
                 return;
             }
 
             if (itemAlignType == ItemAlignTypes.Icon)
             {
-                if (leftIcon != null)
+                if (startIcon != null)
                 {
-                    leftIcon.Show();
+                    startIcon.Show();
                 }
                 if (checkBoxObj != null)
                 {
                     checkBoxObj.Hide();
                 }
 
-                if (rightItemRootView != null)
+                if (endItemRootView != null)
                 {
-                    rightItemRootView.Hide();
+                    endItemRootView.Hide();
                 }
             }
             else
             {
-                if (checkBoxObj == null && listItemAttrs.CheckBoxStyle != null && leftItemRootView != null)
+                if (checkBoxObj == null && Style.CheckBoxStyle != null && startItemRootView != null)
                 {
-                    checkBoxObj = new CheckBox(listItemAttrs.CheckBoxStyle)
+                    checkBoxObj = new CheckBox(Style.CheckBoxStyle)
                     {
                         WidthResizePolicy = ResizePolicyType.FillToParent,
                         HeightResizePolicy = ResizePolicyType.FillToParent
                     };
-                    leftItemRootView.Add(checkBoxObj);
+                    startItemRootView.Add(checkBoxObj);
                 }
                 if (checkBoxObj != null)
                 {
                     checkBoxObj.Show();
                 }
-                if (leftIcon != null)
+                if (startIcon != null)
                 {
-                    leftIcon.Hide();
+                    startIcon.Hide();
                 }
 
-                if (rightItemRootView != null)
+                if (endItemRootView != null)
                 {
-                    rightItemRootView.Show();
+                    endItemRootView.Show();
                 }
             }
         }
 
         private void UpdateTypeForGroupIndexStyle()
         {
-            if (styleType != StyleTypes.GroupIndex || listItemAttrs == null)
+            if (styleType != StyleTypes.GroupIndex || Style == null)
             {
                 return;
             }
             if (groupIndexType == GroupIndexTypes.None)
             {
                 // 56 + text + 56
-                if (rightItemRootView != null)
+                if (endItemRootView != null)
                 {
-                    rightItemRootView.Hide();
+                    endItemRootView.Hide();
                 }
             }
             else if (groupIndexType == GroupIndexTypes.Next)
             {
                 // 56 + text + right icon(48) + 56
-                if (rightItemRootView != null)
+                if (endItemRootView != null)
                 {
-                    rightItemRootView.Show();
+                    endItemRootView.Show();
                 }
                 if (switchObj != null)
                 {
                     switchObj.Hide();
                 }
-                if (rightIcon != null)
+                if (endIcon != null)
                 {
-                    rightIcon.Show();
+                    endIcon.Show();
                 }
             }
             else if (groupIndexType == GroupIndexTypes.Switch)
             {
-                if (switchObj == null && listItemAttrs.SwitchStyle != null && rightItemRootView != null)
+                if (switchObj == null && Style.SwitchStyle != null && endItemRootView != null)
                 {
-                    switchObj = new Switch(listItemAttrs.SwitchStyle)
+                    switchObj = new Switch(Style.SwitchStyle)
                     {
                         WidthResizePolicy = ResizePolicyType.FillToParent,
                         HeightResizePolicy = ResizePolicyType.FillToParent
                     };
-                    rightItemRootView.Add(switchObj);
+                    endItemRootView.Add(switchObj);
                 }
                 // 56 + text + switch(72) + 56
-                if (rightItemRootView != null)
+                if (endItemRootView != null)
                 {
-                    rightItemRootView.Show();
+                    endItemRootView.Show();
                 }
-                if (rightIcon != null)
+                if (endIcon != null)
                 {
-                    rightIcon.Hide();
+                    endIcon.Hide();
                 }
                 if (switchObj != null)
                 {
@@ -1498,13 +1341,13 @@ namespace Tizen.FH.NUI.Controls
             else if (groupIndexType == GroupIndexTypes.DropDown)
             {
                 // 56 + text + drop down(48) + 56
-                if (rightItemRootView != null)
+                if (endItemRootView != null)
                 {
-                    rightItemRootView.Show();
+                    endItemRootView.Show();
                 }
-                if (rightIcon != null)
+                if (endIcon != null)
                 {
-                    rightIcon.Hide();
+                    endIcon.Hide();
                 }
                 if (switchObj != null)
                 {
@@ -1515,9 +1358,9 @@ namespace Tizen.FH.NUI.Controls
 
         private void CurrentStyleType()
         {
-            if (listItemAttrs != null)
+            if (Style != null)
             {
-                styleType = listItemAttrs.StyleType;
+                styleType = Style.StyleType;
             }
         }
 
@@ -1527,85 +1370,59 @@ namespace Tizen.FH.NUI.Controls
             {
                 return;
             }
-            if (mainTextLabel == null || listItemAttrs == null)
+            if (mainTextLabel == null || Style == null)
             {
                 return;
             }
             if (!isEnabled)
             {
-                if (listItemAttrs.MainTextAttributes != null && listItemAttrs.MainTextAttributes.TextColor != null)
+                if (Style.MainText != null && Style.MainText.TextColor != null)
                 {
-                    mainTextLabel.TextColor = listItemAttrs.MainTextAttributes.TextColor.Disabled;
+                    mainTextLabel.TextColor = Style.MainText.TextColor.Disabled;
                 }
-                if (listItemAttrs.BackgroundColor != null)
+                if (Style.BackgroundColor != null)
                 {
-                    this.BackgroundColor = listItemAttrs.BackgroundColor.Disabled;
+                    BackgroundColor = Style.BackgroundColor.Disabled;
                 }
             }
             else
             {
                 if (isPressed)
                 {
-                    if (listItemAttrs.MainTextAttributes != null && listItemAttrs.MainTextAttributes.TextColor != null)
+                    if (Style.MainText != null && Style.MainText.TextColor != null)
                     {
-                        mainTextLabel.TextColor = listItemAttrs.MainTextAttributes.TextColor.Pressed;
+                        mainTextLabel.TextColor = Style.MainText.TextColor.Pressed;
                     }
-                    if (listItemAttrs.BackgroundColor != null)
+                    if (Style.BackgroundColor != null)
                     {
-                        this.BackgroundColor = listItemAttrs.BackgroundColor.Pressed;
+                        BackgroundColor = Style.BackgroundColor.Pressed;
                     }
                 }
                 else
                 {
                     if (isSelected)
                     {
-                        if (listItemAttrs.MainTextAttributes != null && listItemAttrs.MainTextAttributes.TextColor != null)
+                        if (Style.MainText != null && Style.MainText.TextColor != null)
                         {
-                            mainTextLabel.TextColor = listItemAttrs.MainTextAttributes.TextColor.Selected;
+                            mainTextLabel.TextColor = Style.MainText.TextColor.Selected;
                         }
-                        if (listItemAttrs.BackgroundColor != null)
+                        if (Style.BackgroundColor != null)
                         {
-                            this.BackgroundColor = listItemAttrs.BackgroundColor.Selected;
+                            BackgroundColor = Style.BackgroundColor.Selected;
                         }
                     }
                     else
                     {
-                        if (listItemAttrs.MainTextAttributes != null && listItemAttrs.MainTextAttributes.TextColor != null)
+                        if (Style.MainText != null && Style.MainText.TextColor != null)
                         {
-                            mainTextLabel.TextColor = listItemAttrs.MainTextAttributes.TextColor.Normal;
+                            mainTextLabel.TextColor = Style.MainText.TextColor.Normal;
                         }
-                        if (listItemAttrs.BackgroundColor != null)
+                        if (Style.BackgroundColor != null)
                         {
-                            this.BackgroundColor = listItemAttrs.BackgroundColor.Normal;
+                            BackgroundColor = Style.BackgroundColor.Normal;
                         }
                     }
                 }
-            }
-        }
-
-        private void CreateMainTextAttributesIfNecessary()
-        {
-            if (styleType == StyleTypes.GroupIndex && groupIndexType == GroupIndexTypes.None)
-            {
-                if (null == listItemAttrs.MainTextAttributes)
-                {
-                    listItemAttrs.MainTextAttributes = new TextAttributes();
-                }
-            }
-            else
-            {
-                if (null == listItemAttrs.MainText2Attributes)
-                {
-                    listItemAttrs.MainText2Attributes = new TextAttributes();
-                }
-            }
-        }
-
-        private void CreateSubTextAttributesIfNecessary()
-        {
-            if (null == listItemAttrs.SubTextAttributes)
-            {
-                listItemAttrs.SubTextAttributes = new TextAttributes();
             }
         }
     }

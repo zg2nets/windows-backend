@@ -17,8 +17,8 @@
 using System;
 using System.Reflection;
 using Tizen.NUI;
-using Tizen.FH.NUI.Controls;
-using StyleManager = Tizen.NUI.Components.StyleManager;
+using Tizen.FH.NUI.Components;
+using StyleManager = Tizen.NUI.Components.DA.StyleManager;
 using System.ComponentModel;
 
 namespace Tizen.FH.NUI
@@ -37,32 +37,15 @@ namespace Tizen.FH.NUI
     /// }
     /// </code>
     /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    
     public class FHNUIApplication : NUIApplication
     {
-
-        private static Graphics.BackendType GraphicsBackend()
-        {
-            String DALI_VULKAN_BACKEND = Environment.GetEnvironmentVariable("DALI_VULKAN_BACKEND");
-
-            int numVal = Int32.Parse(DALI_VULKAN_BACKEND);
-            Log.Error("TV.NUI", "DALI_VULKAN_BACKEND : " + numVal);
-
-            if ((Graphics.BackendType)numVal == Graphics.BackendType.Gles)
-            {
-                Log.Error("TV.NUI", "NUI Vulkan disabled~!");
-                return Graphics.BackendType.Gles;
-            }
-
-            Log.Error("TV.NUI", "NUI Vulkan enabled~!");
-            return Graphics.BackendType.Vulkan;
-        }
         /// <summary>
         /// Constructor to instantiate the TVUIApplication class.
         /// <param name="windowMode">window mode for deciding whether application window is opaque or transparent.</param>
         /// </summary>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        
         public FHNUIApplication(WindowMode windowMode = WindowMode.Opaque) : base("", windowMode)
         {
         }
@@ -73,7 +56,7 @@ namespace Tizen.FH.NUI
         /// <param name="windowMode">window mode for deciding whether application window is opaque or transparent.</param>
         /// </summary>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        
         public FHNUIApplication(string styleSheet, WindowMode windowMode = WindowMode.Opaque) : base(styleSheet, windowMode)
         {
         }
@@ -82,7 +65,7 @@ namespace Tizen.FH.NUI
         /// Overrides this method if want to handle behavior before calling OnCreate().
         /// </summary>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        
         protected override void OnPreCreate()
         {
             base.OnPreCreate();
@@ -90,10 +73,10 @@ namespace Tizen.FH.NUI
         }
 
         /// <summary>
-        /// Overrides this method if want to handle behavior when the application is created.        
+        /// Overrides this method if want to handle behavior when the application is created.
         /// </summary>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -104,7 +87,7 @@ namespace Tizen.FH.NUI
         /// Overrides this method if want to handle behavior when the application is resumed.
         /// </summary>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        
         protected override void OnResume()
         {
             base.OnResume();
@@ -115,7 +98,7 @@ namespace Tizen.FH.NUI
         /// If base.OnTerminate() is not called, the event 'Terminated' will not be emitted.
         /// </summary>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        
         protected override void OnTerminate()
         {
             CleanUp();
@@ -128,7 +111,7 @@ namespace Tizen.FH.NUI
         /// <version> 5.5.0 </version>
         /// <param name="args">Arguments from commandline.</param>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        
         public override void Run(string[] args)
         {
             base.Run(args);
@@ -138,6 +121,7 @@ namespace Tizen.FH.NUI
         {
             InitializeComponent();
         }
+
         private void CleanUp()
         {
             CleanupComponent();
@@ -186,17 +170,17 @@ namespace Tizen.FH.NUI
             StyleManager.Instance.RegisterStyle("Switch", "Kitchen", typeof(KitchenSwitchStyle));
             StyleManager.Instance.RegisterStyle("ListIndexSwitch", null, typeof(ListIndexSwitchStyle));
 
-            StyleManager.Instance.RegisterStyle("DAScrollbar", null, typeof(FH.NUI.Controls.DAScrollBarStyle));
+            StyleManager.Instance.RegisterStyle("DAScrollbar", null, typeof(DAScrollBarStyle));
 
-            StyleManager.Instance.RegisterStyle("Progressbar","Family", typeof(FH.NUI.Controls.FamilyProgressbarStyle));
-            StyleManager.Instance.RegisterStyle("Progressbar","Food", typeof(FH.NUI.Controls.FoodProgressbarStyle));
-            StyleManager.Instance.RegisterStyle("Progressbar","Kitchen", typeof(FH.NUI.Controls.KitchenProgressbarStyle));
-            StyleManager.Instance.RegisterStyle("Progressbar", "Utility", typeof(FH.NUI.Controls.UtilityProgressbarStyle));
+            StyleManager.Instance.RegisterStyle("Progressbar","Family", typeof(FamilyProgressbarStyle));
+            StyleManager.Instance.RegisterStyle("Progressbar","Food", typeof(FoodProgressbarStyle));
+            StyleManager.Instance.RegisterStyle("Progressbar","Kitchen", typeof(KitchenProgressbarStyle));
+            StyleManager.Instance.RegisterStyle("Progressbar", "Utility", typeof(UtilityProgressbarStyle));
 
             StyleManager.Instance.RegisterStyle("Popup", "Family", typeof(FamilyPopupStyle));
             StyleManager.Instance.RegisterStyle("Popup", "Utility", typeof(UtilityPopupStyle), true);
             StyleManager.Instance.RegisterStyle("Popup", "Food", typeof(FoodPopupStyle));
-            StyleManager.Instance.RegisterStyle("Popup", "Kitchen", typeof(KitchenPopupStyle));           
+            StyleManager.Instance.RegisterStyle("Popup", "Kitchen", typeof(KitchenPopupStyle));
 
             StyleManager.Instance.RegisterStyle("Tab", "Family", typeof(FamilyTabStyle));
             StyleManager.Instance.RegisterStyle("Tab", "Utility", typeof(UtilityTabStyle), true);
@@ -244,17 +228,15 @@ namespace Tizen.FH.NUI
             StyleManager.Instance.RegisterStyle("StyleBInputField", "Utility", typeof(UtilityStyleBInputFieldStyle), true);
             StyleManager.Instance.RegisterStyle("DefaultSearchInputField", null, typeof(DefaultSearchInputFieldStyle));
 
-            StyleManager.Instance.RegisterStyle("DefaultSearchBar", null, typeof(DefaultSearchBarStyle), true);
-
             StyleManager.Instance.RegisterStyle("BasicShortToast", null, typeof(BasicShortToasStyle));
             StyleManager.Instance.RegisterStyle("BasicLongToast", null, typeof(BasicLongToastStyle));
 
             StyleManager.Instance.RegisterStyle("DefaultListItem", null, typeof(DefaultListItemStyle));
-            StyleManager.Instance.RegisterStyle("MultiSubTextListItem", null, typeof(MultiSubTextListItemAttributes));
-            StyleManager.Instance.RegisterStyle("EffectListItem", null, typeof(EffectListItemAttributes));
-            StyleManager.Instance.RegisterStyle("ItemAlignListItem", null, typeof(ItemAlignListItemAttributes));
-            StyleManager.Instance.RegisterStyle("NextDepthListItem", null, typeof(NextDepthListItemAttributes));
-            StyleManager.Instance.RegisterStyle("GroupIndexListItem", null, typeof(GroupIndexListItemAttributes));
+            StyleManager.Instance.RegisterStyle("MultiSubTextListItem", null, typeof(MultiSubTextListItemStyle));
+            StyleManager.Instance.RegisterStyle("EffectListItem", null, typeof(EffectListItemStyle));
+            StyleManager.Instance.RegisterStyle("ItemAlignListItem", null, typeof(ItemAlignListItemStyle));
+            StyleManager.Instance.RegisterStyle("NextDepthListItem", null, typeof(NextDepthListItemStyle));
+            StyleManager.Instance.RegisterStyle("GroupIndexListItem", null, typeof(GroupIndexListItemStyle));
 
             StyleManager.Instance.RegisterStyle("DefaultLoading", null, typeof(DefaultLoadingStyle));
 
@@ -275,8 +257,8 @@ namespace Tizen.FH.NUI
             StyleManager.Instance.RegisterStyle("DefaultHeader", null, typeof(DefaultHeaderStyle));
             StyleManager.Instance.RegisterStyle("OpaqueHeader", null, typeof(OpaqueHeaderStyle));
             StyleManager.Instance.RegisterStyle("TransparencyHeader", null, typeof(TransparencyHeaderStyle));
-            StyleManager.Instance.RegisterStyle("DefaultNaviFrame", null, typeof(DefaultNaviFrameStyle));
         }
+
         private void CleanupComponent()
         {
         }

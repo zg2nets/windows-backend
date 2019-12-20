@@ -38,6 +38,7 @@ namespace Tizen.NUI.Samples
             root = new View()
             {
                 Size2D = new Size2D(1920, 1080),
+                BackgroundColor = Color.White,
             };
             window.Add(root);
 
@@ -65,17 +66,17 @@ namespace Tizen.NUI.Samples
                 utilityRadioButton[i] = new RadioButton();
                 utilityRadioButton[i].Size2D = new Size2D(48, 48);
                 utilityRadioButton[i].Position2D = new Position2D(300, 300 + i * 100);
-                utilityRadioButton[i].Style.SelectableImage.Size = new Size(48, 48);
-                utilityRadioButton[i].Style.SelectableImage.Image.Padding.Start = 5;
-                utilityRadioButton[i].Style.SelectableImage.Image.Padding.End = 5;
-                utilityRadioButton[i].Style.SelectableImage.Opacity = new Selector<float?>
+                utilityRadioButton[i].Style.Icon.Size = new Size(48, 48);
+                utilityRadioButton[i].Style.Icon.Padding.Start = 5;
+                utilityRadioButton[i].Style.Icon.Padding.End = 5;
+                utilityRadioButton[i].Style.Icon.Opacity = new Selector<float?>
                 {
                     Normal = 1.0f,
                     Selected = 1.0f,
                     Disabled = 0.4f,
                     DisabledSelected = 0.4f
                 };
-                utilityRadioButton[i].Style.SelectableImage.Image.ResourceUrl = new Selector<string>
+                utilityRadioButton[i].Style.Icon.ResourceUrl = new Selector<string>
                 {
                     Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_on.png",
@@ -88,17 +89,17 @@ namespace Tizen.NUI.Samples
                 familyRadioButton[i] = new RadioButton();
                 familyRadioButton[i].Size2D = new Size2D(48, 48);
                 familyRadioButton[i].Position2D = new Position2D(500, 300 + i * 100);
-                familyRadioButton[i].Style.SelectableImage.Size = new Size(48, 48);
-                familyRadioButton[i].Style.SelectableImage.Image.Padding.Start = 5;
-                familyRadioButton[i].Style.SelectableImage.Image.Padding.End = 5;
-                familyRadioButton[i].Style.SelectableImage.Opacity = new Selector<float?>
+                familyRadioButton[i].Style.Icon.Size = new Size(48, 48);
+                familyRadioButton[i].Style.Icon.Padding.Start = 5;
+                familyRadioButton[i].Style.Icon.Padding.End = 5;
+                familyRadioButton[i].Style.Icon.Opacity = new Selector<float?>
                 {
                     Normal = 1.0f,
                     Selected = 1.0f,
                     Disabled = 0.4f,
                     DisabledSelected = 0.4f
                 };
-                familyRadioButton[i].Style.SelectableImage.Image.ResourceUrl = new Selector<string>
+                familyRadioButton[i].Style.Icon.ResourceUrl = new Selector<string>
                 {
                     Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_24c447.png",
@@ -111,17 +112,17 @@ namespace Tizen.NUI.Samples
                 foodRadioButton[i] = new RadioButton();
                 foodRadioButton[i].Size2D = new Size2D(150, 48);
                 foodRadioButton[i].Position2D = new Position2D(700, 300 + i * 100);
-                foodRadioButton[i].Style.SelectableImage.Size = new Size(48, 48);
-                foodRadioButton[i].Style.SelectableImage.Image.Padding.Start = 5;
-                foodRadioButton[i].Style.SelectableImage.Image.Padding.End = 5;
-                foodRadioButton[i].Style.SelectableImage.Opacity = new Selector<float?>
+                foodRadioButton[i].Style.Icon.Size = new Size(48, 48);
+                foodRadioButton[i].Style.Icon.Padding.Start = 5;
+                foodRadioButton[i].Style.Icon.Padding.End = 5;
+                foodRadioButton[i].Style.Icon.Opacity = new Selector<float?>
                 {
                     Normal = 1.0f,
                     Selected = 1.0f,
                     Disabled = 0.4f,
                     DisabledSelected = 0.4f
                 };
-                foodRadioButton[i].Style.SelectableImage.Image.ResourceUrl = new Selector<string>
+                foodRadioButton[i].Style.Icon.ResourceUrl = new Selector<string>
                 {
                     Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_ec7510.png",
@@ -139,17 +140,17 @@ namespace Tizen.NUI.Samples
                 kitchenRadioButton[i] = new RadioButton();
                 kitchenRadioButton[i].Size2D = new Size2D(48, 48);
                 kitchenRadioButton[i].Position2D = new Position2D(900, 300 + i * 100);
-                kitchenRadioButton[i].Style.SelectableImage.Size = new Size(48, 48);
-                kitchenRadioButton[i].Style.SelectableImage.Image.Padding.Start = 5;
-                kitchenRadioButton[i].Style.SelectableImage.Image.Padding.End = 5;
-                kitchenRadioButton[i].Style.SelectableImage.Opacity = new Selector<float?>
+                kitchenRadioButton[i].Style.Icon.Size = new Size(48, 48);
+                kitchenRadioButton[i].Style.Icon.Padding.Start = 5;
+                kitchenRadioButton[i].Style.Icon.Padding.End = 5;
+                kitchenRadioButton[i].Style.Icon.Opacity = new Selector<float?>
                 {
                     Normal = 1.0f,
                     Selected = 1.0f,
                     Disabled = 0.4f,
                     DisabledSelected = 0.4f
                 };
-                kitchenRadioButton[i].Style.SelectableImage.Image.ResourceUrl = new Selector<string>
+                kitchenRadioButton[i].Style.Icon.ResourceUrl = new Selector<string>
                 {
                     Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_9762d9.png",
@@ -183,9 +184,9 @@ namespace Tizen.NUI.Samples
                 root.Add(modeText2[i]);
             }
 
-            SelectButtonStyle utilityAttrs = new SelectButtonStyle
+            ButtonStyle utilityAttrs = new ButtonStyle
             {
-                SelectableImage = new ImageControlStyle
+                Icon = new ImageControlStyle
                 {
                     Size =  new Size(48, 48),
                     Opacity = new Selector<float?>
@@ -195,21 +196,18 @@ namespace Tizen.NUI.Samples
                         Disabled = 0.4f,
                         DisabledSelected = 0.4f
                     },
-                    Image = new ImageViewStyle
+                    ResourceUrl = new Selector<string>
                     {
-                        ResourceUrl = new Selector<string>
-                        {
-                            Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
-                            Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_on.png",
-                            Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
-                            DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_on.png",
-                        },
-                    }
+                        Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
+                        Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_on.png",
+                        Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
+                        DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_on.png",
+                    },
                 },            
             };         
-            SelectButtonStyle familyAttrs = new SelectButtonStyle
+            ButtonStyle familyAttrs = new ButtonStyle
             {
-                SelectableImage = new ImageControlStyle
+                Icon = new ImageControlStyle
                 {
                     Size =  new Size(48, 48),
                     Opacity = new Selector<float?>
@@ -219,21 +217,18 @@ namespace Tizen.NUI.Samples
                         Disabled = 0.4f,
                         DisabledSelected = 0.4f
                     },
-                    Image = new ImageViewStyle
+                    ResourceUrl = new Selector<string>
                     {
-                        ResourceUrl = new Selector<string>
-                        {
-                            Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
-                            Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_24c447.png",
-                            Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
-                            DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_24c447.png",
-                        },
-                    }
+                        Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
+                        Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_24c447.png",
+                        Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
+                        DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_24c447.png",
+                    },
                 },
             };
-            SelectButtonStyle foodAttrs = new SelectButtonStyle
+            ButtonStyle foodAttrs = new ButtonStyle
             {
-                SelectableImage = new ImageControlStyle
+                Icon = new ImageControlStyle
                 {
                     Size = new Size(48, 48),
                     Opacity = new Selector<float?>
@@ -243,21 +238,18 @@ namespace Tizen.NUI.Samples
                         Disabled = 0.4f,
                         DisabledSelected = 0.4f
                     },
-                    Image = new ImageViewStyle
+                    ResourceUrl = new Selector<string>
                     {
-                        ResourceUrl = new Selector<string>
-                        {
-                            Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
-                            Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_ec7510.png",
-                            Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
-                            DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_ec7510.png",
-                        },
-                    }
+                        Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
+                        Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_ec7510.png",
+                        Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
+                        DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_ec7510.png",
+                    },
                 },
             };
-            SelectButtonStyle kitchenAttrs = new SelectButtonStyle
+            ButtonStyle kitchenAttrs = new ButtonStyle
             {
-                SelectableImage = new ImageControlStyle
+                Icon = new ImageControlStyle
                 {
                     Size = new Size(48, 48),
                     Opacity = new Selector<float?>
@@ -267,17 +259,14 @@ namespace Tizen.NUI.Samples
                         Disabled = 0.4f,
                         DisabledSelected = 0.4f
                     },
-                    Image = new ImageViewStyle
+                    ResourceUrl = new Selector<string>
                     {
-                        ResourceUrl = new Selector<string>
-                        {
-                            Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
-                            Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_9762d9.png",
-                            Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
-                            DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_9762d9.png",
-                        },
-                    }
-                },               
+                        Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
+                        Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_9762d9.png",
+                        Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_radio_off.png",
+                        DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_radio_on_9762d9.png",
+                    },
+                },
             };
             for (int i = 0; i < num; i++)
             {

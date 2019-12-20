@@ -26,30 +26,9 @@ namespace Tizen.NUI.Components
     /// ButtonGroup is a group of buttons which can be set common property<br />
     /// </summary>
     /// <since_tizen> 3 </since_tizen>
-    public class ButtonGroup : BaseHandle
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class ButtonGroup : BindableObject, global::System.IDisposable
     {
-        /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ItemSizeProperty = BindableProperty.Create(nameof(ItemSize), typeof(Size), typeof(ButtonGroup), new Size(0, 0), propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            ButtonGroup btGroup = (ButtonGroup)bindable;
-            if (btGroup.itemGroup != null && newValue != null)
-            {
-                foreach (Button btn in btGroup.itemGroup)
-                {
-                    btn.Size = (Size)newValue;
-                }
-                btGroup.itemSize = (Size)newValue;
-            }
-        },
-        defaultValueCreator: (bindable) =>
-        {
-            Size ret = new Size(0, 0);
-            ButtonGroup btGroup = (ButtonGroup)bindable;
-            btGroup.itemSize = ret;
-            return ret;
-        });
-
         /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static readonly BindableProperty ItemheightProperty = BindableProperty.Create(nameof(Itemheight), typeof(float), typeof(ButtonGroup), 0.0f, propertyChanged: (bindable, oldValue, newValue) =>
@@ -59,17 +38,15 @@ namespace Tizen.NUI.Components
             {
                 foreach (Button btn in btGroup.itemGroup)
                 {
-                    btn.SizeHeight = (float)newValue;
+                    btn.Style.SizeHeight = (float)newValue;
                 }
                 btGroup.itemheight = (float)newValue;
             }
         },
         defaultValueCreator: (bindable) =>
         {
-            float ret = 0.0f;
             ButtonGroup btGroup = (ButtonGroup)bindable;
-            btGroup.itemheight = ret;
-            return ret;
+            return btGroup.itemheight;
         });
 
         /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -81,17 +58,15 @@ namespace Tizen.NUI.Components
             {
                 foreach (Button btn in btGroup.itemGroup)
                 {
-                    btn.PointSize = (float)newValue;
+                    btn.Style.Text.PointSize = (float)newValue;
                 }
                 btGroup.itemPointSize = (float)newValue;
             }
         },
         defaultValueCreator: (bindable) =>
         {
-            float ret = 0.0f;
             ButtonGroup btGroup = (ButtonGroup)bindable;
-            btGroup.itemPointSize = ret;
-            return ret;
+            return btGroup.itemPointSize;
         });
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -103,22 +78,20 @@ namespace Tizen.NUI.Components
             {
                 foreach (Button btn in btGroup.itemGroup)
                 {
-                    btn.FontFamily = (string)newValue;
+                    btn.Style.Text.FontFamily = (string)newValue;
                 }
                 btGroup.itemFontFamily = (string)newValue;
             }
         },
         defaultValueCreator: (bindable) =>
         {
-            string ret = "";
             ButtonGroup btGroup = (ButtonGroup)bindable;
-            btGroup.itemFontFamily = ret;
-            return ret;
+            return btGroup.itemFontFamily;
         });
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ItemTextColorProperty = BindableProperty.Create(nameof(ItemTextColor), typeof(Color), typeof(ButtonGroup), Color.White, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ItemTextColorProperty = BindableProperty.Create(nameof(ItemTextColor), typeof(Color), typeof(ButtonGroup), Color.Black, propertyChanged: (bindable, oldValue, newValue) =>
         {
             ButtonGroup btGroup = (ButtonGroup)bindable;
             if (btGroup.itemGroup != null && newValue != null)
@@ -132,32 +105,8 @@ namespace Tizen.NUI.Components
         },
         defaultValueCreator: (bindable) =>
         {
-            Color ret = Color.White;
             ButtonGroup btGroup = (ButtonGroup)bindable;
-            btGroup.itemTextColor = ret;
-            return ret;
-        });
-
-        /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ItemBackgroundColorSelectorProperty = BindableProperty.Create(nameof(ItemBackgroundColorSelector), typeof(Selector<Color>), typeof(ButtonGroup), new Selector<Color>(), propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            ButtonGroup btGroup = (ButtonGroup)bindable;
-            if (btGroup.itemGroup != null && newValue != null)
-            {
-                foreach (Button btn in btGroup.itemGroup)
-                {
-                    btn.Style.Overlay.BackgroundColor = (Selector<Color>)newValue;
-                }
-                btGroup.itemBackgroundColorSelector = (Selector<Color>)newValue;
-            }
-        },
-        defaultValueCreator: (bindable) =>
-        {
-            Selector<Color> ret = new Selector<Color>();
-            ButtonGroup btGroup = (ButtonGroup)bindable;
-            btGroup.itemBackgroundColorSelector = ret;
-            return ret;
+            return btGroup.itemTextColor;
         });
 
         /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -169,44 +118,59 @@ namespace Tizen.NUI.Components
             {
                 foreach (Button btn in btGroup.itemGroup)
                 {
-                    btn.TextAlignment = (HorizontalAlignment)newValue;
+                    btn.Style.Text.HorizontalAlignment = (HorizontalAlignment)newValue;
                 }
                 btGroup.itemTextAlignment = (HorizontalAlignment)newValue;
             }
         },
         defaultValueCreator: (bindable) =>
         {
-            HorizontalAlignment ret = new HorizontalAlignment();
             ButtonGroup btGroup = (ButtonGroup)bindable;
-            btGroup.itemTextAlignment = ret;
-            return ret;
+            return btGroup.itemTextAlignment;
         });
 
         /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ItemBackgroundProperty = BindableProperty.Create(nameof(ItemBackground), typeof(string), typeof(ButtonGroup), string.Empty, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty OverLayBackgroundColorSelectorProperty = BindableProperty.Create(nameof(OverLayBackgroundColorSelector), typeof(Selector<Color>), typeof(ButtonGroup), new Selector<Color>(), propertyChanged: (bindable, oldValue, newValue) =>
         {
             ButtonGroup btGroup = (ButtonGroup)bindable;
             if (btGroup.itemGroup != null && newValue != null)
             {
                 foreach (Button btn in btGroup.itemGroup)
                 {
-                    if (btn.Style.Background.ResourceUrl == null)
-                    {
-                        btn.Style.Background.ResourceUrl = new Selector<string>();
-                    }              
-                    btn.Style.Background.ResourceUrl.All = (string)newValue;
-                    //btn.BackgroundImage = (string)newValue;
+                    btn.Style.Overlay.BackgroundColor = (Selector<Color>)newValue;
                 }
-                btGroup.itemBackground = (string)newValue;
+                btGroup.overLayBackgroundColorSelector = (Selector<Color>)newValue;
             }
         },
         defaultValueCreator: (bindable) =>
         {
-            string ret = "";
             ButtonGroup btGroup = (ButtonGroup)bindable;
-            btGroup.itemBackground = ret;
-            return ret;
+            return btGroup.overLayBackgroundColorSelector;
+        });
+
+        /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty ItemBackgroundImageUrlProperty = BindableProperty.Create(nameof(ItemBackgroundImageUrl), typeof(string), typeof(ButtonGroup), string.Empty, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            ButtonGroup btGroup = (ButtonGroup)bindable;
+            if (btGroup.itemGroup != null && newValue != null)
+            {
+                foreach (Button btn in btGroup.itemGroup)
+                {
+                    if (btn.Style.BackgroundImage == null)
+                    {
+                        btn.Style.BackgroundImage = new Selector<string>();
+                    }              
+                    btn.Style.BackgroundImage = (string)newValue;
+                }
+                btGroup.itemBackgroundImageUrl = (string)newValue;
+            }
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            ButtonGroup btGroup = (ButtonGroup)bindable;
+            return btGroup.itemBackgroundImageUrl;
         });
 
         /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -218,30 +182,60 @@ namespace Tizen.NUI.Components
             {
                 foreach (Button btn in btGroup.itemGroup)
                 {                 
-                    btn.BackgroundBorder = (Rectangle)newValue;
+                    btn.BackgroundImageBorder = (Rectangle)newValue;
                 }
                 btGroup.itemBackgroundBorder = (Rectangle)newValue;
             }
         },
         defaultValueCreator: (bindable) =>
         {
-            Rectangle ret = new Rectangle();
             ButtonGroup btGroup = (ButtonGroup)bindable;
-            btGroup.itemBackgroundBorder = ret;
-            return ret;
+            return btGroup.itemBackgroundBorder;
         });
 
-        public List<Button> itemGroup;
-        private View root;
-        private Size itemSize;
-        private float itemheight;
-        private float itemPointSize;
-        private string itemFontFamily;
-        private Color itemTextColor;
-        private Selector<Color> itemBackgroundColorSelector;
-        private HorizontalAlignment itemTextAlignment;
-        private string itemBackground;
-        private Rectangle itemBackgroundBorder;
+        /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty ItemShadowUrlProperty = BindableProperty.Create(nameof(ItemShadowUrl), typeof(string), typeof(ButtonGroup), string.Empty, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            ButtonGroup btGroup = (ButtonGroup)bindable;
+            if (btGroup.itemGroup != null && newValue != null)
+            {
+                foreach (Button btn in btGroup.itemGroup)
+                {
+                    if (btn.Style.Shadow.ResourceUrl == null)
+                    {
+                        btn.Style.Shadow.ResourceUrl = new Selector<string>();
+                    }
+                    btn.Style.Shadow.ResourceUrl = (string)newValue;
+                }
+                btGroup.itemShadowUrl = (string)newValue;
+            }
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            ButtonGroup btGroup = (ButtonGroup)bindable;
+            return btGroup.itemShadowUrl;
+        });
+
+        /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty ItemShadowBorderProperty = BindableProperty.Create(nameof(ItemShadowBorder), typeof(Rectangle), typeof(ButtonGroup), new Rectangle(), propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            ButtonGroup btGroup = (ButtonGroup)bindable;
+            if (btGroup.itemGroup != null && newValue != null)
+            {
+                foreach (Button btn in btGroup.itemGroup)
+                {
+                    btn.Style.Shadow.Border = (Rectangle)newValue;
+                }
+                btGroup.itemShadowBorder = (Rectangle)newValue;
+            }
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            ButtonGroup btGroup = (ButtonGroup)bindable;
+            return btGroup.itemShadowBorder;
+        });
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ButtonGroup(View view) : base()
@@ -275,7 +269,7 @@ namespace Tizen.NUI.Components
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public Button GetButton(int index)
+        public Button GetItem(int index)
         {
             if (index >= Count || index < 0)
             {
@@ -332,7 +326,7 @@ namespace Tizen.NUI.Components
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void UpdateButton()
+        public void UpdateButton(ButtonStyle btStyle)
         {
             if (Count == 0) return;
 
@@ -348,7 +342,7 @@ namespace Tizen.NUI.Components
             {
                 for (int i = Count - 1; i >= 0; i--)
                 {
-                    itemGroup[i].PositionX = pos;
+                    itemGroup[i].Style.PositionX = pos;
                     pos += (int)(itemGroup[i].Size.Width);
                 }
             }
@@ -356,28 +350,13 @@ namespace Tizen.NUI.Components
             {
                 for (int i = 0; i < Count; i++)
                 {
-                    itemGroup[i].PositionX = pos;
+                    itemGroup[i].Style.PositionX = pos;
                     pos += (int)(itemGroup[i].Size.Width);
                 }
             }
-        }
 
-
-        /// <summary>
-        /// Common size for all of the Items
-        /// </summary>
-        /// <since_tizen> 3 </since_tizen>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Size ItemSize
-        {
-            get
-            {
-                return (Size)GetValue(ItemSizeProperty);
-            }
-            set
-            {
-                SetValue(ItemSizeProperty, value);
-            }
+            if (btStyle == null || btStyle.Text == null || btStyle.Text.TextColor == null) return;
+            ItemTextColor = btStyle.Text.TextColor.All;
         }
 
         /// <summary>
@@ -437,19 +416,6 @@ namespace Tizen.NUI.Components
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public Selector<Color> ItemBackgroundColorSelector
-        {
-            get
-            {
-                return (Selector<Color>)GetValue(ItemBackgroundColorSelectorProperty);
-            }
-            set
-            {
-                SetValue(ItemBackgroundColorSelectorProperty, value);
-            }
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public HorizontalAlignment ItemTextAlignment
         {
             get
@@ -462,20 +428,33 @@ namespace Tizen.NUI.Components
             }
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Selector<Color> OverLayBackgroundColorSelector
+        {
+            get
+            {
+                return (Selector<Color>)GetValue(OverLayBackgroundColorSelectorProperty);
+            }
+            set
+            {
+                SetValue(OverLayBackgroundColorSelectorProperty, value);
+            }
+        }
+
         /// <summary>
         /// The mutually exclusive with "backgroundColor" and "background" type Map.
         /// </summary>
         /// <since_tizen> 3 </since_tizen>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string ItemBackground
+        public string ItemBackgroundImageUrl
         {
             get
             {
-                return (string)GetValue(ItemBackgroundProperty);
+                return (string)GetValue(ItemBackgroundImageUrlProperty);
             }
             set
             {
-                SetValue(ItemBackgroundProperty, value);
+                SetValue(ItemBackgroundImageUrlProperty, value);
             }
         }
 
@@ -492,23 +471,56 @@ namespace Tizen.NUI.Components
             }
         }
 
-        protected override void Dispose(DisposeTypes type)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string ItemShadowUrl
         {
-            if (disposed)
+            get
             {
-                return;
+                return (string)GetValue(ItemShadowUrlProperty);
             }
-
-            if (type == DisposeTypes.Explicit)
+            set
             {
-                if (itemGroup != null)
-                {
-                    RemoveAll();
-                    itemGroup = null;
-                }
+                SetValue(ItemShadowUrlProperty, value);
             }
-
-            base.Dispose(type);
         }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Rectangle ItemShadowBorder
+        {
+            get
+            {
+                return (Rectangle)GetValue(ItemShadowBorderProperty);
+            }
+            set
+            {
+                SetValue(ItemShadowBorderProperty, value);
+            }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void Dispose()
+        {
+            if (disposed) return;
+            if (itemGroup != null)
+            {
+                RemoveAll();
+                itemGroup = null;
+            }
+            disposed = true;
+        }
+
+        private List<Button> itemGroup;
+        private View root = null;
+        private bool disposed = false;
+        private float itemheight;
+        private float itemPointSize;
+        private string itemFontFamily;
+        private Color itemTextColor = new Color();
+        private HorizontalAlignment itemTextAlignment;
+        private Selector<Color> overLayBackgroundColorSelector = new Selector<Color>();
+        private string itemBackgroundImageUrl;
+        private Rectangle itemBackgroundBorder = new Rectangle();
+        private string itemShadowUrl;
+        private Rectangle itemShadowBorder = new Rectangle();
     }
 }

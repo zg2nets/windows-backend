@@ -37,6 +37,7 @@ namespace Tizen.NUI.Samples
             root = new View()
             {
                 Size2D = new Size2D(1920, 1080),
+                BackgroundColor = Color.White,
             };
             window.Add(root);
 
@@ -64,33 +65,33 @@ namespace Tizen.NUI.Samples
                 utilityCheckBox[i] = new CheckBox();
                 utilityCheckBox[i].Size2D = new Size2D(150, 48);
                 utilityCheckBox[i].Position2D = new Position2D(300, 300 + i * 100);
-                utilityCheckBox[i].Style.SelectableImage.Size = new Size(48, 48);
-                utilityCheckBox[i].Style.SelectableImage.Padding.Start = 0;
-                utilityCheckBox[i].Style.SelectableImage.Padding.End = 0;
-                utilityCheckBox[i].Style.SelectableImage.Padding.Top = 0;
-                utilityCheckBox[i].Style.SelectableImage.Padding.Bottom = 0;
-                utilityCheckBox[i].Style.SelectableImage.Opacity = new Selector<float?>
+                utilityCheckBox[i].Style.Icon.Size = new Size(48, 48);
+                utilityCheckBox[i].Style.Icon.Padding.Start = 0;
+                utilityCheckBox[i].Style.Icon.Padding.End = 0;
+                utilityCheckBox[i].Style.Icon.Padding.Top = 0;
+                utilityCheckBox[i].Style.Icon.Padding.Bottom = 0;
+                utilityCheckBox[i].Style.Icon.Opacity = new Selector<float?>
                 {
                     Normal = 1.0f,
                     Selected = 1.0f,
                     Disabled = 0.4f,
                     DisabledSelected = 0.4f
                 };
-                utilityCheckBox[i].Style.SelectableImage.Background.ResourceUrl = new Selector<string>
+                utilityCheckBox[i].Style.Icon.BackgroundImage = new Selector<string>
                 {
                     Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_on.png",
                     Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
                     DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_on.png",
                 };
-                utilityCheckBox[i].Style.SelectableImage.Image.ResourceUrl = new Selector<string>
+                utilityCheckBox[i].Style.Icon.ResourceUrl = new Selector<string>
                 {
                     Normal = "",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check.png",
                     Disabled = "",
                     DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check.png",
                 };
-                utilityCheckBox[i].Style.SelectableImage.Shadow.ResourceUrl = new Selector<string>
+                utilityCheckBox[i].Style.Icon.Shadow.ResourceUrl = new Selector<string>
                 {
                     Normal = "",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_shadow.png",
@@ -108,19 +109,19 @@ namespace Tizen.NUI.Samples
                 familyCheckBox[i] = new CheckBox();
                 familyCheckBox[i].Size2D = new Size2D(48, 48);
                 familyCheckBox[i].Position2D = new Position2D(500, 300 + i * 100);
-                familyCheckBox[i].Style.SelectableImage.Size = new Size(48, 48);
-                familyCheckBox[i].Style.SelectableImage.Padding.Start = 0;
-                familyCheckBox[i].Style.SelectableImage.Padding.End = 0;
-                familyCheckBox[i].Style.SelectableImage.Padding.Top = 0;
-                familyCheckBox[i].Style.SelectableImage.Padding.Bottom = 0;
-                familyCheckBox[i].Style.SelectableImage.Opacity = new Selector<float?>
+                familyCheckBox[i].Style.Icon.Size = new Size(48, 48);
+                familyCheckBox[i].Style.Icon.Padding.Start = 0;
+                familyCheckBox[i].Style.Icon.Padding.End = 0;
+                familyCheckBox[i].Style.Icon.Padding.Top = 0;
+                familyCheckBox[i].Style.Icon.Padding.Bottom = 0;
+                familyCheckBox[i].Style.Icon.Opacity = new Selector<float?>
                 {
                     Normal = 1.0f,
                     Selected = 1.0f,
                     Disabled = 0.4f,
                     DisabledSelected = 0.4f
                 };
-                familyCheckBox[i].Style.SelectableImage.Image.ResourceUrl = new Selector<string>
+                familyCheckBox[i].Style.Icon.ResourceUrl = new Selector<string>
                 {
                     Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_24c447.png",
@@ -133,19 +134,19 @@ namespace Tizen.NUI.Samples
                 foodCheckBox[i] = new CheckBox();
                 foodCheckBox[i].Size2D = new Size2D(48, 48);
                 foodCheckBox[i].Position2D = new Position2D(700, 300 + i * 100);
-                foodCheckBox[i].Style.SelectableImage.Size = new Size(48, 48);
-                foodCheckBox[i].Style.SelectableImage.Padding.Start = 0;
-                foodCheckBox[i].Style.SelectableImage.Padding.End = 0;
-                foodCheckBox[i].Style.SelectableImage.Padding.Top = 0;
-                foodCheckBox[i].Style.SelectableImage.Padding.Bottom = 0;
-                foodCheckBox[i].Style.SelectableImage.Opacity = new Selector<float?>
+                foodCheckBox[i].Style.Icon.Size = new Size(48, 48);
+                foodCheckBox[i].Style.Icon.Padding.Start = 0;
+                foodCheckBox[i].Style.Icon.Padding.End = 0;
+                foodCheckBox[i].Style.Icon.Padding.Top = 0;
+                foodCheckBox[i].Style.Icon.Padding.Bottom = 0;
+                foodCheckBox[i].Style.Icon.Opacity = new Selector<float?>
                 {
                     Normal = 1.0f,
                     Selected = 1.0f,
                     Disabled = 0.4f,
                     DisabledSelected = 0.4f
                 };
-                foodCheckBox[i].Style.SelectableImage.Image.ResourceUrl = new Selector<string>
+                foodCheckBox[i].Style.Icon.ResourceUrl = new Selector<string>
                 {
                     Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_ec7510.png",
@@ -158,20 +159,20 @@ namespace Tizen.NUI.Samples
                 kitchenCheckBox[i] = new CheckBox();
                 kitchenCheckBox[i].Size2D = new Size2D(48, 48);
                 kitchenCheckBox[i].Position2D = new Position2D(900, 300 + i * 100);
-                kitchenCheckBox[i].Style.SelectableImage.Size = new Size(48, 48);
-                kitchenCheckBox[i].Style.SelectableImage.Padding.Start = 0;
-                kitchenCheckBox[i].Style.SelectableImage.Padding.End = 0;
-                kitchenCheckBox[i].Style.SelectableImage.Padding.Top = 0;
-                kitchenCheckBox[i].Style.SelectableImage.Padding.Bottom = 0;
+                kitchenCheckBox[i].Style.Icon.Size = new Size(48, 48);
+                kitchenCheckBox[i].Style.Icon.Padding.Start = 0;
+                kitchenCheckBox[i].Style.Icon.Padding.End = 0;
+                kitchenCheckBox[i].Style.Icon.Padding.Top = 0;
+                kitchenCheckBox[i].Style.Icon.Padding.Bottom = 0;
 
-                kitchenCheckBox[i].Style.SelectableImage.Opacity = new Selector<float?>
+                kitchenCheckBox[i].Style.Icon.Opacity = new Selector<float?>
                 {
                     Normal = 1.0f,
                     Selected = 1.0f,
                     Disabled = 0.4f,
                     DisabledSelected = 0.4f
                 };
-                kitchenCheckBox[i].Style.SelectableImage.Image.ResourceUrl = new Selector<string>
+                kitchenCheckBox[i].Style.Icon.ResourceUrl = new Selector<string>
                 {
                     Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
                     Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_9762d9.png",
@@ -204,9 +205,9 @@ namespace Tizen.NUI.Samples
                 root.Add(modeText2[i]);
             }
 
-            SelectButtonStyle utilityAttrs = new SelectButtonStyle
+            ButtonStyle utilityAttrs = new ButtonStyle
             {
-                SelectableImage = new ImageControlStyle
+                Icon = new ImageControlStyle
                 {
                     Size = new Size(48, 48),
                     Opacity = new Selector<float?>
@@ -216,25 +217,19 @@ namespace Tizen.NUI.Samples
                         Disabled = 0.4f,
                         DisabledSelected = 0.4f
                     },
-                    Background = new ImageViewStyle
+                    BackgroundImage = new Selector<string>
                     {
-                        ResourceUrl = new Selector<string>
-                        {
-                            Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
-                            Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_on.png",
-                            Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
-                            DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_on.png",
-                        },
+                        Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
+                        Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_on.png",
+                        Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
+                        DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_on.png",
                     },
-                    Image = new ImageViewStyle
+                    ResourceUrl = new Selector<string>
                     {
-                        ResourceUrl = new Selector<string>
-                        {
-                            Normal = "",
-                            Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check.png",
-                            Disabled = "",
-                            DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check.png",
-                        },
+                        Normal = "",
+                        Selected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check.png",
+                        Disabled = "",
+                        DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check.png",
                     },
                     Shadow = new ImageViewStyle
                     {
@@ -248,9 +243,9 @@ namespace Tizen.NUI.Samples
                     },
                 }
             };
-            SelectButtonStyle familyAttrs = new SelectButtonStyle
+            ButtonStyle familyAttrs = new ButtonStyle
             {
-                SelectableImage = new ImageControlStyle
+                Icon = new ImageControlStyle
                 {
                     Size = new Size(48, 48),
                     Opacity = new Selector<float?>
@@ -260,21 +255,18 @@ namespace Tizen.NUI.Samples
                         Disabled = 0.4f,
                         DisabledSelected = 0.4f
                     },
-                    Image = new ImageViewStyle
+                    ResourceUrl = new Selector<string>
                     {
-                        ResourceUrl = new Selector<string>
-                        {
-                            Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
-                            Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_24c447.png",
-                            Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
-                            DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_24c447.png",
-                        },
+                        Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
+                        Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_24c447.png",
+                        Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
+                        DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_24c447.png",
                     },
                 }
             };
-            SelectButtonStyle foodAttrs = new SelectButtonStyle
+            ButtonStyle foodAttrs = new ButtonStyle
             {
-                SelectableImage = new ImageControlStyle
+                Icon = new ImageControlStyle
                 {
                     Size = new Size(48, 48),
                     Position = new Position(0, 0),
@@ -285,21 +277,18 @@ namespace Tizen.NUI.Samples
                         Disabled = 0.4f,
                         DisabledSelected = 0.4f
                     },
-                    Image = new ImageViewStyle
+                    ResourceUrl = new Selector<string>
                     {
-                        ResourceUrl = new Selector<string>
-                        {
-                            Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
-                            Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_ec7510.png",
-                            Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
-                            DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_ec7510.png",
-                        },
-                    }
+                        Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
+                        Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_ec7510.png",
+                        Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
+                        DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_ec7510.png",
+                    },
                 },
             };
-            SelectButtonStyle kitchenAttrs = new SelectButtonStyle
+            ButtonStyle kitchenAttrs = new ButtonStyle
             {
-                SelectableImage = new ImageControlStyle
+                Icon = new ImageControlStyle
                 {
                     Size = new Size(48, 48),
                     Position = new Position(0, 0),
@@ -310,16 +299,13 @@ namespace Tizen.NUI.Samples
                         Disabled = 0.4f,
                         DisabledSelected = 0.4f
                     },
-                    Image = new ImageViewStyle
+                    ResourceUrl = new Selector<string>
                     {
-                        ResourceUrl = new Selector<string>
-                        {
-                            Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
-                            Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_9762d9.png",
-                            Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
-                            DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_9762d9.png",
-                        },
-                    }
+                        Normal = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
+                        Selected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_9762d9.png",
+                        Disabled = CommonResource.GetFHResourcePath() + "9. Controller/controller_btn_check_off.png",
+                        DisabledSelected = CommonResource.GetFHResourcePath() + "9. Controller/[Controller] App Primary Color/controller_btn_check_on_9762d9.png",
+                    },
                 },
             };
             for (int i = 0; i < num; i++)

@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
+using Tizen.NUI.Components.DA;
 
 namespace Tizen.FH.FamilyBoard
 {
-    public class PictureChooser : IViewLifecycle
+    public class PictureChooser : ILifecycleObserver
     {
         private View mRootView;
 
         // close
         private View mCloseView;
         private ImageView mCloseImageView;
-        private TapGestureDetector mCloseAreaTapGestureDetector;
+        private TapGestureDetector mCloseTapGestureDetector;
 
         private View mPictureRootView;
 
@@ -39,14 +39,37 @@ namespace Tizen.FH.FamilyBoard
         private static string FB_PICTURE_NEXT_BUTTON_IMAGE = FB_PICTURE_DIR + "familyboard_photo_drawer_btn.png";
 
         private static string FB_PHOTO_ALBUM_DIR = CommonResource.GetResourcePath() + "photo_album/";
-        private static string FB_PHOTO_ALBUM_004_IMAGE = FB_PHOTO_ALBUM_DIR + "Photo_004.jpg";
-        private static string FB_PHOTO_ALBUM_007_IMAGE = FB_PHOTO_ALBUM_DIR + "Photo_007.jpg";
-        private static string FB_PHOTO_ALBUM_010_IMAGE = FB_PHOTO_ALBUM_DIR + "Photo_010.jpg";
-        private static string FB_PHOTO_ALBUM_012_IMAGE = FB_PHOTO_ALBUM_DIR + "Photo_012.jpg";
-        private static string FB_PHOTO_ALBUM_005_IMAGE = FB_PHOTO_ALBUM_DIR + "Photo_005.jpg";
-        private static string FB_PHOTO_ALBUM_006_IMAGE = FB_PHOTO_ALBUM_DIR + "Photo_006.jpg";
-        private static string FB_PHOTO_ALBUM_008_IMAGE = FB_PHOTO_ALBUM_DIR + "Photo_008.jpg";
-        private static string FB_PHOTO_ALBUM_009_IMAGE = FB_PHOTO_ALBUM_DIR + "Photo_009.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_004 = FB_PHOTO_ALBUM_DIR + "Photo_004.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_005 = FB_PHOTO_ALBUM_DIR + "Photo_005.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_006 = FB_PHOTO_ALBUM_DIR + "Photo_006.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_007 = FB_PHOTO_ALBUM_DIR + "Photo_007.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_008 = FB_PHOTO_ALBUM_DIR + "Photo_008.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_009 = FB_PHOTO_ALBUM_DIR + "Photo_009.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_010 = FB_PHOTO_ALBUM_DIR + "Photo_010.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_012 = FB_PHOTO_ALBUM_DIR + "Photo_012.jpg";
+
+        // thumb
+        private static string FB_PHOTO_ALBUM_IMAGE_001_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_001_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_002_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_002_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_003_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_003_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_004_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_004_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_005_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_005_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_006_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_006_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_007_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_007_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_008_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_008_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_009_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_009_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_010_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_010_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_011_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_011_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_012_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_012_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_013_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_013_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_014_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_014_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_015_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_015_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_016_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_016_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_017_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_017_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_018_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_018_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_019_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_019_thumb.jpg";
+        private static string FB_PHOTO_ALBUM_IMAGE_020_THUMB = FB_PHOTO_ALBUM_DIR + "Photo_020_thumb.jpg";
+
 
         public void Activate()
         {
@@ -60,42 +83,29 @@ namespace Tizen.FH.FamilyBoard
             CreatePictureGrid();
 
             // message
-            mMessageIndicator = new Toast();
+            mMessageIndicator = new Toast("BasicShortToast");
             mMessageIndicator.Duration = 1000;
             mMessageIndicator.TextArray = new string[] { "You can only select up to 5 pictures." };
-            mMessageIndicator.Position2D = new Position2D(200, 600);
-            mMessageIndicator.Size2D = new Size2D(680, 300);
+            mMessageIndicator.Position2D = new Position2D((SCREEN_WIDTH - 800)/2, (SCREEN_HEIGHT - 200)/2);
+            mMessageIndicator.Size2D = new Size2D(800, 200);
+            mMessageIndicator.BackgroundColor = Color.Transparent;
             mRootView.Add(mMessageIndicator);
             mMessageIndicator.Hide();
         }
 
         public void Reactivate()
         {
-            mCloseAreaTapGestureDetector.Attach(mCloseView);
+            // nothing to do.
         }
 
         public void Deactivate()
         {
-            if (mNextButton != null)
+            if (mCloseTapGestureDetector != null)
             {
-                mPictureRootView.Remove(mNextButton);
-                mNextButton.Dispose();
-                mNextButton = null;
-            }
-
-            if (mPictureGrid != null)
-            {
-                mPictureRootView.Remove(mPictureGrid);
-                mPictureGrid.Dispose();
-                mPictureGrid = null;
-            }
-
-            if (mCloseAreaTapGestureDetector != null)
-            {
-                mCloseAreaTapGestureDetector.Detected -= OnTapGestureDetected;
-                mCloseAreaTapGestureDetector.Detach(mCloseView);
-                mCloseAreaTapGestureDetector.Dispose();
-                mCloseAreaTapGestureDetector = null;
+                mCloseTapGestureDetector.Detected -= OnCloseTapGestureDetected;
+                mCloseTapGestureDetector.Detach(mCloseView);
+                mCloseTapGestureDetector.Dispose();
+                mCloseTapGestureDetector = null;
             }
 
             if (mCloseImageView != null)
@@ -112,6 +122,13 @@ namespace Tizen.FH.FamilyBoard
                 mCloseView = null;
             }
 
+            if (mNextButton != null)
+            {
+                mPictureRootView.Remove(mNextButton);
+                mNextButton.Dispose();
+                mNextButton = null;
+            }
+
             if (mTitleLabel != null)
             {
                 mTitleView.Remove(mTitleLabel);
@@ -124,6 +141,13 @@ namespace Tizen.FH.FamilyBoard
                 mPictureRootView.Remove(mTitleView);
                 mTitleView.Dispose();
                 mTitleView = null;
+            }
+
+            if (mPictureGrid != null)
+            {
+                mPictureRootView.Remove(mPictureGrid);
+                mPictureGrid.Dispose();
+                mPictureGrid = null;
             }
 
             if (mPictureRootView != null)
@@ -187,9 +211,15 @@ namespace Tizen.FH.FamilyBoard
             mCloseImageView.Size2D = new Size2D(40, 40);
             mCloseView.Add(mCloseImageView);
 
-            mCloseAreaTapGestureDetector = new TapGestureDetector();
-            mCloseAreaTapGestureDetector.Attach(mCloseView);
-            mCloseAreaTapGestureDetector.Detected += OnTapGestureDetected;
+            mCloseTapGestureDetector = new TapGestureDetector();
+            mCloseTapGestureDetector.Attach(mCloseView);
+            mCloseTapGestureDetector.Detected += OnCloseTapGestureDetected;
+        }
+
+        private void OnCloseTapGestureDetected(object source, TapGestureDetector.DetectedEventArgs e)
+        {
+            ImageManager.Instance.RemoveAll();
+            FamilyBoardApplication.Instance.RemoveView();
         }
 
         private void CreatePictureGrid()
@@ -226,7 +256,7 @@ namespace Tizen.FH.FamilyBoard
             mNextButton.TextColor = Color.White;
             mNextButton.PointSize = 30;
             mNextButton.FontFamily = "SamsungOneUI 500";
-            mNextButton.Position2D = new Position2D(SCREEN_WIDTH - 151 - 40 - 46, (177 - 70) /2);
+            mNextButton.Position2D = new Position2D(SCREEN_WIDTH - 151 - 40 - 46, (177 - 70) / 2);
             mNextButton.Size2D = new Size2D(151 + 40, 60 + 10);
             mPictureRootView.Add(mNextButton);
 
@@ -242,26 +272,51 @@ namespace Tizen.FH.FamilyBoard
             mPictureGrid.ItemClickEvent += OnGridItemClickEvent;
             mPictureRootView.Add(mPictureGrid);
 
+            // check if thumb is generated or not.
+
+            //Multimedia.Size imgSize = new Multimedia.Size(326, 340);
+            //ThumbnailExtractor.Extract(FB_PHOTO_ALBUM_004_IMAGE, imgSize, Applications.Application.Current.DirectoryInfo.Cache + "Photo_004_thumb.jpg");
+            //ThumbnailExtractor.Extract(FB_PHOTO_ALBUM_007_IMAGE, imgSize, Applications.Application.Current.DirectoryInfo.Cache + "Photo_007_thumb.jpg");
+            //ThumbnailExtractor.Extract(FB_PHOTO_ALBUM_010_IMAGE, imgSize, Applications.Application.Current.DirectoryInfo.Cache + "Photo_010_thumb.jpg");
+            //ThumbnailExtractor.Extract(FB_PHOTO_ALBUM_012_IMAGE, imgSize, Applications.Application.Current.DirectoryInfo.Cache + "Photo_012_thumb.jpg");
+            //ThumbnailExtractor.Extract(FB_PHOTO_ALBUM_005_IMAGE, imgSize, Applications.Application.Current.DirectoryInfo.Cache + "Photo_005_thumb.jpg");
+            //ThumbnailExtractor.Extract(FB_PHOTO_ALBUM_006_IMAGE, imgSize, Applications.Application.Current.DirectoryInfo.Cache + "Photo_006_thumb.jpg");
+            //ThumbnailExtractor.Extract(FB_PHOTO_ALBUM_008_IMAGE, imgSize, Applications.Application.Current.DirectoryInfo.Cache + "Photo_008_thumb.jpg");
+            //ThumbnailExtractor.Extract(FB_PHOTO_ALBUM_009_IMAGE, imgSize, Applications.Application.Current.DirectoryInfo.Cache + "Photo_009_thumb.jpg");
+
             List<PictureGridItemData> dataList = new List<PictureGridItemData>();
-            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_004_IMAGE));
-            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_007_IMAGE));
-            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_010_IMAGE));
-            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_012_IMAGE));
-            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_005_IMAGE));
-            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_006_IMAGE));
-            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_008_IMAGE));
-            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_009_IMAGE));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_001_THUMB, 2000, 1334));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_002_THUMB, 2000, 1331));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_003_THUMB, 1080, 1920));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_004_THUMB, 1080, 1920));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_005_THUMB, 1080, 1920));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_006_THUMB, 1080, 1920));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_007_THUMB, 2000, 1334));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_008_THUMB, 1080, 1920));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_009_THUMB, 2000, 1333));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_010_THUMB, 1080, 1920));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_011_THUMB, 1080, 1920));
+
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_012_THUMB, 1080, 1920));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_013_THUMB, 2000, 1375));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_014_THUMB, 2000, 1333));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_015_THUMB, 2000, 1333));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_016_THUMB, 2000, 1333));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_017_THUMB, 2000, 1333));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_018_THUMB, 2000, 1333));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_019_THUMB, 1080, 1920));
+            dataList.Add(new PictureGridItemData(FB_PHOTO_ALBUM_IMAGE_020_THUMB, 2000, 1333));
+
 
             mPictureGridBridge = new PictureGridBridge(this, dataList);
             mPictureGrid.SetAdapter(mPictureGridBridge);
 
-            GridLayoutManager layoutManager = new GridLayoutManager(3, LinearLayoutManager.VERTICAL);
+            GridLayoutManager layoutManager = new GridLayoutManager(3, LinearLayoutManager.Orientation.VERTICAL);
             mPictureGrid.SetLayoutManager(layoutManager);
         }
 
         private void OnNextButtonClickEvent(object sender, Button.ClickEventArgs e)
         {
-            mCloseAreaTapGestureDetector.Detach(mCloseView);
             PictureWizard.Instance.Next();
         }
 
@@ -300,22 +355,30 @@ namespace Tizen.FH.FamilyBoard
                 }
             }
         }
-
-        private void OnTapGestureDetected(object source, TapGestureDetector.DetectedEventArgs e)
-        {
-            ImageManager.Instance.RemoveAllImages();
-            FamilyBoardApplication.Instance.RemoveView();
-        }
     }
 
     internal class PictureGridItemData
     {
-        public PictureGridItemData(string url)
+        public PictureGridItemData(string url, int width, int height)
         {
             Picture = url;
+            Width = width;
+            Height = height;
         }
 
         public string Picture
+        {
+            set;
+            get;
+        }
+
+        public int Width
+        {
+            set;
+            get;
+        }
+
+        public int Height
         {
             set;
             get;
@@ -339,7 +402,7 @@ namespace Tizen.FH.FamilyBoard
         private static string FB_PICTURE_OVAL_NORMAL_IMAGE = FB_PICTURE_DIR + "familyboard_photo_ic_nor.png";
         private static string FB_PICTURE_OVAL_SELECTED_IMAGE = FB_PICTURE_DIR + "familyboard_photo_ic_sel.png";
 
-        public PictureGridItemView(PictureChooser chooser, string photo)
+        public PictureGridItemView(PictureChooser chooser, string photoThumb)
         {
             mPictureChooser = chooser;
 
@@ -348,7 +411,8 @@ namespace Tizen.FH.FamilyBoard
             mRootView.Size2D = new Size2D(326, 340);
 
             mPictureView = new ImageView();
-            mPictureView.ResourceUrl = photo;
+
+            mPictureView.ResourceUrl = photoThumb;
             mPictureView.PositionUsesPivotPoint = true;
             mPictureView.ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft;
             mPictureView.PivotPoint = Tizen.NUI.PivotPoint.TopLeft;
@@ -395,7 +459,7 @@ namespace Tizen.FH.FamilyBoard
 
         public string ImageId()
         {
-            return mPictureView.ResourceUrl;
+            return mPictureView.ResourceUrl.Replace("_thumb.jpg", ".jpg"); ;
         }
 
         public void SetIndicator(string index)
@@ -417,13 +481,15 @@ namespace Tizen.FH.FamilyBoard
                 else
                 {
                     mTextLabel.BackgroundImage = FB_PICTURE_OVAL_SELECTED_IMAGE;
-                    ImageManager.Instance.AddImage(mPictureView.ResourceUrl, "");
+                    string newPath = mPictureView.ResourceUrl.Replace("_thumb.jpg", ".jpg");
+                    ImageManager.Instance.AddImage(newPath, mPictureView.ResourceUrl, "", ImageManager.ItemType.PHOTO);
                 }
             }
             else
             {
                 mTextLabel.BackgroundImage = FB_PICTURE_OVAL_NORMAL_IMAGE;
-                ImageManager.Instance.RemoveImage(mPictureView.ResourceUrl);
+                string newPath = mPictureView.ResourceUrl.Replace("_thumb.jpg", ".jpg");
+                ImageManager.Instance.RemoveImage(newPath);
                 if (ImageManager.Instance.ImageCount() == 0)
                 {
                     mPictureChooser.ShowNextButton(false);

@@ -1,28 +1,27 @@
 ﻿using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
 using System;
 using Tizen.NUI;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class InputField : IExample
     {
         private const int COUNT = 2;
-        private Tizen.FH.NUI.Controls.InputField[] inputFieldArr;
+        private Components.InputField[] inputFieldArr;
         private TextLabel guideText;
         private SampleLayout rootView;
         private int posY;
-        private Tizen.NUI.Components.Button button;
+        private Tizen.NUI.Components.DA.Button button;
 
         public void Activate()
         {
             Window.Instance.BackgroundColor = Color.White;
             posY = 100;
-            inputFieldArr = new Tizen.FH.NUI.Controls.InputField[COUNT];
+            inputFieldArr = new Components.InputField[COUNT];
             CreateRootView();
             CreateFamily();
             CreateGuideText();
-            button = new Tizen.NUI.Components.Button();
+            button = new Tizen.NUI.Components.DA.Button();
             button.PointSize = 14;
             button.Size2D = new Size2D(300, 80);
             button.BackgroundColor = Color.Green;
@@ -56,7 +55,7 @@ namespace Tizen.FH.NUI.Samples
 
         private void CreateFamily()
         {
-            inputFieldArr[0] = new Tizen.FH.NUI.Controls.InputField("DefaultInputField");
+            inputFieldArr[0] = new Tizen.FH.NUI.Components.InputField("DefaultInputField");
             inputFieldArr[0].Name = "DefaultInputField";
             inputFieldArr[0].Size2D = new Size2D(1080, 95);
             inputFieldArr[0].Position2D = new Position2D(0, posY);
@@ -76,7 +75,7 @@ namespace Tizen.FH.NUI.Samples
             };
 
             posY += 100;
-            inputFieldArr[1] = new Tizen.FH.NUI.Controls.InputField("StyleBInputField");
+            inputFieldArr[1] = new Tizen.FH.NUI.Components.InputField("StyleBInputField");
             inputFieldArr[1].Name = "StyleBInputField";
             inputFieldArr[1].Size2D = new Size2D(1080, 95);
             inputFieldArr[1].Position2D = new Position2D(0, posY);
@@ -155,7 +154,7 @@ namespace Tizen.FH.NUI.Samples
             {
                 Tizen.Log.Fatal("NUI", "OnKeyEvent Key is " + e.Key.KeyPressedName);
 
-                Tizen.FH.NUI.Controls.InputField inputField = sender as Tizen.FH.NUI.Controls.InputField;
+                Tizen.FH.NUI.Components.InputField inputField = sender as Tizen.FH.NUI.Components.InputField;
                 if (inputField != null)
                 {
                     if (inputField.Text.Length > 5 && inputField.Text.Length <= 10)
@@ -222,32 +221,32 @@ namespace Tizen.FH.NUI.Samples
             }
         }
 
-        private void OnCancelBtnClickEvent(object sender, FH.NUI.Controls.InputField.ButtonClickArgs args)
+        private void OnCancelBtnClickEvent(object sender, Tizen.FH.NUI.Components.InputField.ButtonClickArgs args)
         {
-            if (sender is Tizen.FH.NUI.Controls.InputField)
+            if (sender is Tizen.FH.NUI.Components.InputField)
             {
-                Tizen.FH.NUI.Controls.InputField inputfield = sender as Tizen.FH.NUI.Controls.InputField;
+                Tizen.FH.NUI.Components.InputField inputfield = sender as Tizen.FH.NUI.Components.InputField;
                 Console.WriteLine("-------, name: " + inputfield.Name + ", args.State = " + args.State);
                 inputfield.TextColor = Color.Black;
                 inputfield.Text = "Click on the cancel button";
             }
         }
 
-        private void OnDeleteBtnClickEvent(object sender, FH.NUI.Controls.InputField.ButtonClickArgs args)
+        private void OnDeleteBtnClickEvent(object sender, Tizen.FH.NUI.Components.InputField.ButtonClickArgs args)
         {
-            if (sender is Tizen.FH.NUI.Controls.InputField)
+            if (sender is Tizen.FH.NUI.Components.InputField)
             {
-                Tizen.FH.NUI.Controls.InputField inputfield = sender as Tizen.FH.NUI.Controls.InputField;
+                Tizen.FH.NUI.Components.InputField inputfield = sender as Tizen.FH.NUI.Components.InputField;
                 Console.WriteLine("-------, name: " + inputfield.Name + ", args.State = " + args.State);
                 inputfield.Text = "Click on the delete button";
             }
         }
 
-        private void OnAddBtnClickEvent(object sender, FH.NUI.Controls.InputField.ButtonClickArgs args)
+        private void OnAddBtnClickEvent(object sender, Tizen.FH.NUI.Components.InputField.ButtonClickArgs args)
         {
-            if (sender is Tizen.FH.NUI.Controls.InputField)
+            if (sender is Tizen.FH.NUI.Components.InputField)
             {
-                Tizen.FH.NUI.Controls.InputField inputfield = sender as Tizen.FH.NUI.Controls.InputField;
+                Tizen.FH.NUI.Components.InputField inputfield = sender as Tizen.FH.NUI.Components.InputField;
                 Console.WriteLine("-------, name: " + inputfield.Name + ", args.State = " + args.State);
                 inputfield.Text = "Click on the add button";
             }

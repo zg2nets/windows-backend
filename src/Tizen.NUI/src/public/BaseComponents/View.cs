@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Tizen.NUI.Binding;
+using Tizen.NUI.Components;
 
 namespace Tizen.NUI.BaseComponents
 {
@@ -44,7 +45,6 @@ namespace Tizen.NUI.BaseComponents
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static bool layoutingDisabled{get; set;} = true;
 
-        private global::System.Runtime.InteropServices.HandleRef swigCPtr;
         private LayoutItem _layout; // Exclusive layout assigned to this View.
 
         // List of transitions paired with the condition that uses the transition.
@@ -57,15 +57,20 @@ namespace Tizen.NUI.BaseComponents
         private bool _backgroundImageSynchronosLoading = false;
         private Dictionary<string, Transition> transDictionary = new Dictionary<string, Transition>();
         private string[] transitionNames;
+        private Rectangle backgroundImageBorder;
+
+        internal Size2D sizeSetExplicitly = new Size2D(); // Store size set by API, will be used in place of NaturalSize if not set.
 
         private ViewStyle viewStyle;
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public ViewStyle ViewStyle
         {
             get
             {
                 if (null == viewStyle)
                 {
-                    viewStyle = GetAttributes();
+                    ApplyStyle(GetViewStyle());
                 }
 
                 return viewStyle;
@@ -79,7 +84,6 @@ namespace Tizen.NUI.BaseComponents
         public View() : this(Interop.View.View_New(), true)
         {
             if (NDalicPINVOKE.SWIGPendingException.Pending) throw NDalicPINVOKE.SWIGPendingException.Retrieve();
-            ApplyStyle(ViewStyle);
         }
 
         /// This will be public opened in next release of tizen after ACR done. Before ACR, it is used as HiddenAPI (InhouseAPI).
@@ -87,7 +91,6 @@ namespace Tizen.NUI.BaseComponents
         public View(ViewStyle viewStyle) : this(Interop.View.View_New(), true)
         {
             this.ViewStyle.CopyFrom(viewStyle);
-            ApplyStyle(ViewStyle);
         }
 
         /// <summary>
@@ -111,9 +114,13 @@ namespace Tizen.NUI.BaseComponents
             }
         }
 
+        internal View(global::System.IntPtr cPtr, bool cMemoryOwn, ViewStyle viewStyle, bool shown = true) : this(cPtr, cMemoryOwn, shown)
+        {
+            this.ViewStyle.CopyFrom(viewStyle);
+        }
+
         internal View(global::System.IntPtr cPtr, bool cMemoryOwn, bool shown = true) : base(Interop.View.View_SWIGUpcast(cPtr), cMemoryOwn)
         {
-            swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
             if (HasBody())
             {
                 PositionUsesPivotPoint = false;
@@ -162,9 +169,12 @@ namespace Tizen.NUI.BaseComponents
 
                     ControlStateChangeEvent?.Invoke(this, value);
 
-                    foreach (View child in Children)
+                    if (true == OnControlStateChanged(value))
                     {
-                        child.ControlState = value;
+                        foreach (View child in Children)
+                        {
+                            child.ControlState = value;
+                        }
                     }
                 }
             }
@@ -245,6 +255,24 @@ namespace Tizen.NUI.BaseComponents
             set
             {
                 SetValue(BackgroundImageProperty, value);
+                NotifyPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Get or set the border of background image.
+        /// </summary>
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Rectangle BackgroundImageBorder
+        {
+            get
+            {
+                return (Rectangle)GetValue(BackgroundImageBorderProperty);
+            }
+            set
+            {
+                SetValue(BackgroundImageBorderProperty, value);
                 NotifyPropertyChanged();
             }
         }
@@ -608,6 +636,7 @@ namespace Tizen.NUI.BaseComponents
             }
             set
             {
+                sizeSetExplicitly = value;  // Store size set by API, will be used in place of NaturalSize if not set.
                 SetValue(Size2DProperty, value);
                 // Set Specification so when layouts measure this View it matches the value set here.
                 // All Views are currently Layouts.
@@ -1832,8 +1861,18 @@ namespace Tizen.NUI.BaseComponents
                 if (_widthPolicy >= 0)
                 {
                     _measureSpecificationWidth = new MeasureSpecification( new LayoutLength(value), MeasureSpecification.ModeType.Exactly );
-                    Size2D.Width = _widthPolicy;
 
+                    if(_heightPolicy>=0) // Policy an exact value
+                    {
+                        Size2D.Width = _widthPolicy;
+                    }
+                    else
+                    {
+                        // Store _heightPolicy in the Size2D memember as will be reset to 0 by a Size2D callback.
+                        // Size2D height will store the specification value (negative number) this will then be applied to the
+                        // HeightSpecification when the Size2D callback is invoked.
+                        Size2D = new Size2D(_widthPolicy,_heightPolicy);
+                    }
                 }
                 _layout?.RequestLayout();
             }
@@ -1843,7 +1882,6 @@ namespace Tizen.NUI.BaseComponents
         /// The required policy for this dimension, LayoutParamPolicies enum or exact value.
         ///</summary>
         /// <since_tizen> 6 </since_tizen>
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public int HeightSpecification
         {
             get
@@ -1856,7 +1894,18 @@ namespace Tizen.NUI.BaseComponents
                 if (_heightPolicy >= 0)
                 {
                     _measureSpecificationHeight = new MeasureSpecification( new LayoutLength(value), MeasureSpecification.ModeType.Exactly );
-                    Size2D.Height = _heightPolicy;
+
+                    if(_widthPolicy>=0) // Policy an exact value
+                    {
+                        Size2D.Height = _heightPolicy;
+                    }
+                    else
+                    {
+                        // Store widthPolicy in the Size2D memember as will be reset to 0 by a Size2D callback.
+                        // Size2D height will store the specification value (negative number) this will then be applied to the
+                        // HeightSpecification when the Size2D callback is invoked.
+                        Size2D = new Size2D(_widthPolicy,_heightPolicy);
+                    }
 
                 }
                _layout?.RequestLayout();
@@ -2132,17 +2181,46 @@ namespace Tizen.NUI.BaseComponents
         }
 
         /// <summary>
-        /// Get attribues, it is abstract function and must be override.
+        /// Get Style, it is abstract function and must be override.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected virtual ViewStyle GetAttributes()
+        protected virtual ViewStyle GetViewStyle()
         {
             viewStyle = new ViewStyle();
             return viewStyle;
         }
 
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected virtual bool OnControlStateChanged(ControlStates currentState)
+        {
+            //If need to apply the state to all child, return true;
+            return true;
+        }
+        internal static readonly BindableProperty BackgroundImageSelectorProperty = BindableProperty.Create("BackgroundImageSelector", typeof(Selector<string>), typeof(View), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var view = (View)bindable;
+            view.backgroundImageSelector.Clone((Selector<string>)newValue);
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            var view = (View)bindable;
+            return view.backgroundImageSelector;
+        });
+        private TriggerableSelector<string> _backgroundImageSelector;
+        private TriggerableSelector<string> backgroundImageSelector
+        {
+            get
+            {
+                if (null == _backgroundImageSelector)
+                {
+                    _backgroundImageSelector = new TriggerableSelector<string>(this, BackgroundImageProperty);
+                }
+                return _backgroundImageSelector;
+            }
+        }
         internal static readonly BindableProperty BackgroundColorSelectorProperty = BindableProperty.Create("BackgroundColorSelector", typeof(Selector<Color>), typeof(View), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var view = (View)bindable;
@@ -2165,7 +2243,28 @@ namespace Tizen.NUI.BaseComponents
                 return _backgroundColorSelector;
             }
         }
-
+        internal static readonly BindableProperty BackgroundImageBorderSelectorProperty = BindableProperty.Create("BackgroundImageBorderSelector", typeof(Selector<Rectangle>), typeof(View), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var view = (View)bindable;
+            view.backgroundImageBorderSelector.Clone((Selector<Rectangle>)newValue);
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            var view = (View)bindable;
+            return view.backgroundImageBorderSelector;
+        });
+        private TriggerableSelector<Rectangle> _backgroundImageBorderSelector;
+        private TriggerableSelector<Rectangle> backgroundImageBorderSelector
+        {
+            get
+            {
+                if (null == _backgroundImageBorderSelector)
+                {
+                    _backgroundImageBorderSelector = new TriggerableSelector<Rectangle>(this, BackgroundImageBorderProperty);
+                }
+                return _backgroundImageBorderSelector;
+            }
+        }
         internal static readonly BindableProperty OpacitySelectorProperty = BindableProperty.Create("OpacitySelector", typeof(Selector<float?>), typeof(View), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var view = (View)bindable;
@@ -2198,12 +2297,17 @@ namespace Tizen.NUI.BaseComponents
                 return;
             }
 
-            if (bindedStyles.Contains(viewStyle))
+            if (this.viewStyle == viewStyle)
             {
                 return;
             }
 
-            bindedStyles.Add(viewStyle);
+            if (null != this.viewStyle)
+            {
+                simpleBinding.Clear();
+            }
+
+            this.viewStyle = viewStyle;
 
             Dictionary<string, BindableProperty> bindablePropertyOfView;
             Type viewType = GetType();
@@ -2234,21 +2338,10 @@ namespace Tizen.NUI.BaseComponents
                     }
                 }
             }
-
-            OnStyleBinded(viewStyle);
         }
-
-        private HashSet<ViewStyle> bindedStyles = new HashSet<ViewStyle>();
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
         private BundledPipe simpleBinding = new BundledPipe();
-
-        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected void OnStyleBinded(ViewStyle viewStyle)
-        {
-
-        }
     }
 }

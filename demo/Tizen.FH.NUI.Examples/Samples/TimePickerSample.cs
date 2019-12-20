@@ -1,16 +1,13 @@
-﻿using Tizen.FH.NUI.Controls;
-using Tizen.NUI;
-using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
+﻿using Tizen.NUI;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class TimePicker : IExample
     {
         private SampleLayout root;
-        private Tizen.NUI.Components.Popup popup = null;
-        private Controls.TimePicker timePicker = null;
-        private Tizen.NUI.Components.Button[] button = new Tizen.NUI.Components.Button[3];
+        private Tizen.NUI.Components.DA.Popup popup = null;
+        private Tizen.FH.NUI.Components.TimePicker timePicker = null;
+        private Tizen.NUI.Components.DA.Button[] button = new Tizen.NUI.Components.DA.Button[3];
         private int num = 3;
 
         private static string[] mode = new string[]
@@ -29,9 +26,9 @@ namespace Tizen.FH.NUI.Samples
 
             for (int i = 0; i < num; i++)
             {
-                button[i] = new Tizen.NUI.Components.Button("ServiceButton");
+                button[i] = new Tizen.NUI.Components.DA.Button("ServiceButton");
                 button[i].Size2D = new Size2D(240, 80);
-                button[i].Position2D = new Position2D(160 + i * 260, 1350);
+                button[i].Position2D = new Position2D(160 + i * 260, 150);
                 button[i].Text = mode[i];
                 button[i].PointSize = 11;
                 button[i].ClickEvent += ButtonClickEvent;
@@ -42,17 +39,18 @@ namespace Tizen.FH.NUI.Samples
         private void CreateBaseTimePicker()
         {
             DestoryTimePicker();
-            popup = new Tizen.NUI.Components.Popup("Popup");
-            popup.Size2D = new Size2D(1032, 776);
-            popup.Position2D = new Position2D(24, 50);
-            popup.TitleText = "Timer 01";
-            popup.ButtonCount = 2;
-            popup.SetButtonText(0, "Cancel");
-            popup.SetButtonText(1, "OK");
+            popup = new Tizen.NUI.Components.DA.Popup("Popup");
+            popup.Size = new Size(1032, 776);
+            popup.Position = new Position(24, 50);
+            popup.Style.Title.Text = "Timer 01";
+            popup.AddButton("Cancel");
+            popup.AddButton("OK");
+            popup.ButtonHeight = 132;
             popup.PopupButtonClickEvent += PopupButtonClickedEvent;
+            popup.BackgroundColor = Color.Red;
             root.Add(popup);
 
-            timePicker = new Controls.TimePicker("DATimePicker");
+            timePicker = new Tizen.FH.NUI.Components.TimePicker("DATimePicker");
             timePicker.Size2D = new Size2D(1032, 524);
             timePicker.Position2D = new Position2D(0, 0);
             popup.ContentView.Add(timePicker);
@@ -61,17 +59,17 @@ namespace Tizen.FH.NUI.Samples
         private void CreateAMPMTimePicker()
         {
             DestoryTimePicker();
-            popup = new Tizen.NUI.Components.Popup("Popup");
+            popup = new Tizen.NUI.Components.DA.Popup("Popup");
             popup.Size2D = new Size2D(1032, 776);
             popup.Position2D = new Position2D(24, 50);
-            popup.TitleText = "Timer 02";
-            popup.ButtonCount = 2;
-            popup.SetButtonText(0, "Cancel");
-            popup.SetButtonText(1, "OK");
+            popup.Style.Title.Text = "Timer 02";
+            popup.AddButton("Cancel");
+            popup.AddButton("OK");
+            popup.ButtonHeight = 132;
             popup.PopupButtonClickEvent += PopupButtonClickedEvent;
             root.Add(popup);
 
-            timePicker = new Controls.TimePicker("DATimePickerAMPM");
+            timePicker = new Components.TimePicker("DATimePickerAMPM");
             timePicker.Size2D = new Size2D(1032, 524);
             timePicker.Position2D = new Position2D(0, 0);
             popup.ContentView.Add(timePicker);
@@ -80,31 +78,31 @@ namespace Tizen.FH.NUI.Samples
         private void CreateRepeatTimePicker()
         {
             DestoryTimePicker();
-            popup = new Tizen.NUI.Components.Popup("Popup");
+            popup = new Tizen.NUI.Components.DA.Popup("Popup");
             popup.Size2D = new Size2D(1032, 1064);
             popup.Position2D = new Position2D(24, 50);
-            popup.TitleText = "Timer 02";
-            popup.ButtonCount = 2;
-            popup.SetButtonText(0, "Cancel");
-            popup.SetButtonText(1, "OK");
+            popup.Style.Title.Text = "Timer 02";
+            popup.AddButton("Cancel");
+            popup.AddButton("OK");
+            popup.ButtonHeight = 132;
             popup.PopupButtonClickEvent += PopupButtonClickedEvent;
             root.Add(popup);
 
-            timePicker = new Controls.TimePicker("DATimePickerRepeat");
+            timePicker = new Tizen.FH.NUI.Components.TimePicker("DATimePickerRepeat");
             timePicker.Size2D = new Size2D(1032, 812);
             timePicker.Position2D = new Position2D(0, 0);
             popup.ContentView.Add(timePicker);
         }
 
 
-        private void PopupButtonClickedEvent(object sender, Tizen.NUI.Components.Popup.ButtonClickEventArgs e)
+        private void PopupButtonClickedEvent(object sender, Tizen.NUI.Components.DA.Popup.ButtonClickEventArgs e)
         {
 
         }
 
-        private void ButtonClickEvent(object sender, Tizen.NUI.Components.Button.ClickEventArgs e)
+        private void ButtonClickEvent(object sender, Tizen.NUI.Components.DA.Button.ClickEventArgs e)
         {
-            Tizen.NUI.Components.Button btn = sender as Tizen.NUI.Components.Button;
+            Tizen.NUI.Components.DA.Button btn = sender as Tizen.NUI.Components.DA.Button;
             if (button[0] == btn)
             {
                 CreateBaseTimePicker();

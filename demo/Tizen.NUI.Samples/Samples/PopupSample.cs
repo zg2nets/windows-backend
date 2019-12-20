@@ -39,6 +39,7 @@ namespace Tizen.NUI.Samples
             root = new View()
             {
                 Size2D = new Size2D(1920, 1080),
+                BackgroundColor = Color.White,
             };
             window.Add(root);
 
@@ -54,18 +55,21 @@ namespace Tizen.NUI.Samples
             popup.Size = new Size(1032, 400);
             popup.Position = new Position(200, 100);
 
+            // Title
             popup.Style.Title.PointSize = 25;
-            popup.Style.Title.TextColor = Color.Green;
             popup.Style.Title.SizeHeight = 68;
             popup.Style.Title.HorizontalAlignment = HorizontalAlignment.Begin;
             popup.Style.Title.Position = new Position(64, 52);
             popup.Style.Title.Text = "Popup Title";
 
+            // Shadow and background
+		    popup.Style.ShadowExtents = new Extents(24, 24, 24, 24);
             popup.ShadowImage = CommonResource.GetFHResourcePath() + "11. Popup/popup_background_shadow.png";
-            popup.ShadowBorder = new Rectangle(0, 0, 105, 105);
+            popup.ShadowImageBorder = new Rectangle(0, 0, 105, 105);
             popup.BackgroundImage = CommonResource.GetFHResourcePath() + "11. Popup/popup_background.png";
-            popup.BackgroundBorder = new Rectangle(0, 0, 81, 81);
+            popup.BackgroundImageBorder = new Rectangle(0, 0, 81, 81);
 
+            // Buttons
             popup.AddButton("Yes");
             popup.AddButton("Exit");
             popup.ButtonBackground = CommonResource.GetFHResourcePath() + "3. Button/rectangle_btn_normal.png";
@@ -76,7 +80,9 @@ namespace Tizen.NUI.Samples
                 Pressed = new Color(0.0f, 0.0f, 0.0f, 0.1f),
                 Selected = new Color(1.0f, 1.0f, 1.0f, 1.0f),
             };
-            popup.ButtonTextColor = color[1];
+            popup.ButtonShadow = CommonResource.GetFHResourcePath() + "3. Button/rectangle_btn_shadow.png";
+            popup.ButtonShadowBorder = new Rectangle(5, 5, 5, 5);
+            popup.ButtonTextColor = color[0];
             popup.ButtonHeight = 132;
             popup.PopupButtonClickEvent += PopupButtonClickedEvent;
             popup.LayoutDirectionChanged += PopupLayoutDirectionChanged;
@@ -89,7 +95,7 @@ namespace Tizen.NUI.Samples
             contentText.VerticalAlignment = VerticalAlignment.Center;
             contentText.Text = "Popup ButtonStyle is " + buttonStyles[index];
             contentText.TextColor = new Color(0,0,222,1);
-            popup.ContentView.Add(contentText);
+            popup.AddContentText(contentText);
 
             ///////////////////////////////////////////////Create by Attributes//////////////////////////////////////////////////////////
             createText[1] = new TextLabel();
@@ -101,7 +107,14 @@ namespace Tizen.NUI.Samples
             PopupStyle attrs = new PopupStyle
             {
                 MinimumSize = new Size2D(1032, 184),
-                ShadowOffset = new Vector4(24, 24, 24, 24),
+                ShadowExtents = new Extents(24, 24, 24, 24),
+                BackgroundImage = new Selector<string> { All = CommonResource.GetFHResourcePath() + "11. Popup/popup_background.png" },
+                BackgroundImageBorder = new Selector<Rectangle> { All = new Rectangle(0, 0, 81, 81) },
+                Shadow = new ImageViewStyle
+                {
+                    ResourceUrl = new Selector<string> { All = CommonResource.GetFHResourcePath() + "11. Popup/popup_background_shadow.png" },
+                    Border = new Selector<Rectangle> { All = new Rectangle(0, 0, 105, 105) }
+                },
                 Title = new TextLabelStyle
                 {
                     PointSize = new Selector<float?> { All = 25 },
@@ -117,19 +130,15 @@ namespace Tizen.NUI.Samples
                 },
                 Buttons = new ButtonStyle
                 {
-                    Size = new Size(0, 132),
                     PositionUsesPivotPoint = true,
                     ParentOrigin = Tizen.NUI.ParentOrigin.BottomLeft,
                     PivotPoint = Tizen.NUI.PivotPoint.BottomLeft,
-                    Background = new ImageViewStyle
+                    BackgroundImage = new Selector<string> { All = CommonResource.GetFHResourcePath() + "3. Button/rectangle_btn_normal.png" },
+                    BackgroundImageBorder = new Selector<Rectangle> { All = new Rectangle(5, 5, 5, 5) },
+                    Shadow = new ImageViewStyle
                     {
-                        PositionUsesPivotPoint = true,
-                        ParentOrigin = Tizen.NUI.ParentOrigin.Center,
-                        PivotPoint = Tizen.NUI.PivotPoint.Center,
-                        WidthResizePolicy = ResizePolicyType.FillToParent,
-                        HeightResizePolicy = ResizePolicyType.FillToParent,
-                        ResourceUrl = new Selector<string> { All = CommonResource.GetFHResourcePath() + "3. Button/rectangle_btn_normal.png" },
-                        Border = new Selector<Rectangle> { All = new Rectangle(5, 5, 5, 5) },
+                        ResourceUrl = new Selector<string> { All = CommonResource.GetFHResourcePath() + "3. Button/rectangle_btn_shadow.png" },
+                        Border = new Selector<Rectangle> { All = new Rectangle(5, 5, 5, 5) }
                     },
                     Overlay = new ImageViewStyle
                     {
@@ -138,12 +147,12 @@ namespace Tizen.NUI.Samples
                         PivotPoint = Tizen.NUI.PivotPoint.Center,
                         WidthResizePolicy = ResizePolicyType.FillToParent,
                         HeightResizePolicy = ResizePolicyType.FillToParent,
-                        //BackgroundColor = new Selector<Color>
-                        //{
-                        //    Normal = new Color(1.0f, 1.0f, 1.0f, 1.0f),
-                        //    Pressed = new Color(0.0f, 0.0f, 0.0f, 0.1f),
-                        //    Selected = new Color(1.0f, 1.0f, 1.0f, 1.0f),
-                        //},
+                        BackgroundColor = new Selector<Color>
+                        {
+                            Normal = new Color(1.0f, 1.0f, 1.0f, 1.0f),
+                            Pressed = new Color(0.0f, 0.0f, 0.0f, 0.1f),
+                            Selected = new Color(1.0f, 1.0f, 1.0f, 1.0f),
+                        }
                     },
                     Text = new TextLabelStyle
                     {
@@ -159,16 +168,12 @@ namespace Tizen.NUI.Samples
 
             popup2 = new Popup(attrs);
             popup2.Size = new Size(1032, 400);
-            popup2.Position = new Position(200, 600);
-            popup2.ButtonHeight = 132;
+            popup2.Position = new Position(200, 600);     
             popup2.AddButton("Yes");
             popup2.AddButton("Exit");
+            popup2.ButtonHeight = 132;
             popup2.PopupButtonClickEvent += PopupButtonClickedEvent;
             popup2.LayoutDirectionChanged += Popup2LayoutDirectionChanged;
-            popup2.ShadowImage = CommonResource.GetFHResourcePath() + "11. Popup/popup_background_shadow.png";
-            popup2.ShadowBorder = new Rectangle(0, 0, 105, 105);
-            popup2.BackgroundImage = CommonResource.GetFHResourcePath() + "11. Popup/popup_background.png";
-            popup2.BackgroundBorder = new Rectangle(0, 0, 81, 81);
             popup2.Post(window);
 
             contentText2 = new TextLabel();
@@ -180,8 +185,8 @@ namespace Tizen.NUI.Samples
             popup2.ContentView.Add(contentText2);
 
             button = new Button();
-            button.Style.Background.ResourceUrl = CommonResource.GetTVResourcePath() + "component/c_buttonbasic/c_basic_button_white_bg_normal_9patch.png";
-            button.Style.Background.Border = new Rectangle(4, 4, 5, 5);
+            button.Style.BackgroundImage = CommonResource.GetTVResourcePath() + "component/c_buttonbasic/c_basic_button_white_bg_normal_9patch.png";
+            button.Style.BackgroundImageBorder = new Rectangle(4, 4, 5, 5);
             button.Size2D = new Size2D(580, 80);
             button.Position2D = new Position2D(1300, 500);
             button.Style.Text.Text = "LayoutDirection is left to right";

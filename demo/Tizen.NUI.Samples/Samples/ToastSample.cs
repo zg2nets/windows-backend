@@ -18,6 +18,7 @@ namespace Tizen.NUI.Samples
             root = new View()
             {
                 Size = new Size(1920, 1080),
+                BackgroundColor = new Color(0.8f, 0.8f, 0.8f, 0.6f),
             };
 
             CreateBoardAndButtons();
@@ -29,30 +30,16 @@ namespace Tizen.NUI.Samples
             ToastStyle attr = new ToastStyle
             {
                 Size = new Size(512, 132),
-                Text= new TextLabelStyle
-                {
-                    Padding = new Extents(96, 96, 38, 38),
-                    PointSize = new Selector<float?> { All = 26 },
-                    TextColor = new Selector<Color> { All = Color.White },
-                },
-                Background= new ImageViewStyle
-                {
-                    ResourceUrl = new Selector<string>
-                    {
-                        All = CommonResource.GetFHResourcePath() + "12. Toast Popup/toast_background.png",
-                    },
-                    Border = new Selector<Rectangle>()
-                    {
-                        All = new Rectangle(64, 64, 4, 4),
-                    }
-                },
-                Duration = 3000,
+                BackgroundImage = CommonResource.GetFHResourcePath() + "12. Toast Popup/toast_background.png",
+                BackgroundImageBorder = new Rectangle(64, 64, 4, 4),
+                Duration = 3000
             };
         
             toast2_1 = new Toast(attr);
-            toast2_1.Size = new Size(500, 132);
             toast2_1.Message = "attibute parameter construction";
             toast2_1.Post(window);
+            //root.Add(toast2_1);
+
 
             board.UpFocusableView = button1;
             window.Add(root);

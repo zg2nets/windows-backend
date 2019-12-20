@@ -17,7 +17,7 @@
 
 using System.ComponentModel;
 
-namespace Tizen.NUI.BaseComponents
+namespace Tizen.NUI.Components
 {
     /// <summary>
     /// Enumeration for describing the states of the view.

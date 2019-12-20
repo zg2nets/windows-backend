@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class ContactCardLayouter
     {

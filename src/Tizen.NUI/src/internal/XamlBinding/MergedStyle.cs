@@ -27,10 +27,10 @@ namespace Tizen.NUI.Binding
 
         public MergedStyle(Type targetType, BindableObject target)
         {
-            Target = new WeakReference(target);
+            Target = target;
             TargetType = targetType;
             RegisterImplicitStyles();
-            Apply((Target.Target as BindableObject));
+            Apply(Target);
         }
 
         public IStyle Style
@@ -49,7 +49,7 @@ namespace Tizen.NUI.Binding
 
                 if (_styleClass != null && _classStyles != null)
                     foreach (var classStyleProperty in _classStyleProperties)
-                        (Target.Target as BindableObject).RemoveDynamicResource(classStyleProperty);
+                        Target.RemoveDynamicResource(classStyleProperty);
 
                 _styleClass = value;
 
@@ -59,13 +59,13 @@ namespace Tizen.NUI.Binding
                         var classStyleProperty = BindableProperty.Create ("ClassStyle", typeof(IList<Style>), typeof(View), default(IList<Style>),
                             propertyChanged: (bindable, oldvalue, newvalue) => ((View)bindable)._mergedStyle.OnClassStyleChanged());
                         _classStyleProperties.Add (classStyleProperty);
-                        (Target.Target as BindableObject).OnSetDynamicResource (classStyleProperty, Tizen.NUI.Binding.Style.StyleClassPrefix + styleClass);
+                        Target.OnSetDynamicResource (classStyleProperty, Tizen.NUI.Binding.Style.StyleClassPrefix + styleClass);
                     }
                 }
             }
         }
 
-        public WeakReference Target { get; }
+        public BindableObject Target { get; }
 
         IList<Style> ClassStyles
         {
@@ -101,7 +101,7 @@ namespace Tizen.NUI.Binding
 
         void OnClassStyleChanged()
         {
-            ClassStyles = _classStyleProperties.Select (p => ((Target.Target as BindableObject).GetValue (p) as IList<Style>)?.FirstOrDefault (s => s.CanBeAppliedTo (TargetType))).ToList ();
+            ClassStyles = _classStyleProperties.Select (p => (Target.GetValue (p) as IList<Style>)?.FirstOrDefault (s => s.CanBeAppliedTo (TargetType))).ToList ();
         }
 
         void OnImplicitStyleChanged()
@@ -109,7 +109,7 @@ namespace Tizen.NUI.Binding
             var first = true;
             foreach (BindableProperty implicitStyleProperty in _implicitStyles)
             {
-                var implicitStyle = (Style)(Target.Target as BindableObject).GetValue(implicitStyleProperty);
+                var implicitStyle = (Style)Target.GetValue(implicitStyleProperty);
                 if (implicitStyle != null)
                 {
                     if (first || implicitStyle.ApplyToDerivedTypes)
@@ -125,12 +125,11 @@ namespace Tizen.NUI.Binding
         void RegisterImplicitStyles()
         {
             Type type = TargetType;
-            while (true)
-            {
+            while (true) {
                 BindableProperty implicitStyleProperty = BindableProperty.Create("ImplicitStyle", typeof(Style), typeof(View), default(Style),
                         propertyChanged: (bindable, oldvalue, newvalue) => OnImplicitStyleChanged());
                 _implicitStyles.Add(implicitStyleProperty);
-                (Target.Target as BindableObject).SetDynamicResource(implicitStyleProperty, type.FullName);
+                Target.SetDynamicResource(implicitStyleProperty, type.FullName);
                 type = type.GetTypeInfo().BaseType;
                 if (s_stopAtTypes.Contains(type))
                     return;
@@ -144,24 +143,24 @@ namespace Tizen.NUI.Binding
             bool shouldReApplyImplicitStyle = implicitStyle != ImplicitStyle && (Style as Style == null || ((Style)Style).CanCascade);
 
             if (shouldReApplyStyle)
-                Style?.UnApply((Target.Target as BindableObject));
+                Style?.UnApply(Target);
             if (shouldReApplyClassStyle && ClassStyles != null)
                 foreach (var classStyle in ClassStyles)
-                    ((IStyle)classStyle)?.UnApply((Target.Target as BindableObject));
+                    ((IStyle)classStyle)?.UnApply(Target);
             if (shouldReApplyImplicitStyle)
-                ImplicitStyle?.UnApply((Target.Target as BindableObject));
+                ImplicitStyle?.UnApply(Target);
 
             _implicitStyle = implicitStyle;
             _classStyles = classStyles;
             _style = style;
 
             if (shouldReApplyImplicitStyle)
-                ImplicitStyle?.Apply((Target.Target as BindableObject));
+                ImplicitStyle?.Apply(Target);
             if (shouldReApplyClassStyle && ClassStyles != null)
                 foreach (var classStyle in ClassStyles)
-                    ((IStyle)classStyle)?.Apply((Target.Target as BindableObject));
+                    ((IStyle)classStyle)?.Apply(Target);
             if (shouldReApplyStyle)
-                Style?.Apply((Target.Target as BindableObject));
+                Style?.Apply(Target);
         }
     }
 }
