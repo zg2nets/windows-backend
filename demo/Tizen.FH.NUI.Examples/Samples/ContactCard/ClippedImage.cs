@@ -8,7 +8,7 @@ using Tizen.NUI.UIComponents;
 using Tizen.NUI.BaseComponents;
 using System.Runtime.InteropServices;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class ClippedImage
     {

@@ -116,6 +116,11 @@ namespace Tizen.NUI.BaseComponents
 
         public void Dispose()
         {
+            Clear();
+        }
+
+        public void Clear()
+        {
             foreach (Pipe pipe in pipes)
             {
                 pipe.Clear();

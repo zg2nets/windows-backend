@@ -32,7 +32,9 @@ namespace Tizen.NUI.BaseComponents
     /// <since_tizen> 3 </since_tizen>
     public class TextLabel : View
     {
-        /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        /// <summary>
+        /// StyleNameProperty
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static readonly BindableProperty TranslatableTextProperty = BindableProperty.Create(nameof(TranslatableText), typeof(string), typeof(TextLabel), string.Empty, propertyChanged: (bindable, oldValue, newValue) =>
         {
@@ -140,13 +142,7 @@ namespace Tizen.NUI.BaseComponents
             string valueToString = "";
             if (newValue != null)
             {
-                switch ((HorizontalAlignment)newValue)
-                {
-                    case HorizontalAlignment.Begin: { valueToString = "BEGIN"; break; }
-                    case HorizontalAlignment.Center: { valueToString = "CENTER"; break; }
-                    case HorizontalAlignment.End: { valueToString = "END"; break; }
-                    default: { valueToString = "BEGIN"; break; }
-                }
+                valueToString = ((HorizontalAlignment)newValue).GetDescription<HorizontalAlignment>();
                 Tizen.NUI.Object.SetProperty(textLabel.swigCPtr, TextLabel.Property.HORIZONTAL_ALIGNMENT, new Tizen.NUI.PropertyValue(valueToString));
             }
         },
@@ -158,13 +154,7 @@ namespace Tizen.NUI.BaseComponents
             {
                 NUILog.Error("HorizontalAlignment get error!");
             }
-            switch (temp)
-            {
-                case "BEGIN": return HorizontalAlignment.Begin;
-                case "CENTER": return HorizontalAlignment.Center;
-                case "END": return HorizontalAlignment.End;
-                default: return HorizontalAlignment.Begin;
-            }
+            return temp.GetValueByDescription<HorizontalAlignment>();
         });
         /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -174,13 +164,7 @@ namespace Tizen.NUI.BaseComponents
             string valueToString = "";
             if (newValue != null)
             {
-                switch ((VerticalAlignment)newValue)
-                {
-                    case VerticalAlignment.Top: { valueToString = "TOP"; break; }
-                    case VerticalAlignment.Center: { valueToString = "CENTER"; break; }
-                    case VerticalAlignment.Bottom: { valueToString = "BOTTOM"; break; }
-                    default: { valueToString = "BOTTOM"; break; }
-                }
+                valueToString = ((VerticalAlignment)newValue).GetDescription<VerticalAlignment>();
                 Tizen.NUI.Object.SetProperty(textLabel.swigCPtr, TextLabel.Property.VERTICAL_ALIGNMENT, new Tizen.NUI.PropertyValue(valueToString));
             }
         },
@@ -193,13 +177,7 @@ namespace Tizen.NUI.BaseComponents
                 NUILog.Error("VerticalAlignment get error!");
             }
 
-            switch (temp)
-            {
-                case "TOP": return VerticalAlignment.Top;
-                case "CENTER": return VerticalAlignment.Center;
-                case "BOTTOM": return VerticalAlignment.Bottom;
-                default: return VerticalAlignment.Bottom;
-            }
+            return temp.GetValueByDescription<VerticalAlignment>();
         });
         /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -458,12 +436,7 @@ namespace Tizen.NUI.BaseComponents
             {
                 NUILog.Error("AutoScrollStopMode get error!");
             }
-            switch (temp)
-            {
-                case "FINISH_LOOP": return AutoScrollStopMode.FinishLoop;
-                case "IMMEDIATE": return AutoScrollStopMode.Immediate;
-                default: return AutoScrollStopMode.FinishLoop;
-            }
+            return temp.GetValueByDescription<AutoScrollStopMode>();
         });
         /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -538,25 +511,12 @@ namespace Tizen.NUI.BaseComponents
             return temp;
         });
 
-        private global::System.Runtime.InteropServices.HandleRef swigCPtr;
         private string textLabelSid = null;
         private bool systemlangTextFlag = false;
 
-        private TextLabelStyle textLabelStyle;
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public TextLabelStyle TextLabelStyle
-        {
-            get
-            {
-                if (null == textLabelStyle)
-                {
-                    textLabelStyle = ViewStyle as TextLabelStyle;
-                }
-
-                return textLabelStyle;
-            }
-        }
+        public TextLabelStyle Style => ViewStyle as TextLabelStyle;
 
         /// <summary>
         /// Creates the TextLabel control.
@@ -569,9 +529,8 @@ namespace Tizen.NUI.BaseComponents
 
         /// This will be public opened in next release of tizen after ACR done. Before ACR, it is used as HiddenAPI (InhouseAPI).
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public TextLabel(TextLabelStyle viewStyle) : this(Interop.TextLabel.TextLabel_New__SWIG_0(), true)
+        public TextLabel(TextLabelStyle viewStyle) : this(Interop.TextLabel.TextLabel_New__SWIG_0(), true, viewStyle)
         {
-            int temp = 0;
         }
 
         /// <summary>
@@ -619,10 +578,16 @@ namespace Tizen.NUI.BaseComponents
             }
         }
 
+        internal TextLabel(global::System.IntPtr cPtr, bool cMemoryOwn, ViewStyle viewStyle, bool shown = true) : base(Interop.TextLabel.TextLabel_SWIGUpcast(cPtr), cMemoryOwn, viewStyle)
+        {
+            if (!shown)
+            {
+                SetVisible(false);
+            }
+        }
+
         internal TextLabel(global::System.IntPtr cPtr, bool cMemoryOwn, bool shown = true) : base(Interop.TextLabel.TextLabel_SWIGUpcast(cPtr), cMemoryOwn)
         {
-            swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
-
             if (!shown)
             {
                 SetVisible(false);
@@ -1371,32 +1336,11 @@ namespace Tizen.NUI.BaseComponents
             return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
         }
 
-        /// <summary>
-        /// Dispose.
-        /// </summary>
-        /// <since_tizen> 3 </since_tizen>
-        protected override void Dispose(DisposeTypes type)
+        /// This will not be public opened.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected override void ReleaseSwigCPtr(System.Runtime.InteropServices.HandleRef swigCPtr)
         {
-            if (disposed)
-            {
-                return;
-            }
-
-            //Release your own unmanaged resources here.
-            //You should not access any managed member here except static instance.
-            //because the execution order of Finalizes is non-deterministic.
-
-            if (swigCPtr.Handle != global::System.IntPtr.Zero)
-            {
-                if (swigCMemOwn)
-                {
-                    swigCMemOwn = false;
-                    Interop.TextLabel.delete_TextLabel(swigCPtr);
-                }
-                swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
-            }
-
-            base.Dispose(type);
+            Interop.TextLabel.delete_TextLabel(swigCPtr);
         }
 
         /// <summary>
@@ -1405,10 +1349,9 @@ namespace Tizen.NUI.BaseComponents
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override ViewStyle GetAttributes()
+        protected override ViewStyle GetViewStyle()
         {
-            textLabelStyle = new TextLabelStyle();
-            return textLabelStyle;
+            return new TextLabelStyle();
         }
 
         internal static readonly BindableProperty TranslatableTextSelectorProperty = BindableProperty.Create("TranslatableTextSelector", typeof(Selector<string>), typeof(TextLabel), null, propertyChanged: (bindable, oldValue, newValue) =>

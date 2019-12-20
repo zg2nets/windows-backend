@@ -1,4 +1,4 @@
-﻿namespace Tizen.FH.NUI.Samples
+﻿namespace Tizen.FH.NUI.Examples
 {
     interface IExample
     {

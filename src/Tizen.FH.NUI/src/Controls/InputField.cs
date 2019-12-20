@@ -19,18 +19,17 @@ using System.ComponentModel;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
 using Tizen.NUI.Components;
-using StyleManager = Tizen.NUI.Components.StyleManager;
+using StyleManager = Tizen.NUI.Components.DA.StyleManager;
 
-namespace Tizen.FH.NUI.Controls
+namespace Tizen.FH.NUI.Components
 {
     /// <summary>
     /// InputField is a editable input compoment with delete button or delete and add button.
     /// After pressing Return key, search button will show
     /// </summary>
     /// <since_tizen> 6 </since_tizen>
-    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class InputField : Tizen.NUI.Components.InputField
+    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.    
+    public class InputField : Tizen.NUI.Components.DA.InputField
     {
         // the cancel button
         private ImageView cancelBtn = null;
@@ -45,14 +44,11 @@ namespace Tizen.FH.NUI.Controls
         // the search button
         private ImageView searchBtn = null;
         
-        private Style style = Style.None;
+        private InputStyle inputStyle = InputStyle.None;
 
         private ControlStates textFieldState = ControlStates.Normal;
         private TextState textState = TextState.Guide;
         private bool isDoneKeyPressed = false;
-
-        // the attributes of the inputField
-        private InputFieldAttributes inputFieldAttrs = null;
 
         private EventHandler<ButtonClickArgs> cancelBtnClickHandler;
         private EventHandler<ButtonClickArgs> deleteBtnClickHandler;
@@ -64,8 +60,7 @@ namespace Tizen.FH.NUI.Controls
         /// Initializes a new instance of the InputField class.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public InputField() : base()
         {
             Initialize();
@@ -76,8 +71,7 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <param name="style">Create Header by special style defined in UX.</param>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public InputField(string style) : base(style)
         {
             Initialize();
@@ -87,8 +81,7 @@ namespace Tizen.FH.NUI.Controls
         /// Click Event attached to Cancel Button.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public event EventHandler<ButtonClickArgs> CancelButtonClickEvent
         {
             add
@@ -105,8 +98,7 @@ namespace Tizen.FH.NUI.Controls
         /// Click Event attached to Delete Button
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public event EventHandler<ButtonClickArgs> DeleteButtonClickEvent
         {
             add
@@ -123,8 +115,7 @@ namespace Tizen.FH.NUI.Controls
         /// Click Event attached to Add Button
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public event EventHandler<ButtonClickArgs> AddButtonClickEvent
         {
             add
@@ -141,8 +132,7 @@ namespace Tizen.FH.NUI.Controls
         /// Click Event attached to Search Button
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public event EventHandler<ButtonClickArgs> SearchButtonClickEvent
         {
             add
@@ -159,8 +149,7 @@ namespace Tizen.FH.NUI.Controls
         /// The handler Event of Key
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public new event EventHandler<KeyEventArgs> KeyEvent
         {
             add
@@ -177,19 +166,16 @@ namespace Tizen.FH.NUI.Controls
         /// The  state of Button Click
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public enum ButtonClickState
         {
             /// <summary> Press down </summary>
             /// <since_tizen> 6 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             PressDown,
             /// <summary> Bounce up </summary>
             /// <since_tizen> 6 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.            
             BounceUp
         }
 
@@ -199,7 +185,7 @@ namespace Tizen.FH.NUI.Controls
             Input,
         }
 
-        private enum Style
+        private enum InputStyle
         {
             None,
             Default,
@@ -207,12 +193,14 @@ namespace Tizen.FH.NUI.Controls
             SearchBar
         }
 
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public new InputFieldStyle Style => ViewStyle as InputFieldStyle;
+
         /// <summary>
         /// Set the status of the Input Field editable or not.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public new bool StateEnabled
         {
             get
@@ -230,13 +218,135 @@ namespace Tizen.FH.NUI.Controls
             }
         }
 
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override void ApplyStyle(ViewStyle viewStyle)
+        {
+            base.ApplyStyle(viewStyle);
+
+            InputFieldStyle inputFieldStyle = viewStyle as InputFieldStyle;
+
+            if (null != inputFieldStyle?.CancelButton)
+            {
+                if (null == cancelBtn)
+                {
+                    cancelBtn = new ImageView()
+                    {
+                        //WidthResizePolicy = ResizePolicyType.FillToParent,
+                        //HeightResizePolicy = ResizePolicyType.FillToParent,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
+                        PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
+                        PositionUsesPivotPoint = true
+                    };
+                    this.Add(cancelBtn);
+                    cancelBtn.TouchEvent += OnCancelBtnTouchEvent;
+                }
+                cancelBtn.ApplyStyle(inputFieldStyle.CancelButton);
+            }
+            if (null != inputFieldStyle.DeleteButton)
+            {
+                if (null == deleteBtn)
+                {
+                    deleteBtn = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.Fixed,
+                        HeightResizePolicy = ResizePolicyType.Fixed,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
+                        PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
+                        PositionUsesPivotPoint = true
+                    };
+                    this.Add(deleteBtn);
+                    deleteBtn.TouchEvent += OnDeleteBtnTouchEvent;
+                }
+                deleteBtn.ApplyStyle(inputFieldStyle.DeleteButton);
+            }
+            if (null != inputFieldStyle.SearchButton)
+            {
+                if (null == searchBtn)
+                {
+                    searchBtn = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.Fixed,
+                        HeightResizePolicy = ResizePolicyType.Fixed,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
+                        PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
+                        PositionUsesPivotPoint = true
+                    };
+                    this.Add(searchBtn);
+                    searchBtn.TouchEvent += OnSearchBtnTouchEvent;
+                }
+                searchBtn.ApplyStyle(inputFieldStyle.SearchButton);
+            }
+            if (null != inputFieldStyle.AddButtonBackground)
+            {
+                if (null == addBtnBg)
+                {
+                    addBtnBg = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.Fixed,
+                        HeightResizePolicy = ResizePolicyType.Fixed,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
+                        PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
+                        PositionUsesPivotPoint = true
+                    };
+                    this.Add(addBtnBg);
+                }
+                addBtnBg.ApplyStyle(inputFieldStyle.AddButtonBackground);
+            }
+            if (null != inputFieldStyle.AddButtonOverlay)
+            {
+                if (null == addBtnOverlay)
+                {
+                    addBtnOverlay = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.FillToParent,
+                        HeightResizePolicy = ResizePolicyType.FillToParent,
+                    };
+                    addBtnBg.Add(addBtnOverlay);
+                }
+                addBtnOverlay.ApplyStyle(inputFieldStyle.AddButtonOverlay);
+            }
+            if (null != inputFieldStyle.AddButtonForeground)
+            {
+                if (null == addBtnFg)
+                {
+                    addBtnFg = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.FillToParent,
+                        HeightResizePolicy = ResizePolicyType.FillToParent,
+                    };
+                    addBtnOverlay.Add(addBtnFg);
+                    addBtnFg.TouchEvent += OnAddBtnTouchEvent;
+                }
+                addBtnFg.ApplyStyle(inputFieldStyle.AddButtonForeground);
+            }
+
+            if (cancelBtn.ResourceUrl != "")
+            {
+                if (searchBtn.ResourceUrl == "")
+                {
+                    inputStyle = InputStyle.Default;
+                }
+                else
+                {
+                    inputStyle = InputStyle.SearchBar;
+                }
+            }
+            else
+            {
+                if (deleteBtn.ResourceUrl != "" && addBtnBg.ResourceUrl != "" && addBtnOverlay.ResourceUrl != "" && addBtnFg.ResourceUrl != "")
+                {
+                    inputStyle = InputStyle.StyleB;
+                }
+            }
+        }
+
         /// <summary>
         /// Dispose Input Field and all children on it.
         /// </summary>
         /// <param name="type">Dispose type.</param>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void Dispose(DisposeTypes type)
         {
             if (disposed)
@@ -248,49 +358,25 @@ namespace Tizen.FH.NUI.Controls
                 if (cancelBtn != null)
                 {
                     cancelBtn.TouchEvent -= OnCancelBtnTouchEvent;
-                    this.Remove(cancelBtn);
-                    cancelBtn.Dispose();
-                    cancelBtn = null;
+                    Utility.Dispose(cancelBtn);
                 }
                 if (deleteBtn != null)
                 {
                     deleteBtn.TouchEvent -= OnDeleteBtnTouchEvent;
-                    this.Remove(deleteBtn);
-                    deleteBtn.Dispose();
-                    deleteBtn = null;
+                    Utility.Dispose(deleteBtn);
                 }
                 if (searchBtn != null)
                 {
                     searchBtn.TouchEvent -= OnSearchBtnTouchEvent;
-                    this.Remove(searchBtn);
-                    searchBtn.Dispose();
-                    searchBtn = null;
+                    Utility.Dispose(searchBtn);
                 }
                 if (addBtnFg != null)
                 {
                     addBtnFg.TouchEvent -= OnAddBtnTouchEvent;
-                    if (addBtnOverlay != null)
-                    {
-                        addBtnOverlay.Remove(addBtnFg);
-                    }
-                    addBtnFg.Dispose();
-                    addBtnFg = null;
+                    Utility.Dispose(addBtnFg);
                 }
-                if (addBtnOverlay != null)
-                {
-                    if (addBtnBg != null)
-                    {
-                        addBtnBg.Remove(addBtnOverlay);
-                    }
-                    addBtnOverlay.Dispose();
-                    addBtnOverlay = null;
-                }
-                if (addBtnBg != null)
-                {
-                    this.Remove(addBtnBg);
-                    addBtnBg.Dispose();
-                    addBtnBg = null;
-                }
+                Utility.Dispose(addBtnOverlay);
+                Utility.Dispose(addBtnBg);
             }
             base.Dispose(type);
         }
@@ -299,29 +385,21 @@ namespace Tizen.FH.NUI.Controls
         /// Get Input Field attribues.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override Attributes GetAttributes()
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        protected override ViewStyle GetViewStyle()
         {
-            return new InputFieldAttributes();
+            return new InputFieldStyle();
         }
 
         /// <summary>
         /// Update Input Field by attributes.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void OnUpdate()
         {
             RelayoutTextField(false);
-            base.OnUpdate();
-            ApplyAttributes(cancelBtn, inputFieldAttrs.CancelButtonAttributes);
-            ApplyAttributes(deleteBtn, inputFieldAttrs.DeleteButtonAttributes);
-            ApplyAttributes(addBtnBg, inputFieldAttrs.AddButtonBgAttributes);
-            ApplyAttributes(addBtnOverlay, inputFieldAttrs.AddButtonOverlayAttributes);
-            ApplyAttributes(addBtnFg, inputFieldAttrs.AddButtonFgAttributes);
-            ApplyAttributes(searchBtn, inputFieldAttrs.SearchButtonAttributes);
+            base.OnUpdate();     
             RelayoutComponents();
             UpdateComponentsByStateEnabledChanged(base.StateEnabled);
             OnLayoutDirectionChanged();
@@ -331,14 +409,13 @@ namespace Tizen.FH.NUI.Controls
         /// Theme change callback when theme is changed, this callback will be trigger.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void OnThemeChangedEvent(object sender, StyleManager.ThemeChangeEventArgs e)
         {
-            InputFieldAttributes tempAttributes = StyleManager.Instance.GetAttributes(base.style) as InputFieldAttributes;
+            InputFieldStyle tempAttributes = StyleManager.Instance.GetViewStyle(base.style) as InputFieldStyle;
             if (tempAttributes != null)
             {
-                attributes = inputFieldAttrs = tempAttributes;
+                Style.CopyFrom(tempAttributes);
                 RelayoutRequest();
             }
         }
@@ -347,8 +424,7 @@ namespace Tizen.FH.NUI.Controls
         ///  Text field focus gain callback when focus is getted, this callback will be trigger.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void OnTextFieldFocusGained(object source, EventArgs e)
         {
             // when press on TextField, it will gain focus
@@ -360,8 +436,7 @@ namespace Tizen.FH.NUI.Controls
         /// Text field lost gain  callback when focus is lost, this callback will be trigger.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void OnTextFieldFocusLost(object source, EventArgs e)
         {
             textFieldState = ControlStates.Normal;
@@ -372,8 +447,7 @@ namespace Tizen.FH.NUI.Controls
         /// Text field change callback when text  is changed, this callback will be trigger.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void OnTextFieldTextChanged(object sender, TextField.TextChangedEventArgs e)
         {
             if (sender is TextField)
@@ -397,14 +471,10 @@ namespace Tizen.FH.NUI.Controls
         /// Text field key callback when "Return"  click down, this callback will be trigger.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override bool OnTextFieldKeyEvent(object source, KeyEventArgs e)
         {
-            if (keyEventHandler != null)
-            {
-                keyEventHandler(this, e);
-            }
+            keyEventHandler?.Invoke(this, e);
 
             if (e.Key.State == Key.StateType.Down)
             {
@@ -421,114 +491,128 @@ namespace Tizen.FH.NUI.Controls
 
         private void Initialize()
         {
-            inputFieldAttrs = attributes as InputFieldAttributes;
-            if (inputFieldAttrs == null)
+            if (null != Style.CancelButton)
             {
-                throw new Exception("Fail to get the InputField attributes.");
-            }
-            if (inputFieldAttrs.CancelButtonAttributes != null && cancelBtn == null)
-            {
-                cancelBtn = new ImageView()
+                if (null == cancelBtn)
                 {
-                    WidthResizePolicy = ResizePolicyType.FillToParent,
-                    HeightResizePolicy = ResizePolicyType.FillToParent,
-                    ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
-                    PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
-                    PositionUsesPivotPoint = true
-                };
-                this.Add(cancelBtn);
-                cancelBtn.TouchEvent += OnCancelBtnTouchEvent;
+                    cancelBtn = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.FillToParent,
+                        HeightResizePolicy = ResizePolicyType.FillToParent,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
+                        PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
+                        PositionUsesPivotPoint = true
+                    };
+                    this.Add(cancelBtn);
+                    cancelBtn.TouchEvent += OnCancelBtnTouchEvent;
+                }
             }
-            if (inputFieldAttrs.DeleteButtonAttributes != null && deleteBtn == null)
+            if (null != Style.DeleteButton)
             {
-                deleteBtn = new ImageView()
+                if (null == deleteBtn)
                 {
-                    WidthResizePolicy = ResizePolicyType.Fixed,
-                    HeightResizePolicy = ResizePolicyType.Fixed,
-                    ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
-                    PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
-                    PositionUsesPivotPoint = true
-                };
-                this.Add(deleteBtn);
-                deleteBtn.TouchEvent += OnDeleteBtnTouchEvent;
+                    deleteBtn = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.Fixed,
+                        HeightResizePolicy = ResizePolicyType.Fixed,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
+                        PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
+                        PositionUsesPivotPoint = true
+                    };
+                    this.Add(deleteBtn);
+                    deleteBtn.TouchEvent += OnDeleteBtnTouchEvent;
+                }
             }
-            if (inputFieldAttrs.SearchButtonAttributes != null && searchBtn == null)
+            if (null != Style.SearchButton)
             {
-                searchBtn = new ImageView()
+                if (null == searchBtn)
                 {
-                    WidthResizePolicy = ResizePolicyType.Fixed,
-                    HeightResizePolicy = ResizePolicyType.Fixed,
-                    ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
-                    PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
-                    PositionUsesPivotPoint = true
-                };
-                this.Add(searchBtn);
-                searchBtn.TouchEvent += OnSearchBtnTouchEvent;
+                    searchBtn = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.Fixed,
+                        HeightResizePolicy = ResizePolicyType.Fixed,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
+                        PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
+                        PositionUsesPivotPoint = true
+                    };
+                    this.Add(searchBtn);
+                    searchBtn.TouchEvent += OnSearchBtnTouchEvent;
+                }
             }
-            if (inputFieldAttrs.AddButtonBgAttributes != null && addBtnBg == null)
+            if (null != Style.AddButtonBackground)
             {
-                addBtnBg = new ImageView()
+                if (null == addBtnBg)
                 {
-                    WidthResizePolicy = ResizePolicyType.Fixed,
-                    HeightResizePolicy = ResizePolicyType.Fixed,
-                    ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
-                    PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
-                    PositionUsesPivotPoint = true
-                };
-                this.Add(addBtnBg);
+                    addBtnBg = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.Fixed,
+                        HeightResizePolicy = ResizePolicyType.Fixed,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight,
+                        PivotPoint = Tizen.NUI.PivotPoint.CenterRight,
+                        PositionUsesPivotPoint = true
+                    };
+                    this.Add(addBtnBg);
+                }
             }
-            if (inputFieldAttrs.AddButtonOverlayAttributes != null && addBtnOverlay == null)
+            if (null != Style.AddButtonOverlay)
             {
-                addBtnOverlay = new ImageView()
+                if (null == addBtnOverlay)
                 {
-                    WidthResizePolicy = ResizePolicyType.FillToParent,
-                    HeightResizePolicy = ResizePolicyType.FillToParent,
-                };
-                addBtnBg.Add(addBtnOverlay);
+                    addBtnOverlay = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.FillToParent,
+                        HeightResizePolicy = ResizePolicyType.FillToParent,
+                    };
+                    addBtnBg.Add(addBtnOverlay);
+                }
             }
-            if (inputFieldAttrs.AddButtonFgAttributes != null && addBtnFg == null)
+            if (null != Style.AddButtonForeground)
             {
-                addBtnFg = new ImageView()
+                if (null == addBtnFg)
                 {
-                    WidthResizePolicy = ResizePolicyType.FillToParent,
-                    HeightResizePolicy = ResizePolicyType.FillToParent,
-                };
-                addBtnOverlay.Add(addBtnFg);
-                addBtnFg.TouchEvent += OnAddBtnTouchEvent;
+                    addBtnFg = new ImageView()
+                    {
+                        WidthResizePolicy = ResizePolicyType.FillToParent,
+                        HeightResizePolicy = ResizePolicyType.FillToParent,
+                    };
+                    addBtnOverlay.Add(addBtnFg);
+                    addBtnFg.TouchEvent += OnAddBtnTouchEvent;
+                }
             }
 
-            if (cancelBtn != null)
+            if (cancelBtn.ResourceUrl != "")
             {
-                if (searchBtn == null)
+                if (searchBtn.ResourceUrl == "")
                 {
-                    style = Style.Default;
+                    inputStyle = InputStyle.Default;
                 }
                 else
                 {
-                    style = Style.SearchBar;
+                    inputStyle = InputStyle.SearchBar;
                 }
             }
             else
             {
-                if (deleteBtn != null && addBtnBg != null && addBtnOverlay != null && addBtnFg != null)
+                if (deleteBtn.ResourceUrl != "" && addBtnBg.ResourceUrl != "" && addBtnOverlay.ResourceUrl != "" && addBtnFg.ResourceUrl != "")
                 {
-                    style = Style.StyleB;
+                    inputStyle = InputStyle.StyleB;
                 }
             }
         }
+
         private void OnLayoutDirectionChanged()
         {
-            if (inputFieldAttrs == null) return;
+            if (Style == null) return;
 
             if (LayoutDirection == ViewLayoutDirectionType.LTR)
             {
                 if (cancelBtn)
                 {
-                    if (inputFieldAttrs.CancelButtonAttributes != null)
+                    if (Style.CancelButton != null)
                     {
-                        inputFieldAttrs.CancelButtonAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
-                        inputFieldAttrs.CancelButtonAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
-                        inputFieldAttrs.CancelButtonAttributes.PositionUsesPivotPoint = true;
+                        Style.CancelButton.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
+                        Style.CancelButton.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+                        Style.CancelButton.PositionUsesPivotPoint = true;
                     }
                     cancelBtn.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
                     cancelBtn.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
@@ -536,11 +620,11 @@ namespace Tizen.FH.NUI.Controls
                 }
                 if(addBtnBg)
                 {
-                    if (inputFieldAttrs.AddButtonBgAttributes != null)
+                    if (Style.AddButtonBackground != null)
                     {
-                        inputFieldAttrs.AddButtonBgAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
-                        inputFieldAttrs.AddButtonBgAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
-                        inputFieldAttrs.AddButtonBgAttributes.PositionUsesPivotPoint = true;
+                        Style.AddButtonBackground.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
+                        Style.AddButtonBackground.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+                        Style.AddButtonBackground.PositionUsesPivotPoint = true;
                     }
                     addBtnBg.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
                     addBtnBg.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
@@ -548,11 +632,11 @@ namespace Tizen.FH.NUI.Controls
                 }
                 if(searchBtn)
                 {
-                    if (inputFieldAttrs.SearchButtonAttributes != null)
+                    if (Style.SearchButton != null)
                     {
-                        inputFieldAttrs.SearchButtonAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
-                        inputFieldAttrs.SearchButtonAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
-                        inputFieldAttrs.SearchButtonAttributes.PositionUsesPivotPoint = true;
+                        Style.SearchButton.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
+                        Style.SearchButton.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+                        Style.SearchButton.PositionUsesPivotPoint = true;
                     }
                     searchBtn.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
                     searchBtn.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
@@ -560,11 +644,11 @@ namespace Tizen.FH.NUI.Controls
                 }
                 if(deleteBtn)
                 {
-                    if (inputFieldAttrs.DeleteButtonAttributes != null)
+                    if (Style.DeleteButton != null)
                     {
-                        inputFieldAttrs.DeleteButtonAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
-                        inputFieldAttrs.DeleteButtonAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
-                        inputFieldAttrs.DeleteButtonAttributes.PositionUsesPivotPoint = true;
+                        Style.DeleteButton.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
+                        Style.DeleteButton.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+                        Style.DeleteButton.PositionUsesPivotPoint = true;
                     }
                     deleteBtn.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
                     deleteBtn.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
@@ -575,11 +659,11 @@ namespace Tizen.FH.NUI.Controls
             {
                 if (cancelBtn)
                 {
-                    if (inputFieldAttrs.AddButtonBgAttributes != null)
+                    if (Style.AddButtonBackground != null)
                     {
-                        inputFieldAttrs.AddButtonBgAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
-                        inputFieldAttrs.AddButtonBgAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
-                        inputFieldAttrs.AddButtonBgAttributes.PositionUsesPivotPoint = true;
+                        Style.AddButtonBackground.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
+                        Style.AddButtonBackground.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+                        Style.AddButtonBackground.PositionUsesPivotPoint = true;
                     }
                     cancelBtn.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
                     cancelBtn.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
@@ -587,11 +671,11 @@ namespace Tizen.FH.NUI.Controls
                 }
                 if (addBtnBg)
                 {
-                    if (inputFieldAttrs.AddButtonBgAttributes != null)
+                    if (Style.AddButtonBackground != null)
                     {
-                        inputFieldAttrs.AddButtonBgAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
-                        inputFieldAttrs.AddButtonBgAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
-                        inputFieldAttrs.AddButtonBgAttributes.PositionUsesPivotPoint = true;
+                        Style.AddButtonBackground.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
+                        Style.AddButtonBackground.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+                        Style.AddButtonBackground.PositionUsesPivotPoint = true;
                     }
                     addBtnBg.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
                     addBtnBg.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
@@ -599,11 +683,11 @@ namespace Tizen.FH.NUI.Controls
                 }
                 if (searchBtn)
                 {
-                    if (inputFieldAttrs.SearchButtonAttributes != null)
+                    if (Style.SearchButton != null)
                     {
-                        inputFieldAttrs.SearchButtonAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
-                        inputFieldAttrs.SearchButtonAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
-                        inputFieldAttrs.SearchButtonAttributes.PositionUsesPivotPoint = true;
+                        Style.SearchButton.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
+                        Style.SearchButton.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+                        Style.SearchButton.PositionUsesPivotPoint = true;
                     }
                     searchBtn.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
                     searchBtn.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
@@ -611,11 +695,11 @@ namespace Tizen.FH.NUI.Controls
                 }
                 if (deleteBtn)
                 {
-                    if (inputFieldAttrs.DeleteButtonAttributes != null)
+                    if (Style.DeleteButton != null)
                     {
-                        inputFieldAttrs.DeleteButtonAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
-                        inputFieldAttrs.DeleteButtonAttributes.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
-                        inputFieldAttrs.DeleteButtonAttributes.PositionUsesPivotPoint = true;
+                        Style.DeleteButton.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
+                        Style.DeleteButton.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+                        Style.DeleteButton.PositionUsesPivotPoint = true;
                     }
                     deleteBtn.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
                     deleteBtn.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
@@ -624,23 +708,24 @@ namespace Tizen.FH.NUI.Controls
             }
         }
 
-        private void RelayoutComponents(bool shouldUpdate = true, bool enableRelayoutDefault = true, bool enableRelayoutSearchBar = true, bool enableRelayoutStyleB = true)
+        private void RelayoutComponents(bool shouldUpdate = true, bool enableRelayoutDefault = true,
+            bool enableRelayoutSearchBar = true, bool enableRelayoutStyleB = true)
         {
-            switch(style)
+            switch(inputStyle)
             {
-                case Style.Default:
+                case InputStyle.Default:
                     if (enableRelayoutDefault)
                     {
                         RelayoutComponentsForDefault(shouldUpdate);
                     }
                     break;
-                case Style.SearchBar:
+                case InputStyle.SearchBar:
                     if (enableRelayoutSearchBar)
                     {
                         RelayoutComponentsForSearchBar(shouldUpdate);
                     }
                     break;
-                case Style.StyleB:
+                case InputStyle.StyleB:
                     if (enableRelayoutStyleB)
                     {
                         RelayoutComponentsForStyleB(shouldUpdate);
@@ -660,7 +745,7 @@ namespace Tizen.FH.NUI.Controls
             // 2 type layouts:
             // #1 TextField                 normal state, text's length == 0;
             // #2 TextField + CancelBtn     except #1.
-            int space = inputFieldAttrs.Space ?? 0;
+            int space = Style.Space ?? 0;
             if (textFieldState == ControlStates.Normal && textState == TextState.Guide)
             {
                 SetTextFieldSize2D((int)Size.Width - space * 2, (int)Size.Height);
@@ -696,7 +781,7 @@ namespace Tizen.FH.NUI.Controls
             // #1 SearchBtn + TextField                 normal state, text's length == 0;
             // #2 SearchBtn + TextField + CancelBtn     input state, text's length > 0, press "Done" key on IME;
             // #3 TextField + CancelBtn                 excepte #1 & #2.
-            int space = inputFieldAttrs.Space ?? 0;
+            int space = Style.Space ?? 0;
             int textfieldX = 0;
             if (textFieldState == ControlStates.Normal && textState == TextState.Guide)
             {// #1
@@ -754,7 +839,7 @@ namespace Tizen.FH.NUI.Controls
             {
                 return;
             }
-            int space = inputFieldAttrs.Space ?? 0;
+            int space = Style.Space ?? 0;
             int spaceBetweenTextFieldAndRightButton = SpaceBetweenTextFieldAndRightButton();
             SetTextFieldSize2D((int)(Size.Width - space - spaceBetweenTextFieldAndRightButton - deleteBtn.Size.Width - addBtnBg.Size.Width), (int)Size.Height);
 
@@ -772,15 +857,14 @@ namespace Tizen.FH.NUI.Controls
                 addBtnBg.PositionX = 0;
                 deleteBtn.PositionX = -addBtnBg.Size.Width;
             }
-
         }
 
         private int SpaceBetweenTextFieldAndRightButton()
         {
             int space = 0;
-            if (inputFieldAttrs != null && inputFieldAttrs.SpaceBetweenTextFieldAndRightButton != null)
+            if (Style != null && Style.SpaceBetweenTextFieldAndRightButton != null)
             {
-                space = inputFieldAttrs.SpaceBetweenTextFieldAndRightButton.Value;
+                space = Style.SpaceBetweenTextFieldAndRightButton.Value;
             }
             return space;
         }
@@ -788,9 +872,9 @@ namespace Tizen.FH.NUI.Controls
         private int SpaceBetweenTextFieldAndLeftButton()
         {
             int space = 0;
-            if (inputFieldAttrs != null && inputFieldAttrs.SpaceBetweenTextFieldAndLeftButton != null)
+            if (Style != null && Style.SpaceBetweenTextFieldAndLeftButton != null)
             {
-                space = inputFieldAttrs.SpaceBetweenTextFieldAndLeftButton.Value;
+                space = Style.SpaceBetweenTextFieldAndLeftButton.Value;
             }
             return space;
         }
@@ -813,17 +897,18 @@ namespace Tizen.FH.NUI.Controls
         
         private void UpdateTextFieldTextColor(ControlStates state)
         {
-            if (inputFieldAttrs != null && inputFieldAttrs.InputBoxAttributes != null && inputFieldAttrs.InputBoxAttributes.TextColor != null)
+            if (Style != null && Style.InputBoxAttributes != null
+                && Style.InputBoxAttributes.TextColor != null)
             {
                 switch (state)
                 {
                     case ControlStates.Disabled:
                     case ControlStates.DisabledSelected:
-                        SetTextFieldTextColor(inputFieldAttrs.InputBoxAttributes.TextColor.Disabled);
+                        SetTextFieldTextColor(Style.InputBoxAttributes.TextColor.Disabled);
                         break;
                     case ControlStates.Normal:
                     case ControlStates.Selected:
-                        SetTextFieldTextColor(inputFieldAttrs.InputBoxAttributes.TextColor.Normal);
+                        SetTextFieldTextColor(Style.InputBoxAttributes.TextColor.Normal);
                         break;
                     default:
                         break;
@@ -833,19 +918,20 @@ namespace Tizen.FH.NUI.Controls
 
         private void UpdateDeleteBtnState(ControlStates state)
         {
-            if (deleteBtn != null && inputFieldAttrs != null && inputFieldAttrs.DeleteButtonAttributes != null && inputFieldAttrs.DeleteButtonAttributes.ResourceURL != null)
+            if (deleteBtn != null && Style != null && Style.DeleteButton != null
+                && Style.DeleteButton.ResourceUrl != null)
             {
                 switch (state)
                 {
                     case ControlStates.Disabled:
                     case ControlStates.DisabledSelected:
-                        deleteBtn.ResourceUrl = inputFieldAttrs.DeleteButtonAttributes.ResourceURL.Disabled;
+                        deleteBtn.ResourceUrl = Style.DeleteButton.ResourceUrl.Disabled;
                         break;
                     case ControlStates.Selected:
-                        deleteBtn.ResourceUrl = inputFieldAttrs.DeleteButtonAttributes.ResourceURL.Pressed;
+                        deleteBtn.ResourceUrl = Style.DeleteButton.ResourceUrl.Pressed;
                         break;
                     case ControlStates.Normal:
-                        deleteBtn.ResourceUrl = inputFieldAttrs.DeleteButtonAttributes.ResourceURL.Normal;
+                        deleteBtn.ResourceUrl = Style.DeleteButton.ResourceUrl.Normal;
                         break;
                     default:
                         break;
@@ -855,7 +941,7 @@ namespace Tizen.FH.NUI.Controls
 
         private void UpdateAddBtnState(ControlStates state)
         {
-            if (inputFieldAttrs == null || addBtnBg == null || addBtnOverlay == null || addBtnFg == null)
+            if (Style == null || addBtnBg == null || addBtnOverlay == null || addBtnFg == null)
             {
                 return;
             }
@@ -864,49 +950,58 @@ namespace Tizen.FH.NUI.Controls
                 case ControlStates.Disabled:
                 case ControlStates.DisabledSelected:
                     {
-                        if (inputFieldAttrs.AddButtonBgAttributes != null && inputFieldAttrs.AddButtonBgAttributes.ResourceURL != null)
+                        if (Style.AddButtonBackground != null
+                            && Style.AddButtonBackground.ResourceUrl != null)
                         {
-                            addBtnBg.ResourceUrl = inputFieldAttrs.AddButtonBgAttributes.ResourceURL.Disabled;
+                            addBtnBg.ResourceUrl = Style.AddButtonBackground.ResourceUrl.Disabled;
                         }
-                        if (inputFieldAttrs.AddButtonOverlayAttributes != null && inputFieldAttrs.AddButtonOverlayAttributes.ResourceURL != null)
+                        if (Style.AddButtonOverlay != null
+                            && Style.AddButtonOverlay.ResourceUrl != null)
                         {
-                            addBtnOverlay.ResourceUrl = inputFieldAttrs.AddButtonOverlayAttributes.ResourceURL.Disabled;
+                            addBtnOverlay.ResourceUrl = Style.AddButtonOverlay.ResourceUrl.Disabled;
                         }
-                        if (inputFieldAttrs.AddButtonFgAttributes != null && inputFieldAttrs.AddButtonFgAttributes.ResourceURL != null)
+                        if (Style.AddButtonForeground != null
+                            && Style.AddButtonForeground.ResourceUrl != null)
                         {
-                            addBtnFg.ResourceUrl = inputFieldAttrs.AddButtonFgAttributes.ResourceURL.Disabled;
+                            addBtnFg.ResourceUrl = Style.AddButtonForeground.ResourceUrl.Disabled;
                         }
                     }
                     break;
                 case ControlStates.Selected:
                     {
-                        if (inputFieldAttrs.AddButtonBgAttributes != null && inputFieldAttrs.AddButtonBgAttributes.ResourceURL != null)
+                        if (Style.AddButtonBackground != null
+                            && Style.AddButtonBackground.ResourceUrl != null)
                         {
-                            addBtnBg.ResourceUrl = inputFieldAttrs.AddButtonBgAttributes.ResourceURL.Pressed;
+                            addBtnBg.ResourceUrl = Style.AddButtonBackground.ResourceUrl.Pressed;
                         }
-                        if (inputFieldAttrs.AddButtonOverlayAttributes != null && inputFieldAttrs.AddButtonOverlayAttributes.ResourceURL != null)
+                        if (Style.AddButtonOverlay != null
+                            && Style.AddButtonOverlay.ResourceUrl != null)
                         {
-                            addBtnOverlay.ResourceUrl = inputFieldAttrs.AddButtonOverlayAttributes.ResourceURL.Pressed;
+                            addBtnOverlay.ResourceUrl = Style.AddButtonOverlay.ResourceUrl.Pressed;
                         }
-                        if (inputFieldAttrs.AddButtonFgAttributes != null && inputFieldAttrs.AddButtonFgAttributes.ResourceURL != null)
+                        if (Style.AddButtonForeground != null
+                            && Style.AddButtonForeground.ResourceUrl != null)
                         {
-                            addBtnFg.ResourceUrl = inputFieldAttrs.AddButtonFgAttributes.ResourceURL.Pressed;
+                            addBtnFg.ResourceUrl = Style.AddButtonForeground.ResourceUrl.Pressed;
                         }
                     }
                     break;
                 case ControlStates.Normal:
                     {
-                        if (inputFieldAttrs.AddButtonBgAttributes != null && inputFieldAttrs.AddButtonBgAttributes.ResourceURL != null)
+                        if (Style.AddButtonBackground != null
+                            && Style.AddButtonBackground.ResourceUrl != null)
                         {
-                            addBtnBg.ResourceUrl = inputFieldAttrs.AddButtonBgAttributes.ResourceURL.Normal;
+                            addBtnBg.ResourceUrl = Style.AddButtonBackground.ResourceUrl.Normal;
                         }
-                        if (inputFieldAttrs.AddButtonOverlayAttributes != null && inputFieldAttrs.AddButtonOverlayAttributes.ResourceURL != null)
+                        if (Style.AddButtonOverlay != null
+                            && Style.AddButtonOverlay.ResourceUrl != null)
                         {
-                            addBtnOverlay.ResourceUrl = inputFieldAttrs.AddButtonOverlayAttributes.ResourceURL.Normal;
+                            addBtnOverlay.ResourceUrl = Style.AddButtonOverlay.ResourceUrl.Normal;
                         }
-                        if (inputFieldAttrs.AddButtonFgAttributes != null && inputFieldAttrs.AddButtonFgAttributes.ResourceURL != null)
+                        if (Style.AddButtonForeground != null
+                            && Style.AddButtonForeground.ResourceUrl != null)
                         {
-                            addBtnFg.ResourceUrl = inputFieldAttrs.AddButtonFgAttributes.ResourceURL.Normal;
+                            addBtnFg.ResourceUrl = Style.AddButtonForeground.ResourceUrl.Normal;
                         }
                     }
                     break;

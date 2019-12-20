@@ -16,13 +16,12 @@
  */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
-using StyleManager = Tizen.NUI.Components.StyleManager;
-using System.ComponentModel;
+using Tizen.NUI.Components.DA;
 
-namespace Tizen.FH.NUI.Controls
+namespace Tizen.FH.NUI.Components
 {
     /// <summary>
     /// Navigation is one kind of common component, it can be used as instruction, guide or direction.
@@ -30,16 +29,12 @@ namespace Tizen.FH.NUI.Controls
     /// </summary>
     /// <since_tizen> 5.5 </since_tizen>
     /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public class Navigation : Control
     {
         private const int aniTime = 100; // will be defined in const file later
-        private List<NavigationItem> itemList = new List<NavigationItem>();
+        private List<NavigationDataItem> itemList = new List<NavigationDataItem>();
         private List<View> dividerLineList = new List<View>();
         private int curIndex = -1;
-        private NavigationAttributes navigationAttributes = null;
-        private ImageView shadowImage;
-        private ImageView backgroundImage;
         private View rootView;
         private EventHandler<TouchEventArgs> itemTouchHander;
 
@@ -48,30 +43,29 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public Navigation() : base()
         {
             Initialize();
         }
+
         /// <summary>
         /// Creates a new instance of a Navigation with style.
         /// </summary>
         /// <param name="style">Create Navigation by special style defined in UX.</param>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public Navigation(string style) : base(style)
         {
             Initialize();
         }
+
         /// <summary>
         /// Creates a new instance of a Navigation with attributes.
         /// </summary>
         /// <param name="attributes">Create Navigation by attributes customized by user.</param>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Navigation(NavigationAttributes attributes) : base(attributes)
+        public Navigation(NavigationStyle attributes) : base(attributes)
         {
             Initialize();
         }
@@ -81,7 +75,6 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public event EventHandler<ItemChangeEventArgs> ItemChangedEvent;
 
         /// <summary>
@@ -101,12 +94,15 @@ namespace Tizen.FH.NUI.Controls
             }
         }
 
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new NavigationStyle Style => ViewStyle as NavigationStyle;
+
         /// <summary>
         /// Selected item's index in Navigation.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public int SelectedItemIndex
         {
             get
@@ -127,117 +123,38 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public int ItemGap
         {
             get
             {
-                if (navigationAttributes == null)
+                if (Style == null)
                 {
                     return 0;
                 }
-                return navigationAttributes.ItemGap;
+                return Style.ItemGap;
             }
             set
             {
-                navigationAttributes.ItemGap = value;
+                Style.ItemGap = value;
             }
-        }
-
-        /// <summary>
-        /// Left space in Navigation.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public float LeftSpace
-        {
-            get
-            {
-                return navigationAttributes.Space.X;
-            }
-            set
-            {
-                navigationAttributes.Space.X = value;
-                RelayoutRequest();
-            }
-        }
-
-        /// <summary>
-        /// Bottom space in Navigation.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public float BottomSpace
-        {
-            get
-            {
-                return navigationAttributes.Space.W;
-            }
-            set
-            {
-                navigationAttributes.Space.W = value;
-                RelayoutRequest();
-            }
-        }
-
-        /// <summary>
-        /// Right space in Navigation.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public float RightSpace
-        {
-            get
-            {
-                return navigationAttributes.Space.Y;
-            }
-            set
-            {
-                navigationAttributes.Space.Y = value;
-                RelayoutRequest();
-            }
-        }
-
-        /// <summary>
-        /// Top space in Navigation.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public float TopSpace
-        {
-            get
-            {
-                return navigationAttributes.Space.Z;
-            }
-            set
-            {
-                navigationAttributes.Space.Z = value;
-                RelayoutRequest();
-            }
-        }
+        }  
 
         /// <summary>
         /// Shadow image's size in Navigation.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public Size ShadowImageSize
         {
             get
             {
-                return navigationAttributes.ShadowImageAttributes?.Size;
+                return Style.Shadow.Size;
             }
             set
             {
                 if (value != null)
                 {
-                    CreateShadowImageAttributes();
-                    navigationAttributes.ShadowImageAttributes.Size = value;
+                    Style.Shadow.Size = value;
                 }
             }
         }
@@ -247,23 +164,17 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public string ShadowImageURL
+        public string ShadowImageUrl
         {
             get
             {
-                return navigationAttributes.ShadowImageAttributes?.ResourceURL?.All;
+                return Style.Shadow.ResourceUrl?.All;
             }
             set
             {
                 if (value != null)
                 {
-                    CreateShadowImageAttributes();
-                    if (navigationAttributes.ShadowImageAttributes.ResourceURL == null)
-                    {
-                        navigationAttributes.ShadowImageAttributes.ResourceURL = new StringSelector();
-                    }
-                    navigationAttributes.ShadowImageAttributes.ResourceURL.All = value;
+                    Style.Shadow.ResourceUrl = new Selector<string>() { All = value };
                 }
             }
         }
@@ -273,49 +184,17 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public string BackgroundImageURL
+        public string BackgroundImageUrl
         {
             get
             {
-                return navigationAttributes.BackgroundImageAttributes?.ResourceURL?.All;
+                return Style.BackgroundImage?.All;
             }
             set
             {
                 if (value != null)
                 {
-                    CreateBackgroundImageAttributes();
-                    if (navigationAttributes.BackgroundImageAttributes.ResourceURL == null)
-                    {
-                        navigationAttributes.BackgroundImageAttributes.ResourceURL = new StringSelector();
-                    }
-                    navigationAttributes.BackgroundImageAttributes.ResourceURL.All = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Shadow image's border in Navigation.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Rectangle BackgroundImageBorder
-        {
-            get
-            {
-                return navigationAttributes.BackgroundImageAttributes?.Border?.All;
-            }
-            set
-            {
-                if (value != null)
-                {
-                    CreateBackgroundImageAttributes();
-                    if (navigationAttributes.BackgroundImageAttributes.Border == null)
-                    {
-                        navigationAttributes.BackgroundImageAttributes.Border = new RectangleSelector();
-                    }
-                    navigationAttributes.BackgroundImageAttributes.Border.All = value;
+                    Style.BackgroundImage = new Selector<string>() { All = value };
                 }
             }
         }
@@ -325,16 +204,33 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public Color DividerLineColor
         {
             get
             {
-                return navigationAttributes.DividerLineColor;
+                return Style.DividerLineColor;
             }
             set
             {
-                navigationAttributes.DividerLineColor = value;
+                Style.DividerLineColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Padding in Navigation.
+        /// </summary>
+        /// <since_tizen> 5.5 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new Extents Padding
+        {
+            get
+            {
+                return Style.Padding;
+            }
+            set
+            {
+                Style.Padding = value;
             }
         }
 
@@ -344,16 +240,15 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public bool IsFitWithItems
         {
             get
             {
-                return navigationAttributes.IsFitWithItems;
+                return Style.IsFitWithItems;
             }
             set
             {
-                navigationAttributes.IsFitWithItems = value;
+                Style.IsFitWithItems = value;
             }
         }
 
@@ -363,8 +258,7 @@ namespace Tizen.FH.NUI.Controls
         /// <param name="itemData">Item data which will apply to navigaiton item view.</param>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void AddItem(NavigationItemData itemData)
+        public void AddItem(NavigationDataItem itemData)
         {
             AddItemByIndex(itemData, itemList.Count);
         }
@@ -376,8 +270,7 @@ namespace Tizen.FH.NUI.Controls
         /// <param name="index">Position index where will be inserted.</param>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void InsertItem(NavigationItemData itemData, int index)
+        public void InsertItem(NavigationDataItem itemData, int index)
         {
             AddItemByIndex(itemData, index);
         }
@@ -388,7 +281,6 @@ namespace Tizen.FH.NUI.Controls
         /// <param name="itemIndex">Position index where will be deleted.</param>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public void DeleteItem(int itemIndex)
         {
             if (itemList == null || itemIndex < 0 || itemIndex >= itemList.Count)
@@ -409,16 +301,10 @@ namespace Tizen.FH.NUI.Controls
             UpdateItem();
             if (curIndex != -1)
             {
-                itemList[curIndex].State = ControlStates.Selected;
+                itemList[curIndex].ControlState = Tizen.NUI.Components.ControlStates.Selected;
             }
         }
 
-        /// <summary>
-        /// Update Navigation by attributes.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         protected override void OnUpdate()
         {
             UpdateItem();
@@ -430,7 +316,6 @@ namespace Tizen.FH.NUI.Controls
         /// <param name="type">Dispose type.</param>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         protected override void Dispose(DisposeTypes type)
         {
             if (disposed)
@@ -440,50 +325,31 @@ namespace Tizen.FH.NUI.Controls
 
             if (type == DisposeTypes.Explicit)
             {
-
-                if (rootView != null)
+                if (dividerLineList != null)
                 {
-                    if (dividerLineList != null)
+                    for (int i = 0; i < dividerLineList.Count; i++)
                     {
-                        for (int i = 0; i < dividerLineList.Count; i++)
+                        if (dividerLineList[i] != null)
                         {
-                            if (dividerLineList[i] != null)
-                            {
-                                rootView.Remove(dividerLineList[i]);
-                                dividerLineList[i].Dispose();
-                                dividerLineList[i] = null;
-                            }
+                            Utility.Dispose(dividerLineList[i]);
                         }
-                        dividerLineList.Clear();
-                        dividerLineList = null;
                     }
-
-                    if (itemList != null)
-                    {
-                        for (int i = 0; i < itemList.Count; i++)
-                        {
-                            if (itemList[i] != null)
-                            {
-                                rootView.Remove(itemList[i]);
-                                itemList[i].Dispose();
-                                itemList[i] = null;
-                            }
-                        }
-                        itemList.Clear();
-                        itemList = null;
-                    }
-
-                    Remove(rootView);
-                    rootView.Dispose();
-                    rootView = null;
+                    dividerLineList.Clear();
+                    dividerLineList = null;
                 }
-
-                if (backgroundImage != null)
+                if (itemList != null)
                 {
-                    Remove(backgroundImage);
-                    backgroundImage.Dispose();
-                    backgroundImage = null;
+                    for (int i = 0; i < itemList.Count; i++)
+                    {
+                        if (itemList[i] != null)
+                        {
+                            Utility.Dispose(itemList[i]);
+                        }
+                    }
+                    itemList.Clear();
+                    itemList = null;
                 }
+                Utility.Dispose(rootView);
             }
 
             base.Dispose(type);
@@ -494,39 +360,39 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override Attributes GetAttributes()
+        protected override ViewStyle GetViewStyle()
         {
-            return new NavigationAttributes();
+            return new NavigationStyle();
+        }
+
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override void ApplyStyle(ViewStyle viewStyle)
+        {
+            base.ApplyStyle(viewStyle);
+
+            NavigationStyle style = viewStyle as NavigationStyle;
+            if (style != null)
+            {                
+            }
         }
 
         private void Initialize()
         {
-            navigationAttributes = attributes as NavigationAttributes;
-            if (navigationAttributes == null)
-            {
-                throw new Exception("Navigation attribute parse error.");
-            }
-
-            shadowImage = new ImageView();
-            shadowImage.Name = "ShadowImage";
-            Add(shadowImage);
-
-            backgroundImage = new ImageView();
-            backgroundImage.Name = "Background";
-            Add(backgroundImage);
-
             rootView = new View();
             rootView.Name = "RootView";
             Add(rootView);
         }
 
-        private void AddItemByIndex(NavigationItemData itemData, int index)
+        private void AddItemByIndex(NavigationDataItem itemData, int index)
         {
-            NavigationItem item = new NavigationItem(itemData.ItemAttributes);
+            NavigationDataItem item = itemData;
             item.TouchEvent += OnItemTouchEvent;
             rootView.Add(item);
-            item.Size = itemData.ItemAttributes.Size;
+            if (itemData.Style.Size != null)
+            {
+                item.Size = itemData.Style.Size;
+            }
             if (index >= itemList.Count)
             {
                 itemList.Add(item);
@@ -541,37 +407,7 @@ namespace Tizen.FH.NUI.Controls
             UpdateItem();
             if (curIndex != -1)
             {
-                itemList[curIndex].State = ControlStates.Selected;
-            }
-        }
-
-        private void CreateShadowImageAttributes()
-        {
-            if (navigationAttributes.ShadowImageAttributes == null)
-            {
-                navigationAttributes.ShadowImageAttributes = new ImageAttributes()
-                {
-                    PositionUsesPivotPoint = true,
-                    ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft,
-                    PivotPoint = Tizen.NUI.PivotPoint.TopLeft,
-                    Position = new Position(0, 0),
-                    Size = new Size(0, 0)
-                };
-            }
-        }
-
-        private void CreateBackgroundImageAttributes()
-        {
-            if (navigationAttributes.BackgroundImageAttributes == null)
-            {
-                navigationAttributes.BackgroundImageAttributes = new ImageAttributes()
-                {
-                    PositionUsesPivotPoint = true,
-                    ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft,
-                    PivotPoint = Tizen.NUI.PivotPoint.TopLeft,
-                    Position = new Position(0, 0),
-                    Size = new Size(0, 0)
-                };
+                itemList[curIndex].ControlState = Tizen.NUI.Components.ControlStates.Selected;
             }
         }
 
@@ -579,7 +415,7 @@ namespace Tizen.FH.NUI.Controls
         {
             View dividerLine = new View()
             {
-                BackgroundColor = navigationAttributes.DividerLineColor,
+                BackgroundColor = Style.DividerLineColor,
                 PositionUsesPivotPoint = true,
                 ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft,
                 PivotPoint = Tizen.NUI.PivotPoint.TopLeft,
@@ -597,19 +433,18 @@ namespace Tizen.FH.NUI.Controls
             {
                 return;
             }
-            int leftSpace = (int)navigationAttributes.Space.X;
-            int topSpace = (int)navigationAttributes.Space.Z;
-            int bottomSpace = (int)navigationAttributes.Space.W;
-            int rightSpace = (int)navigationAttributes.Space.Y;
+            int leftSpace = Style.Padding.Start;
+            int rightSpace = Style.Padding.End;
+            int topSpace = Style.Padding.Top;
+            int bottomSpace = Style.Padding.Bottom;
 
             int preX = leftSpace;
             int preY = topSpace;
             int parentW = (int)itemList[0].Size.Width + leftSpace + rightSpace;
             int parentH = topSpace + bottomSpace;
-            int itemGap = navigationAttributes.ItemGap;
+            int itemGap = Style.ItemGap;
             for (int i = 0; i < totalNum; i++)
             {
-
                 itemList[i].Index = i;
                 itemList[i].Name = "Item" + i;
                 itemList[i].Position = new Position(preX, preY);
@@ -618,7 +453,7 @@ namespace Tizen.FH.NUI.Controls
                 parentH += (int)itemList[i].Size.Height;
                 preY += (int)itemList[i].Size.Height + itemGap;
 
-                dividerLineList[i].BackgroundColor = navigationAttributes.DividerLineColor;
+                dividerLineList[i].BackgroundColor = Style.DividerLineColor;
                 dividerLineList[i].Show();
             }
             dividerLineList[totalNum - 1].Hide();
@@ -628,7 +463,7 @@ namespace Tizen.FH.NUI.Controls
                 rootView.Size = new Size(parentW, parentH);
             }
 
-            if (navigationAttributes.IsFitWithItems == true)
+            if (Style.IsFitWithItems == true)
             {
                 if (Size.EqualTo(new Size(parentW, parentH)) == false)
                 {
@@ -640,11 +475,10 @@ namespace Tizen.FH.NUI.Controls
                 rootView.PositionY = (Size.Height - rootView.Size.Height) / 2;
             }
 
-            UpdateBackgroundImage();
             UpdateShadowImage();
         }
 
-        private void UpdateSelectedItem(NavigationItem item)
+        private void UpdateSelectedItem(NavigationDataItem item)
         {
             if (item == null || curIndex == item.Index)
             {
@@ -660,35 +494,24 @@ namespace Tizen.FH.NUI.Controls
 
             if (curIndex != -1)
             {
-                itemList[curIndex].State = ControlStates.Normal;
+                itemList[curIndex].ControlState = Tizen.NUI.Components.ControlStates.Normal;
             }
             curIndex = item.Index;
-            itemList[curIndex].State = ControlStates.Selected;
+            itemList[curIndex].ControlState = Tizen.NUI.Components.ControlStates.Selected;
         }
 
         private void UpdateShadowImage()
         {
-            if (navigationAttributes.ShadowImageAttributes == null)
+            if (Style.Shadow == null)
             {
                 return;
             }
-            navigationAttributes.ShadowImageAttributes.Position = new Position(-navigationAttributes.ShadowImageAttributes.Size.Width, 0);
-            ApplyAttributes(shadowImage, navigationAttributes.ShadowImageAttributes);
-        }
-
-        private void UpdateBackgroundImage()
-        {
-            if (navigationAttributes.BackgroundImageAttributes == null)
-            {
-                return;
-            }
-            navigationAttributes.BackgroundImageAttributes.Size = new Size(Size.Width, Size.Height);
-            ApplyAttributes(backgroundImage, navigationAttributes.BackgroundImageAttributes);
+            Style.Shadow.Position = new Position(-Style.Shadow.Size?.Width??0, 0);
         }
 
         private bool OnItemTouchEvent(object source, TouchEventArgs e)
         {
-            NavigationItem item = source as NavigationItem;
+            NavigationDataItem item = source as NavigationDataItem;
             if (item == null)
             {
                 return false;
@@ -702,18 +525,299 @@ namespace Tizen.FH.NUI.Controls
             itemTouchHander?.Invoke(this, e);
 
             return true;
-        }
+        }   
 
-        internal class NavigationItem : Button
+        /// <summary>
+        /// NavigationItemData is a class to record all data which will be applied to Navigation item.
+        /// </summary>
+        /// <since_tizen> 5.5 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public class NavigationDataItem : Button
         {
             private TextLabel subText;
             private View dividerLine;
-            private NavigationItemAttributes itemAttributes;
 
-            public NavigationItem(NavigationItemAttributes attributes) : base(attributes)
+            /// <summary>
+            /// Creates a new instance of a NavigationItemData.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public NavigationDataItem() : base()
             {
-                Initialize();
-            }           
+                Initalize();
+            }
+
+            /// <summary>
+            /// Creates a new instance of a NavigationItemData with style.
+            /// </summary>
+            /// <param name="style">Create NavigationItemData by special style defined in UX.</param>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public NavigationDataItem(string style) : base(style)
+            {
+                Initalize();
+            }
+
+            /// <summary>
+            /// Creates a new instance of a NavigationItemData with attributes.
+            /// </summary>
+            /// <param name="attributes">Create NavigationItemData by attributes customized by user.</param>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public NavigationDataItem(NavigationItemStyle attributes) : base(attributes)
+            {
+                Initalize();
+            }
+
+            /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public new NavigationItemStyle Style => ViewStyle as NavigationItemStyle;
+
+            /// <summary>
+            /// Navigation item size.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public new Size Size
+            {
+                get
+                {
+                    return Style.Size;
+                }
+                set
+                {
+                    Style.Size = value;
+                }
+            }
+
+            /// <summary>
+            /// Sub text string in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public string SubText
+            {
+                get
+                {
+                    return Style.SubText.Text?.All;
+                }
+                set
+                {
+                    if (value != null)
+                    {
+                        Style.SubText.Text = new Selector<string>() { All = value };
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Text size in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public Size TextSize
+            {
+                get
+                {
+                    return Style.Text?.Size;
+                }
+                set
+                {
+                    Style.Text.Size = value;
+                }
+            }
+
+            /// <summary>
+            /// Sub text size in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public Size SubTextSize
+            {
+                get
+                {
+                    return Style.SubText?.Size;
+                }
+                set
+                {
+                    Style.SubText.Size = value;
+                }
+            }
+
+            /// <summary>
+            /// Sub text point size in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public float SubTextPointSize
+            {
+                get
+                {
+                    return Style.SubText?.PointSize?.All ?? 0;
+                }
+                set
+                {
+                    Style.SubText.PointSize = new Selector<float?>() { All = value };
+                }
+            }
+
+            /// <summary>
+            /// Sub text font family in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public string SubTextFontFamily
+            {
+                get
+                {
+                    return Style.SubText.FontFamily.All;
+                }
+                set
+                {
+                    Style.SubText.FontFamily = new Selector<string>() { All = value };
+                }
+            }
+
+            /// <summary>
+            /// Sub text color in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public Color SubTextColor
+            {
+                get
+                {
+                    return Style.SubText?.TextColor?.All;
+                }
+                set
+                {
+                    Style.SubText.TextColor = new Selector<Color>() { All = value };
+                }
+            }
+
+            /// <summary>
+            /// Sub text color selector in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public Selector<Color> SubTextColorSelector
+            {
+                get
+                {
+                    return Style.SubText?.TextColor;
+                }
+                set
+                {
+                    if (value != null)
+                    {
+                        Style.SubText.TextColor = value;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Icon size in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public Size IconSize
+            {
+                get
+                {
+                    return Style.Icon?.Size;
+                }
+                set
+                {
+                    Style.Icon.Size = value;
+                }
+            }
+
+            /// <summary>
+            /// Divider line color in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public Color DividerLineColor
+            {
+                get
+                {
+                    return Style.DividerLine?.BackgroundColor?.All;
+                }
+                set
+                {
+                    Style.DividerLine.BackgroundColor =  new Selector<Color>() { All = value };
+                }
+            }
+
+            /// <summary>
+            /// Divider line size in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public Size DividerLineSize
+            {
+                get
+                {
+                    return Style.DividerLine?.Size;
+                }
+                set
+                {
+                    Style.DividerLine.Size = value;
+                }
+            }
+
+            /// <summary>
+            /// Divider line's position in Navigation item view.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public Position DividerLinePosition
+            {
+                get
+                {
+                    return Style.DividerLine?.Position;
+                }
+                set
+                {
+                    Style.DividerLine.Position = value;
+                }
+            }
+
+            /// <summary>
+            /// Padding in Navigation Item.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public new Extents Padding
+            {
+                get
+                {
+                    return Style.Padding;
+                }
+                set
+                {
+                    Style.Padding = value;
+                }
+            }
+
+            /// <summary>
+            /// Flag to decide icon is in center or not in Navigation item view.
+            /// If true, icon image will in the center of NavigationItem, if false, it will be decided by TopSpace.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            public bool EnableIconCenter
+            {
+                get
+                {
+                    return Style.EnableIconCenter;
+                }
+                set
+                {
+                    Style.EnableIconCenter = value;
+                }
+            }
 
             internal int Index
             {
@@ -721,10 +825,41 @@ namespace Tizen.FH.NUI.Controls
                 set;
             }
 
-            protected override void OnThemeChangedEvent(object sender, StyleManager.ThemeChangeEventArgs e)
+            /// <summary>
+            /// Get attributes.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            protected override ViewStyle GetViewStyle()
             {
+                return new NavigationItemStyle();
             }
 
+            /// <summary>
+            /// Layout children.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            protected override void LayoutChild()
+            {
+                // important! avoid layout child again.
+            }
+
+            /// <summary>
+            /// Measure text.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+            protected override void MeasureText()
+            {
+                // important! avoid measuring text again.
+            }
+
+            /// <summary>
+            /// Dispose.
+            /// </summary>
+            /// <since_tizen> 5.5 </since_tizen>
+            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
             protected override void Dispose(DisposeTypes type)
             {
                 if (disposed)
@@ -736,64 +871,66 @@ namespace Tizen.FH.NUI.Controls
                 {
                     if (subText != null)
                     {
-                        Remove(subText);
-                        subText.Dispose();
-                        subText = null;
+                        Utility.Dispose(subText);
                     }
-
                     if (dividerLine != null)
                     {
-                        Remove(dividerLine);
-                        dividerLine.Dispose();
-                        dividerLine = null;
+                        Utility.Dispose(dividerLine);
                     }
                 }
 
                 base.Dispose(type);
             }
 
-            protected override Attributes GetAttributes()
-            {
-                return new NavigationItemAttributes();
-            }
-
-            protected override void LayoutChild()
-            {
-
-            }
-
             protected override void OnUpdate()
             {
-                LayoutIconAndText();
+                int leftSpace = Style.Padding.Start;
+                int rightSpace = Style.Padding.End;
+                int topSpace = Style.Padding.Top;
+                int bottomSpace = Style.Padding.Bottom;
 
-                base.OnUpdate();
-                if (subText != null)
+                Style.Icon.PositionUsesPivotPoint = true;
+                if (Style.EnableIconCenter == true)
                 {
-                    ApplyAttributes(subText, itemAttributes.SubTextAttributes);
+                    Style.Icon.ParentOrigin = Tizen.NUI.ParentOrigin.Center;
+                    Style.Icon.PivotPoint = Tizen.NUI.PivotPoint.Center;
                 }
-
-                if (dividerLine != null)
+                else
                 {
-                    ApplyAttributes(dividerLine, itemAttributes.DividerLineAttributes);
+                    Style.Icon.ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft;
+                    Style.Icon.PivotPoint = Tizen.NUI.PivotPoint.TopLeft;
+
+                    int w = (int)Size.Width;
+                    int h = (int)Size.Height;
+                    int iconX = (int)((w - Style.Icon.Size?.Width ?? 0) / 2);
+                    int iconY = topSpace;
+                    Style.Icon.Position = new Position(iconX, iconY);
+
+                    int textPosX = leftSpace;
+                    int textPosY = (int)(iconY + Style.Icon.Size?.Height ?? 0);
+                    if (Style.Text != null)
+                    {
+                        Style.Text.Position = new Position(textPosX, textPosY);
+                        if (Style.Text.Size != null)
+                        {
+                            textPosY += (int)Style.Text.Size.Height;
+                        }
+                    }
+                    if (Style.SubText != null)
+                    {
+                        Style.SubText.Position = new Position(textPosX, textPosY);
+                    }
                 }
             }
 
-            private void Initialize()
+            /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public override void ApplyStyle(ViewStyle viewStyle)
             {
-                itemAttributes = attributes as NavigationItemAttributes;
-                if (itemAttributes == null)
-                {
-                    throw new Exception("NavigationItem attribute parse error.");
-                }
+                base.ApplyStyle(viewStyle);
 
-                CreateSubText();
-                CreateDividerLine();
-                ApplyAttributes(this, itemAttributes);
-            }
-
-            private void CreateSubText()
-            {
-                if (itemAttributes.SubTextAttributes != null)
+                NavigationItemStyle itemStyle = viewStyle as NavigationItemStyle;
+                if (subText == null)
                 {
                     subText = new TextLabel()
                     {
@@ -805,11 +942,9 @@ namespace Tizen.FH.NUI.Controls
                     };
                     Add(subText);
                 }
-            }
+                subText.ApplyStyle(itemStyle.SubText);
 
-            private void CreateDividerLine()
-            {
-                if (itemAttributes.DividerLineAttributes != null)
+                if (dividerLine == null)
                 {
                     dividerLine = new View()
                     {
@@ -819,547 +954,11 @@ namespace Tizen.FH.NUI.Controls
                     };
                     Add(dividerLine);
                 }
-            }
-
-            private void LayoutIconAndText()
-            {
-                if (itemAttributes.IconAttributes == null)
-                {
-                    return;
-                }
-
-                int leftSpace = (int)itemAttributes.Space.X;
-                int rightSpace = (int)itemAttributes.Space.Y;
-                int topSpace = (int)itemAttributes.Space.Z;
-                int bottomSpace = (int)itemAttributes.Space.W;
-
-                itemAttributes.IconAttributes.PositionUsesPivotPoint = true;
-                if (itemAttributes.EnableIconCenter == true)
-                {
-                    itemAttributes.IconAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.Center;
-                    itemAttributes.IconAttributes.PivotPoint = Tizen.NUI.PivotPoint.Center;
-                }
-                else
-                {
-                    itemAttributes.IconAttributes.ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft;
-                    itemAttributes.IconAttributes.PivotPoint = Tizen.NUI.PivotPoint.TopLeft;
-
-                    int w = (int)Size.Width;
-                    int h = (int)Size.Height;
-                    int iconX = (int)((w - itemAttributes.IconAttributes.Size.Width) / 2);
-                    int iconY = topSpace;
-                    itemAttributes.IconAttributes.Position = new Position(iconX, iconY);
-                    int textPosX = leftSpace;
-                    int textPosY = (int)(iconY + itemAttributes.IconAttributes.Size.Height);
-                    if (itemAttributes.TextAttributes != null)
-                    {
-                        itemAttributes.TextAttributes.Position = new Position(textPosX, textPosY);
-                        if (itemAttributes.TextAttributes.Size != null)
-                        {
-                            textPosY += (int)itemAttributes.TextAttributes.Size.Height;
-                        }
-                    }
-                    if (itemAttributes.SubTextAttributes != null)
-                    {
-                        itemAttributes.SubTextAttributes.Position = new Position(textPosX, textPosY);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// NavigationItemData is a class to record all data which will be applied to Navigation item.
-        /// </summary>
-        /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public class NavigationItemData : Button
-        {
-            /// <summary>
-            /// Creates a new instance of a NavigationItemData.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public NavigationItemData() : base()
-            {
-                Initalize();
-            }
-
-            /// <summary>
-            /// Creates a new instance of a NavigationItemData with style.
-            /// </summary>
-            /// <param name="style">Create NavigationItemData by special style defined in UX.</param>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public NavigationItemData(string style) : base(style)
-            {
-                Initalize();
-            }
-
-            /// <summary>
-            /// Creates a new instance of a NavigationItemData with attributes.
-            /// </summary>
-            /// <param name="attributes">Create NavigationItemData by attributes customized by user.</param>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public NavigationItemData(NavigationItemAttributes attributes) : base(attributes)
-            {
-                Initalize();
-            }
-
-            /// <summary>
-            /// Navigation item size.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public new Size Size
-            {
-                get
-                {
-                    return ItemAttributes.Size;
-                }
-                set
-                {
-                    ItemAttributes.Size = value;
-                }
-            }
-
-            /// <summary>
-            /// Space in Navigation item view, including left, right, top and bottom space.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public Vector4 Space
-            {
-                get
-                {
-                    return ItemAttributes.Space;
-                }
-                set
-                {
-                    ItemAttributes.Space = value;
-                }
-            }
-
-            /// <summary>
-            /// Left space in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public int LeftSpace
-            {
-                get
-                {
-                    return (int)ItemAttributes.Space.X;
-                }
-                set
-                {
-                    ItemAttributes.Space.X = value;
-                }
-            }
-
-            /// <summary>
-            /// Bottom space in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public int BottomSpace
-            {
-                get
-                {
-                    return (int)ItemAttributes.Space.W;
-                }
-                set
-                {
-                    ItemAttributes.Space.W = value;
-                }
-            }
-
-            /// <summary>
-            /// Right space in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public int RightSpace
-            {
-                get
-                {
-                    return (int)ItemAttributes.Space.Y;
-                }
-                set
-                {
-                    ItemAttributes.Space.Y = value;
-                }
-            }
-
-            /// <summary>
-            /// Top space in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public int TopSpace
-            {
-                get
-                {
-                    return (int)ItemAttributes.Space.Z;
-                }
-                set
-                {
-                    ItemAttributes.Space.Z = value;
-                }
-            }
-
-            /// <summary>
-            /// Sub text string in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public string SubText
-            {
-                get
-                {
-                    return ItemAttributes.SubTextAttributes?.Text?.All;
-                }
-                set
-                {
-                    if (value != null)
-                    {
-                        CreateSubTextAttributes();
-                        if (ItemAttributes.SubTextAttributes.Text == null)
-                        {
-                            ItemAttributes.SubTextAttributes.Text = new StringSelector();
-                        }
-                        ItemAttributes.SubTextAttributes.Text.All = value;
-                    }
-                }
-            }
-
-            /// <summary>
-            /// Text size in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public Size TextSize
-            {
-                get
-                {
-                    return ItemAttributes.TextAttributes?.Size;
-                }
-                set
-                {
-                    CreateTextAttributes();
-                    ItemAttributes.TextAttributes.Size = value;
-                }
-            }
-
-            /// <summary>
-            /// Sub text size in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public Size SubTextSize
-            {
-                get
-                {
-                    return ItemAttributes.SubTextAttributes?.Size;
-                }
-                set
-                {
-                    CreateSubTextAttributes();
-                    ItemAttributes.SubTextAttributes.Size = value;
-                }
-            }
-
-            /// <summary>
-            /// Sub text point size in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public float SubTextPointSize
-            {
-                get
-                {
-                    return ItemAttributes.SubTextAttributes?.PointSize?.All ?? 0;
-                }
-                set
-                {
-                    CreateSubTextAttributes();
-                    if (ItemAttributes.SubTextAttributes.PointSize == null)
-                    {
-                        ItemAttributes.SubTextAttributes.PointSize = new FloatSelector();
-                    }
-                    ItemAttributes.SubTextAttributes.PointSize.All = value;
-                }
-            }
-
-            /// <summary>
-            /// Sub text font family in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public string SubTextFontFamily
-            {
-                get
-                {
-                    return ItemAttributes.SubTextAttributes?.FontFamily;
-                }
-                set
-                {
-                    CreateSubTextAttributes();
-                    ItemAttributes.SubTextAttributes.FontFamily = value;
-                }
-            }
-
-            /// <summary>
-            /// Sub text color in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public Color SubTextColor
-            {
-                get
-                {
-                    return ItemAttributes.SubTextAttributes?.TextColor?.All;
-                }
-                set
-                {
-                    CreateSubTextAttributes();
-                    if (ItemAttributes.SubTextAttributes.TextColor == null)
-                    {
-                        ItemAttributes.SubTextAttributes.TextColor = new ColorSelector();
-                    }
-                    ItemAttributes.SubTextAttributes.TextColor.All = value;
-                }
-            }
-
-            /// <summary>
-            /// Sub text color selector in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public ColorSelector SubTextColorSelector
-            {
-                get
-                {
-                    return ItemAttributes.SubTextAttributes?.TextColor;
-                }
-                set
-                {
-                    CreateSubTextAttributes();
-                    if (value != null)
-                    {
-                        ItemAttributes.SubTextAttributes.TextColor = value.Clone() as ColorSelector;
-                    }
-                }
-            }
-
-            /// <summary>
-            /// Icon size in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public Size IconSize
-            {
-                get
-                {
-                    return ItemAttributes.IconAttributes?.Size;
-                }
-                set
-                {
-                    ItemAttributes.IconAttributes.Size = value;
-                }
-            }
-
-            /// <summary>
-            /// Divider line color in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public Color DividerLineColor
-            {
-                get
-                {
-                    return ItemAttributes.DividerLineAttributes?.BackgroundColor?.All;
-                }
-                set
-                {
-                    CreateDividerLineAttributes();
-                    if (ItemAttributes.DividerLineAttributes.BackgroundColor == null)
-                    {
-                        ItemAttributes.DividerLineAttributes.BackgroundColor = new ColorSelector();
-                    }
-                    ItemAttributes.DividerLineAttributes.BackgroundColor.All = value;
-                }
-            }
-
-            /// <summary>
-            /// Divider line size in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public Size DividerLineSize
-            {
-                get
-                {
-                    return ItemAttributes.DividerLineAttributes?.Size;
-                }
-                set
-                {
-                    CreateDividerLineAttributes();
-                    ItemAttributes.DividerLineAttributes.Size = value;
-                }
-            }
-
-            /// <summary>
-            /// Divider line's position in Navigation item view.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public Position DividerLinePosition
-            {
-                get
-                {
-                    return ItemAttributes.DividerLineAttributes?.Position;
-                }
-                set
-                {
-                    CreateDividerLineAttributes();
-                    ItemAttributes.DividerLineAttributes.Position = value;
-                }
-            }
-
-            /// <summary>
-            /// Flag to decide icon is in center or not in Navigation item view.
-            /// If true, icon image will in the center of NavigationItem, if false, it will be decided by TopSpace.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public bool EnableIconCenter
-            {
-                get
-                {
-                    return ItemAttributes.EnableIconCenter;
-                }
-                set
-                {
-                    ItemAttributes.EnableIconCenter = value;
-                }
-            }
-
-            internal NavigationItemAttributes ItemAttributes
-            {
-                get;
-                set;
-            }
-
-            /// <summary>
-            /// Get attributes.
-            /// </summary>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            protected override Attributes GetAttributes()
-            {
-                return new NavigationItemAttributes();
-            }
-
-            /// <summary>
-            /// Update item data by attributes.
-            /// </summary>
-            /// <param name="attributtes">Item data attributes.</param>
-            /// <since_tizen> 5.5 </since_tizen>
-            /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            protected override void OnUpdate()
-            {
-                
+                dividerLine.ApplyStyle(itemStyle.DividerLine);
             }
 
             private void Initalize()
             {
-                ItemAttributes = attributes as NavigationItemAttributes;
-                if (ItemAttributes == null)
-                {
-                    throw new Exception("NavigationItem attribute parse error.");
-                }
-
-                CreateIconAttributes();
-                CreateTextAttributes();
-            }
-
-            private void CreateTextAttributes()
-            {
-                if (ItemAttributes.TextAttributes == null)
-                {
-                    ItemAttributes.TextAttributes = new TextAttributes()
-                    {
-                        PositionUsesPivotPoint = true,
-                        ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft,
-                        PivotPoint = Tizen.NUI.PivotPoint.TopLeft,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Top,
-                    };
-                }
-            }
-
-            private void CreateSubTextAttributes()
-            {
-                if (ItemAttributes.SubTextAttributes == null)
-                {
-                    ItemAttributes.SubTextAttributes = new TextAttributes()
-                    {
-                        PositionUsesPivotPoint = true,
-                        ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft,
-                        PivotPoint = Tizen.NUI.PivotPoint.TopLeft,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    };
-                }
-            }         
-
-            private void CreateDividerLineAttributes()
-            {
-                if (ItemAttributes.DividerLineAttributes == null)
-                {
-                    ItemAttributes.DividerLineAttributes = new ViewAttributes()
-                    {
-                        PositionUsesPivotPoint = true,
-                        ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft,
-                        PivotPoint = Tizen.NUI.PivotPoint.TopLeft,
-                    };
-                }
-            }
-
-            private void CreateIconAttributes()
-            {
-                if (ItemAttributes.IconAttributes == null)
-                {
-                    ItemAttributes.IconAttributes = new ImageAttributes()
-                    {
-                        Size = new Size(0, 0),
-                    };
-                }
             }
         }
 
@@ -1368,18 +967,16 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public class ItemChangeEventArgs : EventArgs
         {
             /// <summary> previous selected index of Navigation </summary>
             /// <since_tizen> 5.5 </since_tizen>
             /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
             public int PreviousIndex;
+
             /// <summary> current selected index of Navigation </summary>
             /// <since_tizen> 5.5 </since_tizen>
             /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-            [EditorBrowsable(EditorBrowsableState.Never)]
             public int CurrentIndex;
         }
     }

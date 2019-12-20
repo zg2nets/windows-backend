@@ -38,13 +38,6 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         protected SelectGroup itemGroup = null;
 
-        private ImageControl selectableImage;
-        private SelectButtonStyle selectButtonStyle;
-
-        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new SelectButtonStyle Style => selectButtonStyle;
-
         /// <summary>
         /// Creates a new instance of a SelectButton.
         /// </summary>
@@ -75,7 +68,7 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public SelectButton(SelectButtonStyle style) : base(style)
+        public SelectButton(ButtonStyle style) : base(style)
         {
             Initialize();
         }
@@ -108,22 +101,6 @@ namespace Tizen.NUI.Components
         }
 
         /// <summary>
-        /// Theme change callback when theme is changed, this callback will be trigger.
-        /// </summary>
-        /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override void OnThemeChangedEvent(object sender, StyleManager.ThemeChangeEventArgs e)
-        {
-            SelectButtonStyle tempAttributes = StyleManager.Instance.GetAttributes(style) as SelectButtonStyle;
-            if (tempAttributes != null)
-            {
-                selectButtonStyle.CopyFrom(tempAttributes);
-                UpdateUIContent();
-            }
-        }
-
-        /// <summary>
         /// Dispose SelectButton and all children on it.
         /// </summary>
         /// <param name="type">Dispose type.</param>
@@ -139,23 +116,9 @@ namespace Tizen.NUI.Components
 
             if (type == DisposeTypes.Explicit)
             {
-                if (selectableImage != null)
-                {
-                    Remove(selectableImage);
-                    selectableImage.Dispose();
-                    selectableImage = null;
-                }
             }
 
             base.Dispose(type);
-        }
-
-        private void UpdateUIContent()
-        {
-            UpdateTextAttributes();
-            base.OnUpdate();
-
-            selectableImage?.RaiseToTop();
         }
 
         /// <summary>
@@ -213,45 +176,6 @@ namespace Tizen.NUI.Components
             return ret;
         }
 
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override void ApplyStyle(ViewStyle viewStyle)
-        {
-            base.ApplyStyle(viewStyle);
-
-            SelectButtonStyle selectButtonStyle = viewStyle as SelectButtonStyle;
-
-            if (null != selectButtonStyle)
-            {
-                if (selectableImage == null)
-                {
-                    selectableImage = new ImageControl();
-                    selectableImage.Name = "SelectableImage";
-                    Add(selectableImage);
-
-                    selectableImage.RaiseToTop();
-                }
-
-                selectableImage.ApplyStyle(selectButtonStyle.SelectableImage);
-            }
-        }
-
-        /// <summary>
-        /// Get SelectButton attribues.
-        /// </summary>
-        /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override ViewStyle GetAttributes()
-        {
-            if (null == selectButtonStyle)
-            {
-                selectButtonStyle = new SelectButtonStyle();
-            }
-
-            return selectButtonStyle;
-        }
-
         /// <summary>
         /// Overrides this method if want to handle behavior after pressing return key by user.
         /// </summary>
@@ -264,89 +188,8 @@ namespace Tizen.NUI.Components
 
         private void Initialize()
         {
-            if (selectableImage == null)
-            {
-                selectableImage = new ImageControl();
-                selectableImage.Name = "SelectableImage";
-                Add(selectableImage);
-
-                selectableImage.RaiseToTop();
-            }
-
-            selectButtonStyle.SelectableImage.PositionUsesPivotPoint = true;
-            selectButtonStyle.SelectableImage.ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft;
-            selectButtonStyle.SelectableImage.PivotPoint = Tizen.NUI.PivotPoint.TopLeft;
-
-            selectButtonStyle.IsSelectable = true;
-            LayoutDirectionChanged += SelectButtonLayoutDirectionChanged;
-        }
-
-        private void UpdateTextAttributes()
-        {
-            if (selectButtonStyle.Text != null)
-            {
-                selectButtonStyle.Text.PositionUsesPivotPoint = true;
-                selectButtonStyle.Text.ParentOrigin = Tizen.NUI.ParentOrigin.TopLeft;
-                selectButtonStyle.Text.PivotPoint = Tizen.NUI.PivotPoint.TopLeft;
-                selectButtonStyle.Text.WidthResizePolicy = ResizePolicyType.Fixed;
-                selectButtonStyle.Text.HeightResizePolicy = ResizePolicyType.Fixed;
-
-                int iconWidth = (int)selectableImage.SizeWidth;
-
-                int textPaddingLeft = selectButtonStyle.Text.Padding.Start;
-                int textPaddingRight = selectButtonStyle.Text.Padding.End;
-
-                if(selectButtonStyle.Text.Size == null)
-                {
-                    selectButtonStyle.Text.Size = new Size(Size2D.Width - iconWidth - selectableImage.Padding.Start - selectableImage.Padding.End - textPaddingLeft - textPaddingRight, Size2D.Height);
-                }
-                
-                if(selectButtonStyle.Text.Position == null)
-                {
-                    selectButtonStyle.Text.Position = new Position(selectableImage.Padding.Start + iconWidth + selectableImage.Padding.End + textPaddingLeft, 0);
-                }
-                
-                selectButtonStyle.Text.VerticalAlignment = VerticalAlignment.Center;
-            }
-        }
-
-        private void SelectButtonLayoutDirectionChanged(object sender, LayoutDirectionChangedEventArgs e)
-        {
-            if (selectButtonStyle == null || selectButtonStyle.Text == null)
-            {
-                return;
-            }
-
-            UpdateTextAttributes();
-
-            int iconWidth = (int)selectableImage.SizeWidth;
-
-            int textPaddingLeft = selectButtonStyle.Text.Padding.Start;
-            int textPaddingRight = selectButtonStyle.Text.Padding.End;
-            int pos = 0;
-            if (LayoutDirection == ViewLayoutDirectionType.RTL)
-            {
-                selectButtonStyle.Text.HorizontalAlignment = HorizontalAlignment.End;
-                selectButtonStyle.Text.Position.X = textPaddingRight;
-				pos = (int)(selectButtonStyle.Text.Size.Width) + textPaddingLeft + textPaddingRight;
-                if (selectButtonStyle.Icon.Padding != null)
-				{
-                    pos += selectButtonStyle.Icon.Padding.End;
-				}
-
-            }
-            else if (LayoutDirection == ViewLayoutDirectionType.LTR)
-            {
-                selectButtonStyle.Text.HorizontalAlignment = HorizontalAlignment.Begin;
-                selectButtonStyle.Text.Position.X = iconWidth + textPaddingLeft;
-                if (selectButtonStyle.Icon.Padding != null)
-				{
-                    selectButtonStyle.Text.Position.X += (selectButtonStyle.Icon.Padding.Start + selectButtonStyle.Icon.Padding.End); 
-                    pos = selectButtonStyle.Icon.Padding.Start;
-				}
-            }
-
-            selectableImage.Position2D.X = pos;
+            if (null == Style) return;
+            Style.IsSelectable = true;
         }
 
         private void OnSelect()

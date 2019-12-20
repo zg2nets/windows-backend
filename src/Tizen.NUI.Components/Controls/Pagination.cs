@@ -271,7 +271,7 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override ViewStyle GetAttributes()
+        protected override ViewStyle GetViewStyle()
         {
             return new PaginationStyle();
         }
@@ -305,7 +305,7 @@ namespace Tizen.NUI.Components
 
         private void Initialize()
         {
-            paginationStyle = controlStyle as PaginationStyle;
+            paginationStyle = Style as PaginationStyle;
             if (paginationStyle == null)
             {
                 throw new Exception("Pagination attributes is null.");

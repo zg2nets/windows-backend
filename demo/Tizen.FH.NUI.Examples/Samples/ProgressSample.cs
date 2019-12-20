@@ -1,14 +1,12 @@
-﻿using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
-using Tizen.FH.NUI.Controls;
+﻿
 using Tizen.NUI;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class Progress : IExample
     {
-        private Tizen.NUI.Components.Button button1, button2;
-        private Tizen.NUI.Components.Progress progressBar1;
+        private Tizen.NUI.Components.DA.Button button1, button2;
+        private Tizen.NUI.Components.DA.Progress progressBar1;
         private SampleLayout root;
 
         public void Activate()
@@ -18,7 +16,7 @@ namespace Tizen.FH.NUI.Samples
             root = new SampleLayout();
             root.HeaderText = "Progress";
 
-            button1 = new Tizen.NUI.Components.Button("BasicButton");
+            button1 = new Tizen.NUI.Components.DA.Button("BasicButton");
             button1.BackgroundColor = Color.Green;
             button1.Position2D = new Position2D(300, 200);
             button1.Size2D = new Size2D(80, 80);
@@ -27,7 +25,7 @@ namespace Tizen.FH.NUI.Samples
             button1.Focusable = true;
             button1.ClickEvent += bar1Add;
 
-            button2 = new Tizen.NUI.Components.Button("BasicButton");
+            button2 = new Tizen.NUI.Components.DA.Button("BasicButton");
             button2.BackgroundColor = Color.Green;
             button2.Position2D = new Position2D(700, 200);
             button2.Size2D = new Size2D(80, 80);
@@ -36,7 +34,7 @@ namespace Tizen.FH.NUI.Samples
             button2.Focusable = true;
             button2.ClickEvent += bar1Minus;
 
-            progressBar1 = new Tizen.NUI.Components.Progress("Progressbar");
+            progressBar1 = new Tizen.NUI.Components.DA.Progress("Progressbar");
             progressBar1.Position2D = new Position2D(300, 100);
             progressBar1.Size2D = new Size2D(500, 4);
             progressBar1.MaxValue = 100;

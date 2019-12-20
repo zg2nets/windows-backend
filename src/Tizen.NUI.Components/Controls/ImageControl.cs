@@ -14,10 +14,9 @@
  * limitations under the License.
  *
  */
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using Tizen.NUI.BaseComponents;
+using Tizen.NUI.Binding;
 
 namespace Tizen.NUI.Components
 {
@@ -29,17 +28,36 @@ namespace Tizen.NUI.Components
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ImageControl : Control
     {
-        /// <summary>
-        /// Control style.
-        /// </summary>
-        /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        private ImageControlStyle imageControlStyle;
-
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageControlStyle Style => imageControlStyle;
+        public static readonly BindableProperty ResourceUrlProperty = BindableProperty.Create("ImageControlResourceUrl", typeof(Selector<string>), typeof(ImageControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var imageControl = (ImageControl)bindable;
+            if (null != newValue)
+            {
+                imageControl.ResourceUrlSelector.Clone((Selector<string>)newValue);
+            }
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            var imageControl = (ImageControl)bindable;
+            return imageControl.ResourceUrlSelector;
+        });
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty BorderProperty = BindableProperty.Create("ImageControlBorder", typeof(Selector<Rectangle>), typeof(ImageControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var imageControl = (ImageControl)bindable;
+            if (null == newValue)
+            {
+                imageControl.BorderSelector.Clone((Selector<Rectangle>)newValue);
+            }
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            var imageControl = (ImageControl)bindable;
+            return imageControl.BorderSelector;
+        });
 
         internal ImageView imageView;
 
@@ -51,7 +69,7 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ImageControl() : base()
         {
-            Initialize();
+            Initialize(null);
         }
 
         /// <summary>
@@ -63,11 +81,11 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ImageControl(ImageControlStyle style) : base(style)
         {
-            Initialize();
+            Initialize(null);
         }
 
         /// <summary>
-        /// Construct with style.
+        /// Construct with style
         /// </summary>
         /// <param name="style">Style to be applied</param>
         /// <since_tizen> 6 </since_tizen>
@@ -75,7 +93,58 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ImageControl(string style) : base(style)
         {
-            Initialize();
+            Initialize(style);
+        }
+
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new ImageControlStyle Style => ViewStyle as ImageControlStyle;
+
+        /// <summary>
+        /// Override view's BackgroundImage.
+        /// </summary>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Selector<string> ResourceUrl
+        {
+            get => (Selector<string>)GetValue(ResourceUrlProperty);
+            set => SetValue(ResourceUrlProperty, value);
+        }
+
+        /// <summary>
+        /// Override view's BackgroundImageBorder.
+        /// </summary>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Selector<Rectangle> Border
+        {
+            get => (Selector<Rectangle>)GetValue(BorderProperty);
+            set => SetValue(BorderProperty, value);
+        }
+
+        private TriggerableSelector<string> _resourceUrlSelector;
+        private TriggerableSelector<string> ResourceUrlSelector
+        {
+            get
+            {
+                if (null == _resourceUrlSelector)
+                {
+                    _resourceUrlSelector = new TriggerableSelector<string>(imageView, ImageView.ResourceUrlProperty);
+                }
+                return _resourceUrlSelector;
+            }
+        }
+        private TriggerableSelector<Rectangle> _borderSelector;
+        private TriggerableSelector<Rectangle> BorderSelector
+        {
+            get
+            {
+                if (null == _borderSelector)
+                {
+                    _borderSelector = new TriggerableSelector<Rectangle>(imageView, ImageView.BorderProperty);
+                }
+                return _borderSelector;
+            }
         }
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -89,12 +158,18 @@ namespace Tizen.NUI.Components
             {
                 if (null == imageView)
                 {
-                    imageView = new ImageView();
+                    imageView = new ImageView()
+                    {
+                        PositionUsesPivotPoint = true,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.Center,
+                        PivotPoint = Tizen.NUI.PivotPoint.Center,
+                        WidthResizePolicy = ResizePolicyType.UseNaturalSize,
+                        HeightResizePolicy = ResizePolicyType.UseNaturalSize,
+                    };
                     this.Add(imageView);
                 }
+                imageView.RaiseToTop();
             }
-
-            imageView.ApplyStyle(imageControlStyle.Image);
         }
 
         /// <summary>
@@ -119,19 +194,27 @@ namespace Tizen.NUI.Components
             base.Dispose(type);
         }
 
-        private void Initialize()
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected override ViewStyle GetViewStyle()
+        {
+            return new ImageControlStyle(); ;
+        }
+
+        private void Initialize(string style)
         {
             if (null == imageView)
             {
-                imageView = new ImageView();
+                imageView = new ImageView()
+                {
+                    PositionUsesPivotPoint = true,
+                    ParentOrigin = Tizen.NUI.ParentOrigin.Center,
+                    PivotPoint = Tizen.NUI.PivotPoint.Center,
+                    WidthResizePolicy = ResizePolicyType.UseNaturalSize,
+                    HeightResizePolicy = ResizePolicyType.UseNaturalSize,
+                };
                 this.Add(imageView);
             }
-        }
-
-        protected override ViewStyle GetAttributes()
-        {
-            imageControlStyle = new ImageControlStyle();
-            return imageControlStyle;
         }
     }
 }

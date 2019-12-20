@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -1044,10 +1045,16 @@ namespace Tizen.NUI.BaseComponents
             simpleBinding.Dispose();
             simpleBinding = null;
 
-            bindedStyles.Clear();
-            bindedStyles = null;
+            viewStyle = null;
 
             base.Dispose(type);
+        }
+
+        /// This will not be public opened.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected override void ReleaseSwigCPtr(System.Runtime.InteropServices.HandleRef swigCPtr)
+        {
+            Interop.View.delete_View(swigCPtr);
         }
 
         private void DisConnectFromSignals()

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Tizen.NUI.BaseComponents;
 using Tizen.NUI;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public delegate uint GetNumberOfItems();
     public delegate View NewItem(uint itemId);

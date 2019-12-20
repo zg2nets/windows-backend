@@ -16,7 +16,7 @@
  */
 using System;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class Application
     {

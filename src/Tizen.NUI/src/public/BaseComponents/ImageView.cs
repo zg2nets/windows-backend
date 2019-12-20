@@ -231,7 +231,6 @@ namespace Tizen.NUI.BaseComponents
             return ret;
         });
 
-        private global::System.Runtime.InteropServices.HandleRef swigCPtr;
         private EventHandler<ResourceReadyEventArgs> _resourceReadyEventHandler;
         private ResourceReadyEventCallbackType _resourceReadyEventCallback;
         private EventHandler<ResourceLoadedEventArgs> _resourceLoadedEventHandler;
@@ -241,21 +240,9 @@ namespace Tizen.NUI.BaseComponents
         private string _resourceUrl = "";
         private bool _synchronosLoading = false;
 
-        private ImageViewStyle imageViewStyle;
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageViewStyle ImageViewStyle
-        {
-            get
-            {
-                if (null == imageViewStyle)
-                {
-                    imageViewStyle = ViewStyle as ImageViewStyle;
-                }
-
-                return imageViewStyle;
-            }
-        }
+        public ImageViewStyle Style => ViewStyle as ImageViewStyle;
 
         /// <summary>
         /// Creates an initialized ImageView.
@@ -268,9 +255,8 @@ namespace Tizen.NUI.BaseComponents
 
         /// This will be public opened in next release of tizen after ACR done. Before ACR, it is used as HiddenAPI (InhouseAPI).
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageView(ViewStyle viewStyle) : this(Interop.ImageView.ImageView_New__SWIG_0(), true)
+        public ImageView(ViewStyle viewStyle) : this(Interop.ImageView.ImageView_New__SWIG_0(), true, viewStyle)
         {
-            int temp = 0;
         }
 
         /// <summary>
@@ -323,10 +309,16 @@ namespace Tizen.NUI.BaseComponents
             }
         }
 
+        internal ImageView(global::System.IntPtr cPtr, bool cMemoryOwn, ViewStyle viewStyle, bool shown = true) : base(Interop.ImageView.ImageView_SWIGUpcast(cPtr), cMemoryOwn, viewStyle)
+        {
+            if (!shown)
+            {
+                SetVisible(false);
+            }
+        }
+
         internal ImageView(global::System.IntPtr cPtr, bool cMemoryOwn, bool shown = true) : base(Interop.ImageView.ImageView_SWIGUpcast(cPtr), cMemoryOwn)
         {
-            swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
-
             if (!shown)
             {
                 SetVisible(false);
@@ -905,15 +897,9 @@ namespace Tizen.NUI.BaseComponents
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override ViewStyle GetAttributes()
+        protected override ViewStyle GetViewStyle()
         {
-            imageViewStyle = new ImageViewStyle();
-            return imageViewStyle;
-        }
-
-        internal static global::System.Runtime.InteropServices.HandleRef getCPtr(ImageView obj)
-        {
-            return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
+            return new ImageViewStyle();
         }
 
         internal void SetImage(string url, Uint16Pair size)
@@ -1009,21 +995,14 @@ namespace Tizen.NUI.BaseComponents
                 _border = null;
             }
 
-            //Release your own unmanaged resources here.
-            //You should not access any managed member here except static instance.
-            //because the execution order of Finalizes is non-deterministic.
-
-            if (swigCPtr.Handle != global::System.IntPtr.Zero)
-            {
-                if (swigCMemOwn)
-                {
-                    swigCMemOwn = false;
-                    Interop.ImageView.delete_ImageView(swigCPtr);
-                }
-                swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
-            }
-
             base.Dispose(type);
+        }
+
+        /// This will not be public opened.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected override void ReleaseSwigCPtr(System.Runtime.InteropServices.HandleRef swigCPtr)
+        {
+            Interop.ImageView.delete_ImageView(swigCPtr);
         }
 
         // Callback for View ResourceReady signal

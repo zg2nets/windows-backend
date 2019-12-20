@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
 using Tizen.NUI.UIComponents;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class ItemView : IExample
     {

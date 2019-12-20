@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F988BBA1-52C3-453F-8D1C-434172967AAD}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Tizen.FH.NUI.Examples</RootNamespace>
+    <AssemblyName>Tizen.FH.NUI.Examples</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Dali\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IExample.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleMain.cs" />
+    <Compile Include="Samples\ButtonSample.cs" />
+    <Compile Include="Samples\CheckBoxSample.cs" />
+    <Compile Include="Samples\ContactCard\ClippedImage.cs" />
+    <Compile Include="Samples\ContactCard\ContactCard.cs" />
+    <Compile Include="Samples\ContactCard\ContactCardLayouter.cs" />
+    <Compile Include="Samples\ContactCard\ContactCardLayoutInfo.cs" />
+    <Compile Include="Samples\ContactCard\ContactCardsSample.cs" />
+    <Compile Include="Samples\ContactCard\ContactData.cs" />
+    <Compile Include="Samples\ContactCard\MaskedImage.cs" />
+    <Compile Include="Samples\CubeTransitionEffectSample.cs" />
+    <Compile Include="Samples\DaliDemo\DaliDemo.cs" />
+    <Compile Include="Samples\DaliDemo\DaliTableView.cs" />
+    <Compile Include="Samples\DatePickerSample.cs" />
+    <Compile Include="Samples\DropDownSample.cs" />
+    <Compile Include="Samples\FlexibleViewSample.cs" />
+    <Compile Include="Samples\ItemViewDemo\ItemFactoryWrapper.cs" />
+    <Compile Include="Samples\ItemViewDemo\ItemViewSample.cs" />
+    <Compile Include="Samples\ItemViewDemo\Utils.cs" />
+    <Compile Include="Samples\NavigationSample.cs" />
+    <Compile Include="Samples\NaviFrameSample.cs" />
+    <Compile Include="Samples\LoadingSample.cs" />
+    <Compile Include="Samples\InputFieldSample.cs" />
+    <Compile Include="Samples\ListItemSample.cs" />
+    <Compile Include="Samples\PaginationSample.cs" />
+    <Compile Include="Samples\PopupSample.cs" />
+    <Compile Include="Samples\ProgressSample.cs" />
+    <Compile Include="Samples\RadioButtonSample.cs" />
+    <Compile Include="SampleLayout.cs" />
+    <Compile Include="Samples\ScrollbarSample.cs" />
+    <Compile Include="Samples\SliderSample.cs" />
+    <Compile Include="Samples\SwitchSample.cs" />
+    <Compile Include="Samples\TabSample.cs" />
+    <Compile Include="Samples\TimePickerSample.cs" />
+    <Compile Include="Samples\HeaderSample.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Tizen.Applications.Common\Tizen.Applications.Common.csproj">
+      <Project>{2aedcaa7-543f-48a1-bea3-cf3e14f6edc2}</Project>
+      <Name>Tizen.Applications.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Tizen.FH.NUI\Tizen.FH.NUI.csproj">
+      <Project>{f913ea19-8768-48f1-923a-227b63fa53eb}</Project>
+      <Name>Tizen.FH.NUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Tizen.Log\Tizen.Log.csproj">
+      <Project>{1c550c1f-9370-42ff-86fa-edcd6262b258}</Project>
+      <Name>Tizen.Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Tizen.NUI.Components.DA\Tizen.NUI.Components.DA.csproj">
+      <Project>{359fd5a5-4552-4628-9a00-f90076293525}</Project>
+      <Name>Tizen.NUI.Components.DA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Tizen.NUI\Tizen.NUI.csproj">
+      <Project>{473c3bec-2f67-4285-85fc-bf4e96bfff1c}</Project>
+      <Name>Tizen.NUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Tizen.System.SystemSettings\Tizen.System.SystemSettings.csproj">
+      <Project>{8d71b1b6-9901-436f-8914-9f812e1b10a7}</Project>
+      <Name>Tizen.System.SystemSettings</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

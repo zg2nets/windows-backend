@@ -16,6 +16,7 @@
  */
 using System.ComponentModel;
 using Tizen.NUI.Binding;
+using Tizen.NUI.Components;
 
 namespace Tizen.NUI.BaseComponents
 {
@@ -200,6 +201,8 @@ namespace Tizen.NUI.BaseComponents
         }
     }
 
+    /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class TriggerableSelector<T> : Selector<T>
     {
         public TriggerableSelector(View view, BindableProperty bindableProperty)

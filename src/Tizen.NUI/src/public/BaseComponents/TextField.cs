@@ -30,11 +30,14 @@ namespace Tizen.NUI.BaseComponents
     /// <since_tizen> 3 </since_tizen>
     public partial class TextField : View
     {
-        private global::System.Runtime.InteropServices.HandleRef swigCPtr;
         private string textFieldTextSid = null;
         private string textFieldPlaceHolderTextSid = null;
         private bool systemlangTextFlag = false;
         private InputMethodContext inputMethodCotext = null;
+
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public TextFieldStyle Style => ViewStyle as TextFieldStyle;
 
         /// <summary>
         /// Creates the TextField control.
@@ -57,10 +60,27 @@ namespace Tizen.NUI.BaseComponents
             SetVisible(shown);
         }
 
+        /// <summary>
+        /// Get attribues, it is abstract function and must be override.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected override ViewStyle GetViewStyle()
+        {
+            return new TextFieldStyle();
+        }
+
+        internal TextField(global::System.IntPtr cPtr, bool cMemoryOwn, ViewStyle viewStyle, bool shown = true) : base(Interop.TextField.TextField_SWIGUpcast(cPtr), cMemoryOwn, viewStyle)
+        {
+            if (!shown)
+            {
+                SetVisible(false);
+            }
+        }
+
         internal TextField(global::System.IntPtr cPtr, bool cMemoryOwn, bool shown = true) : base(Interop.TextField.TextField_SWIGUpcast(cPtr), cMemoryOwn)
         {
-            swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
-
             if (!shown)
             {
                 SetVisible(false);
@@ -1262,19 +1282,16 @@ namespace Tizen.NUI.BaseComponents
                 }
             }
 
-            if (swigCPtr.Handle != global::System.IntPtr.Zero)
-            {
-                if (swigCMemOwn)
-                {
-                    swigCMemOwn = false;
-                    // In order to speed up IME hide, temporarily add
-                    GetInputMethodContext()?.DestroyContext();
-                    Interop.TextField.delete_TextField(swigCPtr);
-                }
-                swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
-            }
-
             base.Dispose(type);
+        }
+
+        /// This will not be public opened.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected override void ReleaseSwigCPtr(System.Runtime.InteropServices.HandleRef swigCPtr)
+        {
+            // In order to speed up IME hide, temporarily add
+            GetInputMethodContext()?.DestroyContext();
+            Interop.TextField.delete_TextField(swigCPtr);
         }
 
         private string SetTranslatable(string textFieldSid)

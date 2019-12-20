@@ -17,43 +17,36 @@
 using System;
 using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
-using System.ComponentModel;
-using StyleManager = Tizen.NUI.Components.StyleManager;
+using Tizen.NUI.Components.DA;
+using StyleManager = Tizen.NUI.Components.DA.StyleManager;
 
-namespace Tizen.FH.NUI.Controls
+namespace Tizen.FH.NUI.Components
 {
     /// <summary>
     /// TimePicker is one kind of Fhub component, a timePicker allows the user to change time information: hour/minute/second/AMPM.
     /// </summary>
     /// <since_tizen> 5.5 </since_tizen>
-    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.    
     public class TimePicker : Control
     {
-        private ImageView backgroundImage = null;
-        private ImageView shadowImage = null;
         private ImageView colonImage = null;
         private ImageView colonImage2 = null;        
         private Spin hourSpin = null;
         private Spin minuteSpin = null;
         private Spin secondSpin = null;
-        private Spin AMPMSpin = null;
+        private Spin amPmSpin = null;
         private View weekView = null;
-        private TextLabel titleText = null;
+        private TextLabel title = null;
         private ImageView[] weekSelectImage = null;
         private TextLabel[] weekText = null;
         private TextLabel weekTitleText = null;
         private bool[] selected = null;
-        private DateTime curTime;      
-        private TimePickerAttributes timePickerAttributes;
 
         /// <summary>
         /// Creates a new instance of a TimePicker.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public TimePicker() : base()
         {
             Initialize();
@@ -64,29 +57,24 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <param name="style">Create TimePicker by special style defined in UX.</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         public TimePicker(string style) : base(style)
         {
             Initialize();
         }
 
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public new TimePickerStyle Style => ViewStyle as TimePickerStyle;
+
         /// <summary>
         /// Current time in TimePicker.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public DateTime CurTime
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        public DateTime CurrentTime
         {
-            get
-            {
-                return curTime;
-            }
-            set
-            {
-                curTime = value;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -94,8 +82,7 @@ namespace Tizen.FH.NUI.Controls
         /// </summary>
         /// <param name="type">Dispose type.</param>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void Dispose(DisposeTypes type)
         {
             if (disposed)
@@ -104,106 +91,32 @@ namespace Tizen.FH.NUI.Controls
             }
 
             if (type == DisposeTypes.Explicit)
-            {
-                if (backgroundImage != null)
+            {              
+                Utility.Dispose(colonImage);
+                Utility.Dispose(colonImage2);
+                Utility.Dispose(hourSpin);
+                Utility.Dispose(minuteSpin);
+                Utility.Dispose(secondSpin);
+                Utility.Dispose(amPmSpin);
+                Utility.Dispose(title);
+                Utility.Dispose(weekTitleText);
+                if (weekSelectImage != null)
                 {
-                    Remove(backgroundImage);
-                    backgroundImage.Dispose();
-                    backgroundImage = null;
-                }
-                
-                if (shadowImage != null)
-                {
-                    Remove(shadowImage);
-                    shadowImage.Dispose();
-                    shadowImage = null;
-                }
-                
-                if (colonImage != null)
-                {
-                    Remove(colonImage);
-                    colonImage.Dispose();
-                    colonImage = null;
-                }
-                
-                if (colonImage2 != null)
-                {
-                    Remove(colonImage2);
-                    colonImage2.Dispose();
-                    colonImage2 = null;
-                }
-                
-                if (hourSpin != null)
-                {
-                    Remove(hourSpin);
-                    hourSpin.Dispose();
-                    hourSpin = null;
-                }
-                
-                if (minuteSpin != null)
-                {
-                    Remove(minuteSpin);
-                    minuteSpin.Dispose();
-                    minuteSpin = null;
-                }
-                
-                if (secondSpin != null)
-                {
-                    Remove(secondSpin);
-                    secondSpin.Dispose();
-                    secondSpin = null;
-                }
-                
-                if (AMPMSpin != null)
-                {
-                    Remove(AMPMSpin);
-                    AMPMSpin.Dispose();
-                    AMPMSpin = null;
-                }
-
-                if (titleText != null)
-                {
-                    Remove(titleText);
-                    titleText.Dispose();
-                    titleText = null;
-                }
-                
-                if (weekView != null)
-                {
-                    if (weekTitleText != null)
+                    for (int i = 0; i < 7; i++)
                     {
-                        weekView.Remove(weekTitleText);
-                        weekTitleText.Dispose();
-                        weekTitleText = null;
+                        Utility.Dispose(weekSelectImage[i]);
                     }
-                    
-                    if (weekSelectImage != null)
-                    {
-                        for (int i = 0; i < 7; i++)
-                        {
-                            weekView.Remove(weekSelectImage[i]);
-                            weekSelectImage[i].Dispose();
-                            weekSelectImage[i] = null;
-                        }
-                    }
-                    
-                    if (weekText!= null)
-                    {
-                        for (int i = 0; i < 7; i++)
-                        {
-                            weekText[i].TouchEvent -= OnRepeatTextTouchEvent;
-                            weekView.Remove(weekText[i]);
-                            weekText[i].Dispose();
-                            weekText[i] = null;
-                        }
-                    }
-                    
-                    Remove(weekView);
-                    weekView.Dispose();
-                    weekView = null;
                 }
+                if (weekText!= null)
+                {
+                    for (int i = 0; i < 7; i++)
+                    {
+                        weekText[i].TouchEvent -= OnRepeatTextTouchEvent;
+                        Utility.Dispose(weekText[i]);
+                    }
+                }
+                Utility.Dispose(weekView);
             }
-
             base.Dispose(type);
         }   
 
@@ -211,25 +124,23 @@ namespace Tizen.FH.NUI.Controls
         /// Get TimePicker attribues.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override Attributes GetAttributes()
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
+        protected override ViewStyle GetViewStyle()
         {
-            return new TimePickerAttributes();
+            return new TimePickerStyle();
         }
 
         /// <summary>
         /// Theme change callback when theme is changed, this callback will be trigger.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-		/// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+		/// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
 		protected override void OnThemeChangedEvent(object sender, StyleManager.ThemeChangeEventArgs e)
         {
-            TimePickerAttributes tempAttributes = StyleManager.Instance.GetAttributes(style) as TimePickerAttributes;
+            TimePickerStyle tempAttributes = StyleManager.Instance.GetViewStyle(style) as TimePickerStyle;
             if (tempAttributes != null)
             {
-                attributes = timePickerAttributes = tempAttributes;
+                Style.CopyFrom(tempAttributes);
                 RelayoutRequest();
             }
         }
@@ -238,52 +149,24 @@ namespace Tizen.FH.NUI.Controls
         /// Update TimePicker by attributes.
         /// </summary>
         /// <since_tizen> 5.5 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void OnUpdate()
-        {
-
-            ApplyAttributes(this, timePickerAttributes);            
-            ApplyAttributes(shadowImage, timePickerAttributes.ShadowImageAttributes);
-            ApplyAttributes(backgroundImage, timePickerAttributes.BackgroundImageAttributes);          
-            ApplyAttributes(hourSpin, timePickerAttributes.HourSpinAttributes);
-            ApplyAttributes(minuteSpin, timePickerAttributes.MinuteSpinAttributes);
-            ApplyAttributes(secondSpin, timePickerAttributes.SecondSpinAttributes);
-            ApplyAttributes(colonImage, timePickerAttributes.ColonImageAttributes);
-            ApplyAttributes(colonImage2, timePickerAttributes.ColonImageAttributes);
-            ApplyAttributes(AMPMSpin, timePickerAttributes.AMPMSpinAttributes);
-            ApplyAttributes(titleText, timePickerAttributes.TitleTextAttributes);
-
-            if (weekView != null)
-            {
-                ApplyAttributes(weekView, timePickerAttributes.WeekViewAttributes);
-                for (int i = 0; i < 7; i++)
-                {
-                    ApplyAttributes(weekSelectImage[i], timePickerAttributes.WeekSelectImageAttributes);
-                    ApplyAttributes(weekText[i], timePickerAttributes.WeekTextAttributes);
-                }
-                ApplyAttributes(weekTitleText, timePickerAttributes.WeekTitleTextAttributes);
-            }
-            
+        {           
             int w = 0;
-            int h = 0;
-            
-            if (shadowImage != null)
+            int h = 0;           
+            if (Style.Shadow != null)
             {
-                w = (int)(Size.Width + timePickerAttributes.ShadowOffset.W + timePickerAttributes.ShadowOffset.X);
-                h = (int)(Size.Height + timePickerAttributes.ShadowOffset.Y + timePickerAttributes.ShadowOffset.Z);
-                shadowImage.Size = new Size(w, h);
+                w = (int)(Size.Width + Style.ShadowExtents.Start + Style.ShadowExtents.End);
+                h = (int)(Size.Height + Style.ShadowExtents.Top + Style.ShadowExtents.Bottom);
+                Style.Shadow.Size = new Size(w, h);
             }
 
-            int x = 0;
-            //int y = 0;
-            
+            int x = 0;           
             if (colonImage2 != null)
             {
                 x = (int)(minuteSpin.Position.X + minuteSpin.Size.Width + (minuteSpin.Position.X - hourSpin.Position.X - hourSpin.Size.Width - colonImage.Size.Width)/2);
                 colonImage2.Position = new Position(x, colonImage2.Position.Y);
             }
-
             x = (int)(hourSpin.Position.X + hourSpin.Size.Width + (minuteSpin.Position.X - hourSpin.Position.X - hourSpin.Size.Width - colonImage.Size.Width)/2);
             colonImage.Position = new Position(x, colonImage.Position.Y);
 
@@ -304,172 +187,160 @@ namespace Tizen.FH.NUI.Controls
                     weekText[4].Text = "Thu";
                     weekText[5].Text = "Fri";
                     weekText[6].Text = "Sat";
-                }
-                
+                }                
             }
-            if (AMPMSpin != null)
+            if (amPmSpin != null)
             {
-                hourSpin.Max = 11;
-                hourSpin.Min = 0;
-                AMPMSpin.Max = 1;
-                AMPMSpin.Min = 0;
+                hourSpin.MaxValue = 11;
+                hourSpin.MinValue = 0;
+                amPmSpin.MaxValue = 1;
+                amPmSpin.MinValue = 0;
             }
             else
             {
-                hourSpin.Max = 23;
-                hourSpin.Min = 0;
+                hourSpin.MaxValue = 23;
+                hourSpin.MinValue = 0;
             }
             if (minuteSpin !=null)
             {
-                minuteSpin.Max = 59;
-                minuteSpin.Min = 0;
+                minuteSpin.MaxValue = 59;
+                minuteSpin.MinValue = 0;
             }
             if (secondSpin !=null)
             {
-                secondSpin.Max = 59;
-                secondSpin.Min = 0;
+                secondSpin.MaxValue = 59;
+                secondSpin.MinValue = 0;
             }
         }
 
-        private void Initialize()
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public override void ApplyStyle(ViewStyle viewStyle)
         {
-            timePickerAttributes = attributes as TimePickerAttributes;
-            
-            if (timePickerAttributes == null)
-            {
-                throw new Exception("TimePicker attribute parse error.");
-            }
+            base.ApplyStyle(viewStyle);
 
-            LeaveRequired = true;
-            curTime = DateTime.Now;
-
-            if (timePickerAttributes.ShadowImageAttributes != null)
-            {
-                shadowImage = new ImageView();
-                Add(shadowImage);
-            }
-
-            if (timePickerAttributes.BackgroundImageAttributes != null)
-            {
-                backgroundImage = new ImageView()
-                {
-                    WidthResizePolicy = ResizePolicyType.FillToParent,
-                    HeightResizePolicy = ResizePolicyType.FillToParent
-                };
-                
-                Add(backgroundImage);
-            }
-
-            if (timePickerAttributes.ColonImageAttributes != null)
+            TimePickerStyle timePickerStyle = viewStyle as TimePickerStyle;
+            if (colonImage == null)
             {
                 colonImage = new ImageView()
                 {
                     WidthResizePolicy = ResizePolicyType.FillToParent,
                     HeightResizePolicy = ResizePolicyType.FillToParent
                 };
-                
                 Add(colonImage);
+                colonImage.ApplyStyle(timePickerStyle.ColonImage);
             }
-
-            if (timePickerAttributes.HourSpinAttributes != null)
+            if (colonImage2 == null)
             {
-                hourSpin = new Spin("DASpin");
-                hourSpin.NameText = "Hours";
-                
-                if (timePickerAttributes.AMPMSpinAttributes != null)
+                colonImage2 = new ImageView()
                 {
-                    hourSpin.CurValue = curTime.Hour%12;
-                    Add(hourSpin);
-                }
-                else
-                {
-                    hourSpin.CurValue = curTime.Hour%24;
-                    Add(hourSpin);
-                }
+                    WidthResizePolicy = ResizePolicyType.FillToParent,
+                    HeightResizePolicy = ResizePolicyType.FillToParent
+                };
+                Add(colonImage2);
+                colonImage2.ApplyStyle(timePickerStyle.ColonImage);
             }
-
-            if (timePickerAttributes.MinuteSpinAttributes != null)
+            if (timePickerStyle.Title != null && title == null)
             {
-                minuteSpin = new Spin("DASpin");
-                minuteSpin.NameText = "Minutes";
-                minuteSpin.CurValue = curTime.Minute;
-                Add(minuteSpin);
+                title = new TextLabel();
+                Add(title);
+                title.ApplyStyle(timePickerStyle.Title);
             }
-
-            if (timePickerAttributes.SecondSpinAttributes != null)
+            if (timePickerStyle.WeekView != null && weekView == null)
             {
-                secondSpin = new Spin("DASpin");
-                secondSpin.NameText = "Seconds";
-                secondSpin.CurValue = curTime.Second;
-                Add(secondSpin);
-
-                if (timePickerAttributes.ColonImageAttributes != null)
+                weekView = new View();
+                Add(weekView);
+                weekView.ApplyStyle(timePickerStyle.WeekView);
+            }
+            if (timePickerStyle.WeekSelectImage != null && weekSelectImage == null)
+            {
+                weekSelectImage = new ImageView[7];
+                selected = new bool[7];
+                for (int i = 0; i < 7; i++)
                 {
-                    colonImage2 = new ImageView()
+                    weekSelectImage[i] = new ImageView()
                     {
                         WidthResizePolicy = ResizePolicyType.FillToParent,
                         HeightResizePolicy = ResizePolicyType.FillToParent
                     };
-                    
-                    Add(colonImage2);
+                    weekSelectImage[i].Hide();
+                    weekView.Add(weekSelectImage[i]);
+                    selected[i] = false;
+                    weekSelectImage[i].ApplyStyle(timePickerStyle.WeekSelectImage);
                 }
             }
-
-            if (timePickerAttributes.AMPMSpinAttributes != null)
+            if (timePickerStyle.WeekText != null && weekText == null)
             {
-                AMPMSpin = new Spin("DAStrSpin");
-                AMPMSpin.CurValue = curTime.Hour/12;
-                Add(AMPMSpin);
+                weekText = new TextLabel[7];
+                for (int i = 0; i < 7; i++)
+                {
+                    weekText[i] = new TextLabel();
+                    weekText[i].TouchEvent += OnRepeatTextTouchEvent;
+                    weekView.Add(weekText[i]);
+                    weekText[i].ApplyStyle(timePickerStyle.WeekText);
+                }
             }
-
-            if (timePickerAttributes.TitleTextAttributes != null)
+            if (timePickerStyle.WeekTitleText != null && weekTitleText == null)
             {
-                titleText= new TextLabel();
-                Add(titleText);
+                weekTitleText = new TextLabel();
+                weekView.Add(weekTitleText);
+                weekTitleText.ApplyStyle(timePickerStyle.WeekTitleText);
             }
-            
-            if (timePickerAttributes.WeekViewAttributes != null)
+        }
+
+        private void Initialize()
+        {
+            LeaveRequired = true;
+            CurrentTime = DateTime.Now;
+
+            hourSpin = new Spin("DASpin");
+            hourSpin.NameText = "Hours";
+            if (Style.AmPmSpin != null)
             {
-                weekView = new View();
-                Add(weekView);
+                hourSpin.CurrentValue = CurrentTime.Hour % 12;
+            }
+            else
+            {
+                hourSpin.CurrentValue = CurrentTime.Hour % 24;
+            }
+            Add(hourSpin);
+            hourSpin.ParentOrigin = Style.HourSpin.ParentOrigin;
+            hourSpin.PivotPoint = Style.HourSpin.PivotPoint;
+            hourSpin.PositionUsesPivotPoint = (bool)Style.HourSpin.PositionUsesPivotPoint;
+            hourSpin.Size = Style.HourSpin.Size;
+            hourSpin.Position = Style.HourSpin.Position;
 
-                if (timePickerAttributes.WeekSelectImageAttributes != null)
-                {
-                    weekSelectImage = new ImageView[7];
-                    selected = new bool[7];
-                    
-                    for (int i = 0; i < 7; i++)
-                    {
-                        weekSelectImage[i] = new ImageView()
-                        {
-                            WidthResizePolicy = ResizePolicyType.FillToParent,
-                            HeightResizePolicy = ResizePolicyType.FillToParent
-                        };
-                        
-                        weekSelectImage[i].Hide();
-                        weekView.Add(weekSelectImage[i]);
-                        selected[i] = false;
-                    }                
-                }
+            minuteSpin = new Spin("DASpin");
+            minuteSpin.NameText = "Minutes";
+            minuteSpin.CurrentValue = CurrentTime.Minute;
+            Add(minuteSpin);
+            minuteSpin.ParentOrigin = Style.MinuteSpin.ParentOrigin;
+            minuteSpin.PivotPoint = Style.MinuteSpin.PivotPoint;
+            minuteSpin.PositionUsesPivotPoint = (bool)Style.MinuteSpin.PositionUsesPivotPoint;
+            minuteSpin.Size = Style.MinuteSpin.Size;
+            minuteSpin.Position = Style.MinuteSpin.Position;
 
-                if (timePickerAttributes.WeekTextAttributes != null)
-                {
-                    weekText = new TextLabel[7];
-                    
-                    for (int i = 0; i < 7; i++)
-                    {
-                        weekText[i] = new TextLabel();
-
-                        weekText[i].TouchEvent += OnRepeatTextTouchEvent;
-                        weekView.Add(weekText[i]);
-                    }
-                }
-
-                if (timePickerAttributes.WeekTitleTextAttributes != null)
-                {
-                    weekTitleText = new TextLabel();
-                    weekView.Add(weekTitleText);
-                }
+            if (Style.SecondSpin != null)
+            {
+                secondSpin = new Spin("DASpin");
+                secondSpin.NameText = "Seconds";
+                secondSpin.CurrentValue = CurrentTime.Second;
+                Add(secondSpin);
+                secondSpin.ParentOrigin = Style.SecondSpin.ParentOrigin;
+                secondSpin.PivotPoint = Style.SecondSpin.PivotPoint;
+                secondSpin.PositionUsesPivotPoint = (bool)Style.SecondSpin.PositionUsesPivotPoint;
+                secondSpin.Size = Style.SecondSpin.Size;
+                secondSpin.Position = Style.SecondSpin.Position;
+            }
+            if (Style.AmPmSpin != null)
+            {
+                amPmSpin = new Spin("DAStrSpin");
+                amPmSpin.CurrentValue = CurrentTime.Hour / 12;
+                Add(amPmSpin);
+                amPmSpin.ParentOrigin = Style.AmPmSpin.ParentOrigin;
+                amPmSpin.PivotPoint = Style.AmPmSpin.PivotPoint;
+                amPmSpin.PositionUsesPivotPoint = (bool)Style.AmPmSpin.PositionUsesPivotPoint;
+                amPmSpin.Size = Style.AmPmSpin.Size;
+                amPmSpin.Position = Style.AmPmSpin.Position;
             }
         }
 
@@ -480,16 +351,14 @@ namespace Tizen.FH.NUI.Controls
             
             if (state == PointStateType.Down)
             {
-                int i = 0;
-                
+                int i = 0;                
                 for (i = 0; i < 7; i++)
                 {
                     if (weekText[i] == textLabel)
                     {
                         break;
                     }
-                }
-                
+                }                
                 if (selected[i] == false)
                 {
                     selected[i] = true;

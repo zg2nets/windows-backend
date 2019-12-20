@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundChooser.cs" />
     <Compile Include="ImageManager.cs" />
     <Compile Include="IViewLifecycle.cs" />
     <Compile Include="FamilyBoardApplication.cs" />
@@ -51,6 +52,8 @@
     <Compile Include="FrameStyleChooser.cs" />
     <Compile Include="FamilyBoardMain.cs" />
     <Compile Include="PictureChooser.cs" />
+    <Compile Include="StickerChooser.cs" />
+    <Compile Include="TextChooser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -68,9 +71,9 @@
       <Project>{1c550c1f-9370-42ff-86fa-edcd6262b258}</Project>
       <Name>Tizen.Log</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Tizen.NUI.Components\Tizen.NUI.Components.csproj">
-      <Project>{9e27f612-ce1c-4bee-8d0e-7265e362662a}</Project>
-      <Name>Tizen.NUI.Components</Name>
+    <ProjectReference Include="..\..\src\Tizen.NUI.Components.DA\Tizen.NUI.Components.DA.csproj">
+      <Project>{359fd5a5-4552-4628-9a00-f90076293525}</Project>
+      <Name>Tizen.NUI.Components.DA</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Tizen.NUI\Tizen.NUI.csproj">
       <Project>{473c3bec-2f67-4285-85fc-bf4e96bfff1c}</Project>

@@ -1,14 +1,14 @@
 ﻿using Tizen.NUI;
 using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
+using Tizen.NUI.Components.DA;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class DropDown : IExample
     {
         private SampleLayout root;
-        private Tizen.NUI.Components.DropDown dropDown = null;
-        private Tizen.NUI.Components.DropDown dropDown2 = null;
+        private Tizen.NUI.Components.DA.DropDown dropDown = null;
+        private Tizen.NUI.Components.DA.DropDown dropDown2 = null;
         private ScrollBar scrollBar = null;
         private TextLabel text = null;
 
@@ -33,18 +33,18 @@ namespace Tizen.FH.NUI.Samples
             text.MultiLine = true;
             root.Add(text);
 
-            dropDown = new Tizen.NUI.Components.DropDown("HeaderDropDown");
+            dropDown = new Tizen.NUI.Components.DA.DropDown("HeaderDropDown");
             dropDown.Size2D = new Size2D(1080, 108);
             dropDown.Position2D = new Position2D(0, 100);
-            dropDown.ListSize = new Size(360, 500);
-            dropDown.HeaderText = "Header area";
-            dropDown.ButtonText = "Normal list 1";
+            dropDown.Style.ListBackgroundImage.Size = new Size(360, 500);
+            dropDown.Style.HeaderText.Text = "Header area";
+            dropDown.Style.Button.Text.Text = "Normal list 1";
             dropDown.ItemClickEvent += DropDownItemClickEvent;
             root.Add(dropDown);
 
             for (int i = 0; i < 8; i++)
             {
-                Tizen.NUI.Components.DropDown.DropDownItemData item = new Tizen.NUI.Components.DropDown.DropDownItemData("TextListItem");
+                Tizen.NUI.Components.DA.DropDown.DropDownDataItem item = new Tizen.NUI.Components.DA.DropDown.DropDownDataItem("TextListItem");
                 item.Size = new Size(360, 96);
                 item.Text = "Normal list " + i;
                 dropDown.AddItem(item);
@@ -63,17 +63,17 @@ namespace Tizen.FH.NUI.Samples
             dropDown.AttachScrollBar(scrollBar);
 
             //////////////////ListSpinner DropDown////////////////////////
-            dropDown2 = new Tizen.NUI.Components.DropDown("ListDropDown");
+            dropDown2 = new Tizen.NUI.Components.DA.DropDown("ListDropDown");
             dropDown2.Size2D = new Size2D(1080, 108);
             dropDown2.Position2D = new Position2D(0, 300);
-            dropDown2.ListSize = new Size(360, 192);
-            dropDown2.HeaderText = "List area";
-            dropDown2.ButtonText = "Menu";
+            dropDown2.Style.ListBackgroundImage.Size = new Size(360, 192);
+            dropDown2.Style.HeaderText.Text = "List area";
+            dropDown2.Style.Button.Text.Text = "Menu";
             root.Add(dropDown2);
 
             for (int i = 0; i < 2; i++)
             {
-                Tizen.NUI.Components.DropDown.DropDownItemData item = new Tizen.NUI.Components.DropDown.DropDownItemData("IconListItem");
+                Tizen.NUI.Components.DA.DropDown.DropDownDataItem item = new Tizen.NUI.Components.DA.DropDown.DropDownDataItem("IconListItem");
                 item.Size = new Size(360, 96);
                 item.IconResourceUrl = iconImage[i];
                 dropDown2.AddItem(item);
@@ -84,7 +84,7 @@ namespace Tizen.FH.NUI.Samples
             dropDown.RaiseToTop();
         }
 
-        private void DropDownItemClickEvent(object sender, Tizen.NUI.Components.DropDown.ItemClickEventArgs e)
+        private void DropDownItemClickEvent(object sender, Tizen.NUI.Components.DA.DropDown.ItemClickEventArgs e)
         {
             text.Text = "DropDown Clicked item string is " + e.Text;
         }
@@ -125,9 +125,9 @@ namespace Tizen.FH.NUI.Samples
             }
         }
 
-        private void ButtonClickEvent(object sender, Tizen.NUI.Components.Button.ClickEventArgs e)
+        private void ButtonClickEvent(object sender, Tizen.NUI.Components.DA.Button.ClickEventArgs e)
         {
-            Tizen.NUI.Components.Button btn = sender as Tizen.NUI.Components.Button;
+            Tizen.NUI.Components.DA.Button btn = sender as Tizen.NUI.Components.DA.Button;
 
         }
     }

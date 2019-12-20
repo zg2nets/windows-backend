@@ -1,15 +1,14 @@
 ﻿using Tizen.NUI.BaseComponents;
-using Tizen.NUI.Components;
 using System;
 using Tizen.NUI;
 
-namespace Tizen.FH.NUI.Samples
+namespace Tizen.FH.NUI.Examples
 {
     public class Slider : IExample
     {
         private SampleLayout root;
         private TextLabel inforText;
-        private Tizen.NUI.Components.Slider[] slider_da;
+        private Tizen.NUI.Components.DA.Slider[] slider_da;
         private const int MIN_VALUE = 0;
         private const int MAX_VALUE = 100;
         private const int SR_COUNT = 2;
@@ -45,25 +44,25 @@ namespace Tizen.FH.NUI.Samples
         {
             if (slider_da == null)
             {
-                slider_da = new Tizen.NUI.Components.Slider[DA_COUNT];
+                slider_da = new Tizen.NUI.Components.DA.Slider[DA_COUNT];
             }
 
-            slider_da[0] = CreateDA(styleName[0], 40, 100, 1000, 50, 20, Tizen.NUI.Components.Slider.DirectionType.Horizontal);
-            slider_da[1] = CreateDA(styleName[0], 300, 250, 50, 400, 20, Tizen.NUI.Components.Slider.DirectionType.Vertical);
+            slider_da[0] = CreateDA(styleName[0], 40, 100, 1000, 50, 20, Tizen.NUI.Components.DA.Slider.DirectionType.Horizontal);
+            slider_da[1] = CreateDA(styleName[0], 300, 250, 50, 400, 20, Tizen.NUI.Components.DA.Slider.DirectionType.Vertical);
 
-            slider_da[2] = CreateDA(styleName[1], 40, 200, 1000, 50, 30, Tizen.NUI.Components.Slider.DirectionType.Horizontal);
+            slider_da[2] = CreateDA(styleName[1], 40, 200, 1000, 50, 30, Tizen.NUI.Components.DA.Slider.DirectionType.Horizontal);
             slider_da[2].LowIndicatorTextContent = "SubText";
             slider_da[2].LowIndicatorSize = new Size(200, 80);
 
-            slider_da[3] = CreateDA(styleName[1], 600, 250, 50, 400, 30, Tizen.NUI.Components.Slider.DirectionType.Vertical);
+            slider_da[3] = CreateDA(styleName[1], 600, 250, 50, 400, 30, Tizen.NUI.Components.DA.Slider.DirectionType.Vertical);
             slider_da[3].LowIndicatorTextContent = "SubText";
             slider_da[3].LowIndicatorSize = new Size(200, 80);
 
         }
 
-        private Tizen.NUI.Components.Slider CreateDA(string style, int posX, int posY, int w, int h, int curValue, Tizen.NUI.Components.Slider.DirectionType dir)
+        private Tizen.NUI.Components.DA.Slider CreateDA(string style, int posX, int posY, int w, int h, int curValue, Tizen.NUI.Components.DA.Slider.DirectionType dir)
         {
-            Tizen.NUI.Components.Slider source = new Tizen.NUI.Components.Slider(style);
+            Tizen.NUI.Components.DA.Slider source = new Tizen.NUI.Components.DA.Slider(style);
             source.Name = style;
             source.Direction = dir;
             root.Add(source);
@@ -113,20 +112,20 @@ namespace Tizen.FH.NUI.Samples
             }
         }
 
-        private void OnValueChanged(object sender, Tizen.NUI.Components.Slider.ValueChangedArgs args)
+        private void OnValueChanged(object sender, Tizen.NUI.Components.DA.Slider.ValueChangedArgs args)
         {
             Console.WriteLine("args.CurrentValue = " + args.CurrentValue);
-            if (sender is Tizen.NUI.Components.Slider)
+            if (sender is Tizen.NUI.Components.DA.Slider)
             {
-                Tizen.NUI.Components.Slider slider = sender as Tizen.NUI.Components.Slider;
+                Tizen.NUI.Components.DA.Slider slider = sender as Tizen.NUI.Components.DA.Slider;
                 if (slider != null)
                 {
                     inforText.Text = "name = " + slider.Name + ", currentValue = " + args.CurrentValue;
                 }
             }
-            else if (sender is Tizen.NUI.Components.Slider)
+            else if (sender is Tizen.NUI.Components.DA.Slider)
             {
-                Tizen.NUI.Components.Slider slider = sender as Tizen.NUI.Components.Slider;
+                Tizen.NUI.Components.DA.Slider slider = sender as Tizen.NUI.Components.DA.Slider;
                 if (slider != null)
                 {
                     inforText.Text = "name = " + slider.Name + ", currentValue = " + args.CurrentValue;
@@ -134,12 +133,12 @@ namespace Tizen.FH.NUI.Samples
             }
         }
 
-        private void OnStateChanged(object sender, Tizen.NUI.Components.Slider.StateChangedArgs args)
+        private void OnStateChanged(object sender, Tizen.NUI.Components.DA.Slider.StateChangedArgs args)
         {
             Console.WriteLine("args.CurrentState = " + args.CurrentState);
-            if (sender is Tizen.NUI.Components.Slider)
+            if (sender is Tizen.NUI.Components.DA.Slider)
             {
-                Tizen.NUI.Components.Slider slider = sender as Tizen.NUI.Components.Slider;
+                Tizen.NUI.Components.DA.Slider slider = sender as Tizen.NUI.Components.DA.Slider;
                 if (slider != null)
                 {
                     //if (args.CurrentState == States.Normal)
