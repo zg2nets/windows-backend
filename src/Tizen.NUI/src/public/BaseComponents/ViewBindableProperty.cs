@@ -81,6 +81,7 @@ namespace Tizen.NUI.BaseComponents
             var view = (View)bindable;
             if (newValue != null)
             {
+                view.ClearBackground();
                 Tizen.NUI.Object.SetProperty(view.swigCPtr, View.Property.BACKGROUND, new Tizen.NUI.PropertyValue((string)newValue));
                 view.BackgroundImageSynchronosLoading = view._backgroundImageSynchronosLoading;
             }
@@ -1346,6 +1347,39 @@ namespace Tizen.NUI.BaseComponents
             Vector2 temp = new Vector2(0.0f, 0.0f);
             Tizen.NUI.Object.GetProperty(view.swigCPtr, Interop.ViewProperty.View_Property_UPDATE_SIZE_HINT_get()).Get(temp);
             return temp;
+        });
+
+        /// <summary>
+        /// ImageShadow Property
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty ImageShadowProperty = BindableProperty.Create("ImageShadow", typeof(ImageShadow), typeof(View), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var view = (View)bindable;
+            view.imageShadow = (ImageShadow)newValue;
+            Tizen.NUI.Object.SetProperty(view.swigCPtr, Interop.ViewProperty.View_Property_SHADOW_get(), ImageShadow.ToPropertyValue(view.imageShadow));
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            return ((View)bindable).imageShadow;
+        });
+
+        /// <summary>
+        /// Shadow Property
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty BoxShadowProperty = BindableProperty.Create("BoxShadow", typeof(Shadow), typeof(View), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var view = (View)bindable;
+            view.boxShadow = (Shadow)newValue;
+            if (view.imageShadow == null)
+            {
+                Tizen.NUI.Object.SetProperty(view.swigCPtr, Interop.ViewProperty.View_Property_SHADOW_get(), Shadow.ToPropertyValue(view.boxShadow));
+            }
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            return ((View)bindable).boxShadow;
         });
 
         /// <summary>

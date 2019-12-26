@@ -38,11 +38,11 @@ namespace Tizen.FH.NUI.Components
                         Pressed = new Color(0, 0, 0, 1),
                         Disabled = new Color(0, 0, 0, 0.4f)
                     },
-                    PlaceholderTextColor = new ColorSelector
+                    PlaceholderTextColor = new Selector<Vector4>
                     {
                         All = new Color(0, 0, 0, 0.4f),
                     },
-                    PrimaryCursorColor = new ColorSelector
+                    PrimaryCursorColor = new Selector<Vector4>
                     {
                         All = Utility.Hex2Color(0x0aaaf5, 1),
                     },

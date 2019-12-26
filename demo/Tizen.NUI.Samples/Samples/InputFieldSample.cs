@@ -65,7 +65,7 @@ namespace Tizen.NUI.Samples
                     Pressed = new Color(0, 0, 0, 1),
                     Disabled = new Color(0, 0, 0, 0.4f)
                 },
-                PlaceholderTextColor = new Selector<Color>
+                PlaceholderTextColor = new Selector<Vector4>
                 {
                     All = new Color(0, 0, 0, 0.4f)
                 },

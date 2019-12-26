@@ -102,6 +102,7 @@ namespace Tizen.NUI.Components.DA
         [EditorBrowsable(EditorBrowsableState.Never)]
         protected void AddSelection(SelectButton selection)
         {
+            if (null == selection) return;
             if (itemGroup.Contains(selection))
             {
                 return;
