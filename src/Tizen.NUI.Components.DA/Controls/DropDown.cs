@@ -32,7 +32,7 @@ namespace Tizen.NUI.Components.DA
     {
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ListPaddingProperty = BindableProperty.Create("ListPadding", typeof(Extents), typeof(DropDown), null, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ListPaddingProperty = BindableProperty.Create(nameof(ListPadding), typeof(Extents), typeof(DropDown), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var instance = (DropDown)bindable;
             if (newValue != null)
@@ -48,7 +48,7 @@ namespace Tizen.NUI.Components.DA
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty SelectedItemIndexProperty = BindableProperty.Create("SelectedItemIndex", typeof(int), typeof(DropDown), 0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty SelectedItemIndexProperty = BindableProperty.Create(nameof(SelectedItemIndex), typeof(int), typeof(DropDown), 0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var instance = (DropDown)bindable;
             if (newValue != null)
@@ -68,7 +68,7 @@ namespace Tizen.NUI.Components.DA
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ListMarginProperty = BindableProperty.Create("ListMargin", typeof(Extents), typeof(DropDown), null, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ListMarginProperty = BindableProperty.Create(nameof(ListMargin), typeof(Extents), typeof(DropDown), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var instance = (DropDown)bindable;
             if (newValue != null)
@@ -84,7 +84,7 @@ namespace Tizen.NUI.Components.DA
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ListRelativeOrientationProperty = BindableProperty.Create("ListRelativeOrientation", typeof(ListOrientation), typeof(DropDown), ListOrientation.Left, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ListRelativeOrientationProperty = BindableProperty.Create(nameof(ListRelativeOrientation), typeof(ListOrientation), typeof(DropDown), ListOrientation.Left, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var instance = (DropDown)bindable;
             if (newValue != null)
@@ -100,7 +100,7 @@ namespace Tizen.NUI.Components.DA
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty SpaceBetweenButtonTextAndIconProperty = BindableProperty.Create("SpaceBetweenButtonTextAndIcon", typeof(int), typeof(DropDown), 0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty SpaceBetweenButtonTextAndIconProperty = BindableProperty.Create(nameof(SpaceBetweenButtonTextAndIcon), typeof(int), typeof(DropDown), 0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var instance = (DropDown)bindable;
             if (newValue != null)
@@ -120,7 +120,8 @@ namespace Tizen.NUI.Components.DA
         private TextLabel buttonText = null;
         private ImageView listBackgroundImage = null;
         // Component that scrolls the child added to it.
-        private LayoutScroller layoutScroller = null;
+        private ScrollableBase scrollableBase = null;
+
         // The LinearLayout container to house the items in the drop down list.
         private View dropDownMenuFullList = null;
         private DropDownListBridge adapter = new DropDownListBridge();
@@ -350,7 +351,7 @@ namespace Tizen.NUI.Components.DA
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void AttachScrollBar(ScrollBar scrollBar)
         {
-            if (layoutScroller == null)
+            if (scrollableBase == null)
             {
                 return;
             }
@@ -365,7 +366,7 @@ namespace Tizen.NUI.Components.DA
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void DetachScrollBar()
         {
-            if (layoutScroller == null)
+            if (scrollableBase == null)
             {
                 return;
             }
@@ -386,7 +387,7 @@ namespace Tizen.NUI.Components.DA
                 CreateButton();
 
                 CreateListBackgroundImage();
-                if (null == layoutScroller) // layoutScroller used to test of ListContainer Setup invoked already
+                if (null == scrollableBase) // scrollableBase used to test of ListContainer Setup invoked already
                 {
                     SetUpListContainer();
                 }
@@ -405,11 +406,11 @@ namespace Tizen.NUI.Components.DA
         [EditorBrowsable(EditorBrowsableState.Never)]
         protected void UpdateDropDown()
         {
-            if (null == layoutScroller || null == listBackgroundImage || null == dropDownMenuFullList) return;
+            if (null == scrollableBase || null == listBackgroundImage || null == dropDownMenuFullList) return;
             if (null == Style.ListBackgroundImage.Size) return;
             // Resize and position scrolling list within the drop down list container.  Can be used to position list in relation to the background image.
-            layoutScroller.Size = Style.ListBackgroundImage.Size - new Size((listPadding.Start + listPadding.End), (listPadding.Top + listPadding.Bottom), 0);
-            layoutScroller.Position2D = new Position2D(listPadding.Start, listPadding.Top);
+            scrollableBase.Size = Style.ListBackgroundImage.Size - new Size((listPadding.Start + listPadding.End), (listPadding.Top + listPadding.Bottom), 0);
+            scrollableBase.Position2D = new Position2D(listPadding.Start, listPadding.Top);
 
             int listBackgroundImageX = 0;
             int listBackgroundImageY = 0;
@@ -427,6 +428,9 @@ namespace Tizen.NUI.Components.DA
             dropDownMenuFullList?.Layout?.RequestLayout();
         }
 
+        /// <summary>
+        /// update.
+        /// </summary>
         protected override void OnUpdate()
         {
             float iconWidth = 0;
@@ -473,7 +477,7 @@ namespace Tizen.NUI.Components.DA
                 Utility.Dispose(headerText);
                 Utility.Dispose(buttonText);
                 Utility.Dispose(button);
-                Utility.Dispose(layoutScroller);
+                Utility.Dispose(scrollableBase);
                 Utility.Dispose(dropDownMenuFullList);
                 Utility.Dispose(listBackgroundImage);
             }
@@ -593,13 +597,13 @@ namespace Tizen.NUI.Components.DA
                 Focusable = true,
             };
 
-            layoutScroller = new LayoutScroller()
+            scrollableBase = new ScrollableBase()
             {
-                Name = "LayoutScroller",
+                Name = "Scrollable",
             };
-            layoutScroller.AddLayoutToScroll(dropDownMenuFullList);
+            scrollableBase.Add(dropDownMenuFullList);
 
-            listBackgroundImage.Add(layoutScroller);
+            listBackgroundImage.Add(scrollableBase);
             listBackgroundImage.Hide();
         }
 
@@ -1463,6 +1467,7 @@ namespace Tizen.NUI.Components.DA
             [EditorBrowsable(EditorBrowsableState.Never)]
             public void BindViewHolder(ViewHolder holder, int position)
             {
+                if (null == holder) return;
                 DropDownDataItem listItemData = itemDataList[position];
                 if(listItemData == null)
                 {
@@ -1540,6 +1545,7 @@ namespace Tizen.NUI.Components.DA
             [EditorBrowsable(EditorBrowsableState.Never)]
             public void OnDestroyViewHolder(ViewHolder holder)
             {
+                if (null == holder) return;
                 if (holder.ItemView != null)
                 {
                     holder.ItemView.Dispose();

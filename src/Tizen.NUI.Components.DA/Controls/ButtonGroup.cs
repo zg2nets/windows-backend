@@ -26,6 +26,7 @@ namespace Tizen.NUI.Components.DA
     /// ButtonGroup is a group of buttons which can be set common property<br />
     /// </summary>
     /// <since_tizen> 3 </since_tizen>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class ButtonGroup : BindableObject, global::System.IDisposable
     {
         /// This will be public opened in tizen_5.0 after ACR done. Before ACR, need to be hidden as inhouse API.
@@ -236,6 +237,10 @@ namespace Tizen.NUI.Components.DA
             return btGroup.itemShadowBorder;
         });
 
+        /// <summary>
+        /// Construct an button group.
+        /// </summary>
+        /// <param name="view">root view</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ButtonGroup(View view) : base()
         {
@@ -246,6 +251,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Get group item number.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public int Count
         {
@@ -255,18 +263,33 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Check if the button exists.
+        /// </summary>
+        /// <param name="bt">button item</param>
+        /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool Contains(Button bt)
         {
             return itemGroup.Contains(bt);
         }
 
+        /// <summary>
+        /// Get button item index.
+        /// </summary>
+        /// <param name="bt">button item</param>
+        /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public int GetIndex(Button bt)
         {
             return itemGroup.IndexOf(bt);
         }
 
+        /// <summary>
+        /// Get item by index.
+        /// </summary>
+        /// <param name="index">item index.</param>
+        /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public Button GetItem(int index)
         {
@@ -277,6 +300,10 @@ namespace Tizen.NUI.Components.DA
             return itemGroup[index];
         }
 
+        /// <summary>
+        /// Add item into group.
+        /// </summary>
+        /// <param name="bt">button item.</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void AddItem(Button bt)
         {
@@ -288,9 +315,14 @@ namespace Tizen.NUI.Components.DA
             root.Add(bt);
         }
 
+        /// <summary>
+        /// The item to removed.
+        /// </summary>
+        /// <param name="bt">button item.</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void RemoveItem(Button bt)
         {
+            if (null == bt) return;
             if (!itemGroup.Contains(bt))
             {
                 return;
@@ -300,6 +332,10 @@ namespace Tizen.NUI.Components.DA
             bt.Dispose();
         }
 
+        /// <summary>
+        /// Remove item by index.
+        /// </summary>
+        /// <param name="index">item index.</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void RemoveItem(int index)
         {
@@ -313,6 +349,9 @@ namespace Tizen.NUI.Components.DA
             bt.Dispose();
         }
 
+        /// <summary>
+        /// Remove all items.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void RemoveAll()
         {
@@ -324,6 +363,10 @@ namespace Tizen.NUI.Components.DA
             itemGroup.Clear();
         }
 
+        /// <summary>
+        /// Update button by style.
+        /// </summary>
+        /// <param name="btStyle">button style.</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void UpdateButton(ButtonStyle btStyle)
         {
@@ -375,6 +418,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Get or set point size of item.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public float ItemPointSize
         {
@@ -388,6 +434,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Get or set font family of item.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string ItemFontFamily
         {
@@ -401,6 +450,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Get or set text color of item.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public Color ItemTextColor
         {
@@ -414,6 +466,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Get or set text alignment of item.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public HorizontalAlignment ItemTextAlignment
         {
@@ -427,6 +482,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Get or set background color of item.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public Selector<Color> OverLayBackgroundColorSelector
         {
@@ -457,6 +515,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Get or set background border of item.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public Rectangle ItemBackgroundBorder
         {
@@ -470,6 +531,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Get or set shadow resource of item.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string ItemShadowUrl
         {
@@ -483,6 +547,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Get or set shadow border of item.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public Rectangle ItemShadowBorder
         {
@@ -496,6 +563,9 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
+        /// <summary>
+        /// Dispose.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void Dispose()
         {

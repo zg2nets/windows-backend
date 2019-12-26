@@ -159,10 +159,11 @@ namespace Tizen.NUI.Components
             set
             {
                 CreateTextFieldAttributes();
-                if (null != inputFieldAttrs?.InputBoxAttributes)
+                if (null != inputFieldAttrs?.InputBoxAttributes && null != value)
                 {
-                    inputFieldAttrs.InputBoxAttributes.PlaceholderTextColor = value;
-                    if (null != textField) textField.PlaceholderTextColor = value;
+                    Vector4 color = new Vector4(value.R, value.G, value.B, value.A);
+                    inputFieldAttrs.InputBoxAttributes.PlaceholderTextColor = color;
+                    if (null != textField) textField.PlaceholderTextColor = color;
                 }
             }
         }
@@ -182,10 +183,11 @@ namespace Tizen.NUI.Components
             set
             {
                 CreateTextFieldAttributes();
-                if (null == inputFieldAttrs?.InputBoxAttributes)
+                if (null != inputFieldAttrs?.InputBoxAttributes && null != value)
                 {
-                    inputFieldAttrs.InputBoxAttributes.PrimaryCursorColor = value;
-                    if (null != textField) textField.PrimaryCursorColor = value;
+                    Vector4 color = new Vector4(value.R, value.G, value.B, value.A);
+                    inputFieldAttrs.InputBoxAttributes.PrimaryCursorColor = color;
+                    if (null != textField) textField.PrimaryCursorColor = color;
                 }
             }
         }
@@ -334,7 +336,7 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public Rectangle BackgroundImageBorder
+        public new Rectangle BackgroundImageBorder
         {
             get
             {

@@ -63,6 +63,12 @@ namespace Tizen.NUI.Binding
 
             throw new InvalidOperationException($"Cannot convert \"{value}\" into {typeof(Position)}");
         }
+
+        public override string ConvertToString(object value)
+        {
+            Position position = (Position)value;
+            return position.X.ToString() + " " + position.Y.ToString() + " " + position.Z.ToString();
+        }
     }
 
     internal class Position2DTypeConverter : TypeConverter
@@ -70,6 +76,12 @@ namespace Tizen.NUI.Binding
         public override object ConvertFromInvariantString(string value)
         {
             return Position2D.ConvertFromString(value);
+        }
+
+        public override string ConvertToString(object value)
+        {
+            Position2D position = (Position2D)value;
+            return  position.X.ToString() + " " + position.Y.ToString();
         }
     }
 }
