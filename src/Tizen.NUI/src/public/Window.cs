@@ -100,7 +100,14 @@ namespace Tizen.NUI
             /// Landscape inverse orientation.
             /// </summary>
             /// <since_tizen> 3 </since_tizen>
-            LandscapeInverse = 270
+            LandscapeInverse = 270,
+            /// <summary>
+            /// No orientation. It is for the preferred orientation
+            /// Especially, NoOrientationPreference only has the effect for the preferred orientation.
+            /// It is used to unset the preferred orientation with SetPreferredOrientation.
+            /// </summary>
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            NoOrientationPreference = -1
         }
 
         /// <summary>
@@ -990,6 +997,17 @@ namespace Tizen.NUI
             Window ret = Registry.GetManagedBaseHandleFromNativePtr(Interop.Window.GetParent(swigCPtr)) as Window;
             if (NDalicPINVOKE.SWIGPendingException.Pending) throw NDalicPINVOKE.SWIGPendingException.Retrieve();
             return ret;
+        }
+
+        /// This will be public opened in tizen_next after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void ObjectDump()
+        {
+            Layer rootLayer = GetRootLayer();
+            foreach (View view in rootLayer.Children)
+            {
+                view.ObjectDump();
+            }
         }
 
         internal static global::System.Runtime.InteropServices.HandleRef getCPtr(Window obj)
