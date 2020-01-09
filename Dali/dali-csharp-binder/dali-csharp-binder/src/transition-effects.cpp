@@ -827,7 +827,7 @@ SWIGEXPORT Dali::Toolkit::Control * SWIGSTDCALL CSharp_Dali_CubeTransitionCrossE
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_Dali_CubeTransitionCrossEffect_New(unsigned int numRows, unsigned int numColumns) {
   void * jresult;
-  Dali::Toolkit::CubeTransitionCrossEffect result;
+  Dali::Toolkit::CubeTransitionEffect result;
 
   {
     try {
@@ -899,7 +899,7 @@ SWIGEXPORT Dali::Toolkit::Control * SWIGSTDCALL CSharp_Dali_CubeTransitionFoldEf
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_Dali_CubeTransitionFoldEffect_New(unsigned int numRows, unsigned int numColumns) {
   void * jresult;
-  Dali::Toolkit::CubeTransitionFoldEffect result;
+  Dali::Toolkit::CubeTransitionEffect result;
 
   {
     try {
@@ -971,7 +971,7 @@ SWIGEXPORT Dali::Toolkit::Control * SWIGSTDCALL CSharp_Dali_CubeTransitionWaveEf
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_Dali_CubeTransitionWaveEffect_New(unsigned int numRows, unsigned int numColumns) {
   void * jresult;
-  Dali::Toolkit::CubeTransitionWaveEffect result;
+  Dali::Toolkit::CubeTransitionEffect result;
 
   {
     try {
