@@ -34,6 +34,8 @@ namespace Tizen.NUI.Components.DA
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class CheckBoxGroup : SelectGroup
     {
+        static CheckBoxGroup() { }
+
         /// <summary>
         /// Construct CheckBoxGroup
         /// </summary>

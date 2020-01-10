@@ -159,15 +159,15 @@ namespace Tizen.FH.NUI.Examples
                 {
                     if (inputField.Text.Length > 5 && inputField.Text.Length <= 10)
                     {
-                        inputField.TextColor = Color.Yellow;
+                        inputField.Style.InputBox.TextColor = Color.Yellow;
                     }
                     else if (inputField.Text.Length > 10 && inputField.Text.Length <= 15)
                     {
-                        inputField.TextColor = Color.Red;
+                        inputField.Style.InputBox.TextColor = Color.Red;
                     }
                     else
                     {
-                        inputField.TextColor = Color.Black;
+                        inputField.Style.InputBox.TextColor = Color.Black;
                     }
                 }
             }
@@ -227,7 +227,7 @@ namespace Tizen.FH.NUI.Examples
             {
                 Tizen.FH.NUI.Components.InputField inputfield = sender as Tizen.FH.NUI.Components.InputField;
                 Console.WriteLine("-------, name: " + inputfield.Name + ", args.State = " + args.State);
-                inputfield.TextColor = Color.Black;
+                inputfield.Style.InputBox.TextColor = Color.Black;
                 inputfield.Text = "Click on the cancel button";
             }
         }

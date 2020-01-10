@@ -37,7 +37,10 @@ namespace Tizen.FH.NUI.Examples
 
         public void Deactivate()
         {
-            mContactCardLayouter.Clear();
+            if (null != mContactCardLayouter)
+            {
+                mContactCardLayouter.Clear();
+            }
         }
 
         //private void OnKeyEvent(object sender, Window.KeyEventArgs e)

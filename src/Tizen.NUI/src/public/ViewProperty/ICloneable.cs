@@ -1,5 +1,5 @@
 /*
- * Copyright(c) 2017 Samsung Electronics Co., Ltd.
+ * Copyright(c) 2020 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,23 @@
  *
  */
 
+using System.ComponentModel;
+
 namespace Tizen.NUI
 {
+
     /// <summary>
-    /// The visibility change type.
+    /// The class that offer Clone method.
     /// </summary>
-    /// <since_tizen> 3 </since_tizen>
-    public enum VisibilityChangeType
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public interface ICloneable
     {
         /// <summary>
-        /// The visibility of the actor itself has changed.
+        /// Clone object
         /// </summary>
-        /// <since_tizen> 3 </since_tizen>
-        SELF,
-        /// <summary>
-        /// The visibility of a parent has changed.
-        /// </summary>
-        /// <since_tizen> 3 </since_tizen>
-        PARENT
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        object Clone();
     }
-
 }
+
+

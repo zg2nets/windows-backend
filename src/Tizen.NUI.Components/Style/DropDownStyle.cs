@@ -29,15 +29,9 @@ namespace Tizen.NUI.Components
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DropDownStyle : ControlStyle
     {
-        private Extents listMargin = new Extents(0, 0, 0, 0);
-        private Extents listPadding = new Extents(0, 0, 0, 0);
-        private int spaceBetweenButtonTextAndIcon = 0;
-        private ListOrientation? listRelativeOrientation = ListOrientation.Left;
-        private int selectedItemIndex = 0;
-
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty SpaceBetweenButtonTextAndIconProperty = BindableProperty.Create("SpaceBetweenButtonTextAndIcon", typeof(int), typeof(DropDownStyle), 0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty SpaceBetweenButtonTextAndIconProperty = BindableProperty.Create(nameof(SpaceBetweenButtonTextAndIcon), typeof(int), typeof(DropDownStyle), 0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var dropDownStyle = (DropDownStyle)bindable;
             dropDownStyle.spaceBetweenButtonTextAndIcon = (int)newValue;
@@ -49,7 +43,7 @@ namespace Tizen.NUI.Components
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ListRelativeOrientationProperty = BindableProperty.Create("ListRelativeOrientation", typeof(ListOrientation?), typeof(DropDownStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ListRelativeOrientationProperty = BindableProperty.Create(nameof(ListRelativeOrientation), typeof(ListOrientation?), typeof(DropDownStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var dropDownStyle = (DropDownStyle)bindable;
             dropDownStyle.listRelativeOrientation = (ListOrientation?)newValue;
@@ -61,10 +55,11 @@ namespace Tizen.NUI.Components
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ListMarginProperty = BindableProperty.Create("ListMargin", typeof(Extents), typeof(DropDownStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ListMarginProperty = BindableProperty.Create(nameof(ListMargin), typeof(Extents), typeof(DropDownStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var dropDownStyle = (DropDownStyle)bindable;
-            dropDownStyle.listMargin.CopyFrom((Extents)newValue);
+            if (null == dropDownStyle.listMargin) dropDownStyle.listMargin = new Extents(dropDownStyle.OnListMarginChanged, 0, 0, 0, 0);
+            dropDownStyle.listMargin.CopyFrom(null == newValue ? new Extents() : (Extents)newValue);
         },
         defaultValueCreator: (bindable) =>
         {
@@ -73,7 +68,7 @@ namespace Tizen.NUI.Components
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty SelectedItemIndexProperty = BindableProperty.Create("SelectedItemIndex", typeof(int), typeof(DropDownStyle), 0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty SelectedItemIndexProperty = BindableProperty.Create(nameof(SelectedItemIndex), typeof(int), typeof(DropDownStyle), 0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var dropDownStyle = (DropDownStyle)bindable;
             dropDownStyle.selectedItemIndex = (int)newValue;
@@ -85,12 +80,13 @@ namespace Tizen.NUI.Components
         });
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly BindableProperty ListPaddingProperty = BindableProperty.Create("ListPadding", typeof(Extents), typeof(DropDownStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ListPaddingProperty = BindableProperty.Create(nameof(ListPadding), typeof(Extents), typeof(DropDownStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var dropDownStyle = (DropDownStyle)bindable;
             if (null != newValue)
             {
-                dropDownStyle.listPadding.CopyFrom((Extents)newValue);
+                if (null == dropDownStyle.listPadding) dropDownStyle.listPadding = new Extents(dropDownStyle.OnListPaddingChanged, 0, 0, 0, 0);
+                dropDownStyle.listPadding.CopyFrom(null == newValue ? new Extents() : (Extents)newValue);
             }
         },
         defaultValueCreator: (bindable) =>
@@ -98,6 +94,14 @@ namespace Tizen.NUI.Components
             var dropDownStyle = (DropDownStyle)bindable;
             return dropDownStyle.listPadding;
         });
+
+        private Extents listMargin;
+        private Extents listPadding;
+        private int spaceBetweenButtonTextAndIcon = 0;
+        private ListOrientation? listRelativeOrientation = ListOrientation.Left;
+        private int selectedItemIndex = 0;
+
+        static DropDownStyle() { }
 
         /// <summary>
         /// Creates a new instance of a DropDownStyle.
@@ -180,7 +184,7 @@ namespace Tizen.NUI.Components
             get
             {
                 Extents tmp = (Extents)GetValue(ListMarginProperty);
-                return new Extents((ushort start, ushort end, ushort top, ushort bottom) => { ListMargin = new Extents(start, end, top, bottom); }, tmp.Start, tmp.End, tmp.Top, tmp.Bottom);
+                return (null != tmp) ? tmp : listMargin = new Extents(OnListMarginChanged, 0, 0, 0, 0);
             }
             set => SetValue(ListMarginProperty, value);
         }
@@ -204,7 +208,7 @@ namespace Tizen.NUI.Components
             get
             {
                 Extents tmp = (Extents)GetValue(ListPaddingProperty);
-                return new Extents((ushort start, ushort end, ushort top, ushort bottom) => { ListPadding = new Extents(start, end, top, bottom); }, tmp.Start, tmp.End, tmp.Top, tmp.Bottom);
+                return (null != tmp) ? tmp : listPadding = new Extents(OnListPaddingChanged, 0, 0, 0, 0);
             }
             set => SetValue(ListPaddingProperty, value);
         }
@@ -228,6 +232,16 @@ namespace Tizen.NUI.Components
                 SelectedItemIndex = dropDownStyle.SelectedItemIndex;
                 ListPadding.CopyFrom(dropDownStyle.ListPadding);
             }
+        }
+
+        private void OnListMarginChanged(ushort start, ushort end, ushort top, ushort bottom)
+        {
+            ListMargin = new Extents(start, end, top, bottom);
+        }
+
+        private void OnListPaddingChanged(ushort start, ushort end, ushort top, ushort bottom)
+        {
+            ListPadding = new Extents(start, end, top, bottom);
         }
     }
 

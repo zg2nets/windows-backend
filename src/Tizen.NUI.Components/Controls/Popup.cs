@@ -227,6 +227,7 @@ namespace Tizen.NUI.Components
         private TextLabel titleText;
         private ButtonGroup btGroup = null;
         private Window window = null;
+        static Popup() { }
 
         /// <summary>
         /// Creates a new instance of a Popup.
@@ -659,7 +660,9 @@ namespace Tizen.NUI.Components
         /// <param name="text">Button text string.</param>
         /// <since_tizen> 6 </since_tizen>
         public void SetButtonText(int index, string text)
-        {}
+        {
+            AddButton(text);
+        }
 
         /// <summary>
         /// Dispose Popup and all children on it.

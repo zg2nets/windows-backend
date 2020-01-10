@@ -18,7 +18,7 @@ namespace Tizen.NUI.Samples
             root = new View()
             {
                 Size = new Size(1920, 1080),
-                BackgroundColor = new Color(0.8f, 0.8f, 0.8f, 0.6f),
+                BackgroundColor = new Color(0.7f, 0.9f, 0.8f, 1.0f),
             };
 
             CreateBoardAndButtons();

@@ -70,7 +70,7 @@ namespace Tizen.FH.NUI.Examples
             mContactCard.Size2D = new Size2D((int)mContactCardLayoutInfo.foldedSize.Width, (int)mContactCardLayoutInfo.foldedSize.Height);
             mContactCard.KeyEvent += OnKeyEvent;
 
-            Window.Instance.GetDefaultLayer().Add(mContactCard);
+            //Window.Instance.GetDefaultLayer().Add(mContactCard);
             rootView.Add(mContactCard);
 
             // Create the header which will be shown only when the contact is unfolded

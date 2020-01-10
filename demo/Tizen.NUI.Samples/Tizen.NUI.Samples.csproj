@@ -71,7 +71,6 @@
     <Compile Include="Samples\LoadingSample.cs" />
     <Compile Include="Samples\ScrollBarSample.cs" />
     <Compile Include="Samples\CheckBoxSample.cs" />
-    <Compile Include="Samples\InputFieldSample.cs" />
     <Compile Include="Samples\PopupSample.cs" />
     <Compile Include="Samples\RadioButtonSample.cs" />
     <Compile Include="Samples\SwitchSample.cs" />

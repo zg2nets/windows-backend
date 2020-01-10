@@ -29,8 +29,9 @@ namespace Tizen.FH.NUI.Components
     /// </summary>
     /// <since_tizen> 6 </since_tizen>
     /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.    
-    public class InputField : Tizen.NUI.Components.DA.InputField
+    public class InputField : Tizen.NUI.Components.DA.Control
     {
+        private TextField textField = null;
         // the cancel button
         private ImageView cancelBtn = null;
         // the delete button
@@ -201,20 +202,56 @@ namespace Tizen.FH.NUI.Components
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
-        public new bool StateEnabled
+        public bool StateEnabled
         {
             get
             {
-                return base.StateEnabled;
+                return Sensitive;
             }
             set
             {
-                if (base.StateEnabled == value)
+                if (Sensitive == value)
                 {
                     return;
                 }
                 UpdateComponentsByStateEnabledChanged(value);
-                base.StateEnabled = value;
+                Sensitive = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the property for the text content.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string Text
+        {
+            get
+            {
+                return textField?.Text;
+            }
+            set
+            {
+                if (null != textField) textField.Text = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the property for the hint text.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string HintText
+        {
+            get
+            {
+                return textField?.PlaceholderText;
+            }
+            set
+            {
+                if (null != textField) textField.PlaceholderText = value;
             }
         }
 
@@ -225,6 +262,26 @@ namespace Tizen.FH.NUI.Components
             base.ApplyStyle(viewStyle);
 
             InputFieldStyle inputFieldStyle = viewStyle as InputFieldStyle;
+            if (null != inputFieldStyle.InputBox)
+            {
+                if (null == textField)
+                {
+                    textField = new TextField()
+                    {
+                        WidthResizePolicy = ResizePolicyType.Fixed,
+                        HeightResizePolicy = ResizePolicyType.Fixed,
+                        ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
+                        PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
+                        PositionUsesPivotPoint = true,
+                    };
+                    this.Add(textField);
+                    textField.FocusGained += OnTextFieldFocusGained;
+                    textField.FocusLost += OnTextFieldFocusLost;
+                    textField.TextChanged += OnTextFieldTextChanged;
+                    textField.KeyEvent += OnTextFieldKeyEvent;
+                }
+                textField.ApplyStyle(inputFieldStyle.InputBox);
+            }
 
             if (null != inputFieldStyle?.CancelButton)
             {
@@ -398,10 +455,10 @@ namespace Tizen.FH.NUI.Components
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
         protected override void OnUpdate()
         {
-            RelayoutTextField(false);
+            //RelayoutTextField(false);
             base.OnUpdate();     
             RelayoutComponents();
-            UpdateComponentsByStateEnabledChanged(base.StateEnabled);
+            UpdateComponentsByStateEnabledChanged(Sensitive);
             OnLayoutDirectionChanged();
         }
 
@@ -425,7 +482,7 @@ namespace Tizen.FH.NUI.Components
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
-        protected override void OnTextFieldFocusGained(object source, EventArgs e)
+        protected void OnTextFieldFocusGained(object source, EventArgs e)
         {
             // when press on TextField, it will gain focus
             textFieldState = ControlStates.Selected;
@@ -437,7 +494,7 @@ namespace Tizen.FH.NUI.Components
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
-        protected override void OnTextFieldFocusLost(object source, EventArgs e)
+        protected void OnTextFieldFocusLost(object source, EventArgs e)
         {
             textFieldState = ControlStates.Normal;
             RelayoutComponents(false, true, true, false);
@@ -448,7 +505,7 @@ namespace Tizen.FH.NUI.Components
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
-        protected override void OnTextFieldTextChanged(object sender, TextField.TextChangedEventArgs e)
+        protected void OnTextFieldTextChanged(object sender, TextField.TextChangedEventArgs e)
         {
             if (sender is TextField)
             {
@@ -472,7 +529,7 @@ namespace Tizen.FH.NUI.Components
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.        
-        protected override bool OnTextFieldKeyEvent(object source, KeyEventArgs e)
+        protected bool OnTextFieldKeyEvent(object source, KeyEventArgs e)
         {
             keyEventHandler?.Invoke(this, e);
 
@@ -598,6 +655,23 @@ namespace Tizen.FH.NUI.Components
                     inputStyle = InputStyle.StyleB;
                 }
             }
+
+            if (null == textField)
+            {
+                textField = new TextField()
+                {
+                    WidthResizePolicy = ResizePolicyType.Fixed,
+                    HeightResizePolicy = ResizePolicyType.Fixed,
+                    ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft,
+                    PivotPoint = Tizen.NUI.PivotPoint.CenterLeft,
+                    PositionUsesPivotPoint = true,
+                };
+                this.Add(textField);
+                textField.FocusGained += OnTextFieldFocusGained;
+                textField.FocusLost += OnTextFieldFocusLost;
+                textField.TextChanged += OnTextFieldTextChanged;
+                textField.KeyEvent += OnTextFieldKeyEvent;
+            }
         }
 
         private void OnLayoutDirectionChanged()
@@ -654,6 +728,13 @@ namespace Tizen.FH.NUI.Components
                     deleteBtn.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
                     deleteBtn.PositionUsesPivotPoint = true;
                 }
+                if(textField)
+                {
+                    textField.HorizontalAlignment = HorizontalAlignment.Begin;
+                    textField.ParentOrigin = Tizen.NUI.ParentOrigin.CenterLeft;
+                    textField.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
+                    textField.PositionUsesPivotPoint = true;
+                }
             }
             else
             {
@@ -705,6 +786,13 @@ namespace Tizen.FH.NUI.Components
                     deleteBtn.PivotPoint = Tizen.NUI.PivotPoint.CenterLeft;
                     deleteBtn.PositionUsesPivotPoint = true;
                 }
+                if(textField)
+                {
+                    textField.HorizontalAlignment = HorizontalAlignment.End;
+                    textField.ParentOrigin = Tizen.NUI.ParentOrigin.CenterRight;
+                    textField.PivotPoint = Tizen.NUI.PivotPoint.CenterRight;
+                    textField.PositionUsesPivotPoint = true;
+                }
             }
         }
 
@@ -738,7 +826,7 @@ namespace Tizen.FH.NUI.Components
 
         private void RelayoutComponentsForDefault(bool shouldUpdate)
         {
-            if (cancelBtn == null)
+            if (null == cancelBtn || null == textField)
             {
                 return;
             }
@@ -748,24 +836,28 @@ namespace Tizen.FH.NUI.Components
             int space = Style.Space ?? 0;
             if (textFieldState == ControlStates.Normal && textState == TextState.Guide)
             {
-                SetTextFieldSize2D((int)Size.Width - space * 2, (int)Size.Height);
+                //SetTextFieldSize2D((int)Size.Width - space * 2, (int)Size.Height);
+                textField.Size2D = new Size2D((int)Size.Width - space * 2, (int)Size.Height);
                 cancelBtn.Hide();
             }
             else
             {
-                SetTextFieldSize2D((int)(Size.Width - space * 2 - cancelBtn.Size.Width - SpaceBetweenTextFieldAndRightButton()), (int)Size.Height);
+                //SetTextFieldSize2D((int)(Size.Width - space * 2 - cancelBtn.Size.Width - SpaceBetweenTextFieldAndRightButton()), (int)Size.Height);
+                textField.Size2D = new Size2D((int)(Size.Width - space * 2 - cancelBtn.Size.Width - SpaceBetweenTextFieldAndRightButton()), (int)Size.Height);
                 cancelBtn.Show();
             }
             if (shouldUpdate)
             {
                 if(this.LayoutDirection == ViewLayoutDirectionType.RTL)
                 {
-                    SetTextFieldPosX(-space);
+                    //SetTextFieldPosX(-space);
+                    textField.PositionX = -space;
                     cancelBtn.PositionX = space;
                 }
                 else
                 {
-                    SetTextFieldPosX(space);
+                    //SetTextFieldPosX(space);
+                    textField.PositionX = space;
                     cancelBtn.PositionX = -space;
                 }
             }
@@ -773,7 +865,7 @@ namespace Tizen.FH.NUI.Components
 
         private void RelayoutComponentsForSearchBar(bool shouldUpdate)
         {
-            if (searchBtn == null || cancelBtn == null)
+            if (null == searchBtn || null == cancelBtn || null == textField)
             {
                 return;
             }
@@ -786,7 +878,9 @@ namespace Tizen.FH.NUI.Components
             if (textFieldState == ControlStates.Normal && textState == TextState.Guide)
             {// #1
                 int spaceBetweenTextFieldAndLeftButton = SpaceBetweenTextFieldAndLeftButton();
-                SetTextFieldSize2D((int)(Size.Width - space * 2 - searchBtn.Size.Width - spaceBetweenTextFieldAndLeftButton), (int)Size.Height);
+                //SetTextFieldSize2D((int)(Size.Width - space * 2 - searchBtn.Size.Width - spaceBetweenTextFieldAndLeftButton), (int)Size.Height);
+                textField.Size2D = new Size2D((int)(Size.Width - space * 2 - searchBtn.Size.Width - spaceBetweenTextFieldAndLeftButton), (int)Size.Height);
+
                 textfieldX = (int)(space + searchBtn.Size.Width + spaceBetweenTextFieldAndLeftButton);
                 searchBtn.Show();
                 cancelBtn.Hide();
@@ -795,7 +889,9 @@ namespace Tizen.FH.NUI.Components
             {// #2
                 int spaceBetweenTextFieldAndLeftButton = SpaceBetweenTextFieldAndLeftButton();
                 int spaceBetweenTextFieldAndRightButton = SpaceBetweenTextFieldAndRightButton();
-                SetTextFieldSize2D((int)(Size.Width - space * 2 - searchBtn.Size.Width - spaceBetweenTextFieldAndLeftButton - cancelBtn.Size.Width - spaceBetweenTextFieldAndRightButton), (int)Size.Height);
+                //SetTextFieldSize2D((int)(Size.Width - space * 2 - searchBtn.Size.Width - spaceBetweenTextFieldAndLeftButton - cancelBtn.Size.Width - spaceBetweenTextFieldAndRightButton), (int)Size.Height);
+                textField.Size2D = new Size2D((int)(Size.Width - space * 2 - searchBtn.Size.Width - spaceBetweenTextFieldAndLeftButton - cancelBtn.Size.Width - spaceBetweenTextFieldAndRightButton), (int)Size.Height);
+
                 textfieldX = (int)(space + searchBtn.Size.Width + spaceBetweenTextFieldAndLeftButton);
                 searchBtn.Show();
                 cancelBtn.Show();
@@ -803,7 +899,9 @@ namespace Tizen.FH.NUI.Components
             else
             {// #3
                 int spaceBetweenTextFieldAndRighttButton = SpaceBetweenTextFieldAndRightButton();
-                SetTextFieldSize2D((int)(Size.Width - space * 2 - cancelBtn.Size.Width - spaceBetweenTextFieldAndRighttButton), (int)Size.Height);
+                //SetTextFieldSize2D((int)(Size.Width - space * 2 - cancelBtn.Size.Width - spaceBetweenTextFieldAndRighttButton), (int)Size.Height);
+                textField.Size2D = new Size2D((int)(Size.Width - space * 2 - cancelBtn.Size.Width - spaceBetweenTextFieldAndRighttButton), (int)Size.Height);
+
                 textfieldX = space;
                 searchBtn.Hide();
                 cancelBtn.Show();
@@ -816,7 +914,8 @@ namespace Tizen.FH.NUI.Components
                     searchBtn.PositionX = -space;
                     cancelBtn.PositionX = space;
                 }
-                SetTextFieldPosX(-textfieldX);
+                //SetTextFieldPosX(-textfieldX);
+                textField.PositionX = -textfieldX;
             }
             else
             {
@@ -825,13 +924,14 @@ namespace Tizen.FH.NUI.Components
                     searchBtn.PositionX = space;
                     cancelBtn.PositionX = -space;
                 }
-                SetTextFieldPosX(textfieldX);
+                //SetTextFieldPosX(textfieldX);
+                textField.PositionX = textfieldX;
             }
         }
 
         private void RelayoutComponentsForStyleB(bool shouldUpdate)
         {
-            if (addBtnBg == null || deleteBtn == null)
+            if (null == addBtnBg || null == deleteBtn || null == textField)
             {
                 return;
             }
@@ -841,19 +941,21 @@ namespace Tizen.FH.NUI.Components
             }
             int space = Style.Space ?? 0;
             int spaceBetweenTextFieldAndRightButton = SpaceBetweenTextFieldAndRightButton();
-            SetTextFieldSize2D((int)(Size.Width - space - spaceBetweenTextFieldAndRightButton - deleteBtn.Size.Width - addBtnBg.Size.Width), (int)Size.Height);
+            //SetTextFieldSize2D((int)(Size.Width - space - spaceBetweenTextFieldAndRightButton - deleteBtn.Size.Width - addBtnBg.Size.Width), (int)Size.Height);
+            textField.Size2D = new Size2D((int)(Size.Width - space - spaceBetweenTextFieldAndRightButton - deleteBtn.Size.Width - addBtnBg.Size.Width), (int)Size.Height);
 
             if (this.LayoutDirection == ViewLayoutDirectionType.RTL)
             {
-                SetTextFieldPosX(-space);
+                //SetTextFieldPosX(-space);
 
+                textField.PositionX = -space;
                 addBtnBg.PositionX = 0;
                 deleteBtn.PositionX = addBtnBg.Size.Width;
             }
             else
             {
-                SetTextFieldPosX(space);
-
+                //SetTextFieldPosX(space);
+                textField.PositionX = space;
                 addBtnBg.PositionX = 0;
                 deleteBtn.PositionX = -addBtnBg.Size.Width;
             }
@@ -897,18 +999,20 @@ namespace Tizen.FH.NUI.Components
         
         private void UpdateTextFieldTextColor(ControlStates state)
         {
-            if (Style != null && Style.InputBoxAttributes != null
-                && Style.InputBoxAttributes.TextColor != null)
+            if (null != Style && null != Style.InputBox
+                && null != Style.InputBox.TextColor && null != textField)
             {
                 switch (state)
                 {
                     case ControlStates.Disabled:
                     case ControlStates.DisabledSelected:
-                        SetTextFieldTextColor(Style.InputBoxAttributes.TextColor.Disabled);
+                        //SetTextFieldTextColor(Style.InputBoxAttributes.TextColor.Disabled);
+                        textField.TextColor = Style.InputBox.TextColor.Disabled;
                         break;
                     case ControlStates.Normal:
                     case ControlStates.Selected:
-                        SetTextFieldTextColor(Style.InputBoxAttributes.TextColor.Normal);
+                        //SetTextFieldTextColor(Style.InputBoxAttributes.TextColor.Normal);
+                        textField.TextColor = Style.InputBox.TextColor.Normal;
                         break;
                     default:
                         break;

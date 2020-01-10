@@ -13,6 +13,7 @@ namespace Tizen.NUI.Samples
         public void Activate()
         {
             Window window = Window.Instance;
+            window.BackgroundColor = new Color(0.7f, 0.9f, 0.8f, 1.0f);
 
             ///////////////////////////////////////////////Create by Properties//////////////////////////////////////////////////////////
             pagination1 = new Pagination();
