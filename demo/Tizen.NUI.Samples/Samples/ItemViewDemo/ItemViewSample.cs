@@ -23,23 +23,23 @@ namespace Tizen.NUI.Samples
         private string GRID_LABEL = "Grid";
         private string DEPTH_LABEL = "Depth";
 
-        private string TOOLBAR_IMAGE = CommonResource.GetFHResourcePath() + "ItemViewDemo/top-bar.png";
-        private string EDIT_IMAGE = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-edit.png";
-        private string EDIT_IMAGE_SELECTED = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-edit-selected.png";
-        private string DELETE_IMAGE = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-delete.png";
-        private string DELETE_IMAGE_SELECTED = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-delete-selected.png";
-        private string REPLACE_IMAGE = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-replace.png";
-        private string REPLACE_IMAGE_SELECTED = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-replace-selected.png";
-        private string INSERT_IMAGE = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-insert.png";
-        private string INSERT_IMAGE_SELECTED = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-insert-selected.png.png";
-        private string SELECTED_IMAGE = CommonResource.GetFHResourcePath() + "ItemViewDemo/item-select-check.png";
+        private string TOOLBAR_IMAGE = CommonResource.GetDaliResourcePath() + "ItemViewDemo/top-bar.png";
+        private string EDIT_IMAGE = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-edit.png";
+        private string EDIT_IMAGE_SELECTED = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-edit-selected.png";
+        private string DELETE_IMAGE = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-delete.png";
+        private string DELETE_IMAGE_SELECTED = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-delete-selected.png";
+        private string REPLACE_IMAGE = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-replace.png";
+        private string REPLACE_IMAGE_SELECTED = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-replace-selected.png";
+        private string INSERT_IMAGE = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-insert.png";
+        private string INSERT_IMAGE_SELECTED = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-insert-selected.png.png";
+        private string SELECTED_IMAGE = CommonResource.GetDaliResourcePath() + "ItemViewDemo/item-select-check.png";
 
-        private string SPIRAL_LAYOUT_IMAGE = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-item-view-layout-spiral.png";
-        private string SPIRAL_LAYOUT_IMAGE_SELECTED = CommonResource.GetFHResourcePath() + "ItemViewDemo/icon-item-view-layout-spiral-selected.png";
-        private string GRID_LAYOUT_IMAGE = CommonResource.GetFHResourcePath() +  "ItemViewDemo/icon-item-view-layout-grid.png";
-        private string GRID_LAYOUT_IMAGE_SELECTED = CommonResource.GetFHResourcePath() +  "ItemViewDemo/icon-item-view-layout-grid-selected.png";
-        private string DEPTH_LAYOUT_IMAGE = CommonResource.GetFHResourcePath() +  "ItemViewDemo/icon-item-view-layout-depth.png";
-        private string DEPTH_LAYOUT_IMAGE_SELECTED = CommonResource.GetFHResourcePath() +  "ItemViewDemo/icon-item-view-layout-depth-selected.png";
+        private string SPIRAL_LAYOUT_IMAGE = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-item-view-layout-spiral.png";
+        private string SPIRAL_LAYOUT_IMAGE_SELECTED = CommonResource.GetDaliResourcePath() + "ItemViewDemo/icon-item-view-layout-spiral-selected.png";
+        private string GRID_LAYOUT_IMAGE = CommonResource.GetDaliResourcePath() +  "ItemViewDemo/icon-item-view-layout-grid.png";
+        private string GRID_LAYOUT_IMAGE_SELECTED = CommonResource.GetDaliResourcePath() +  "ItemViewDemo/icon-item-view-layout-grid-selected.png";
+        private string DEPTH_LAYOUT_IMAGE = CommonResource.GetDaliResourcePath() +  "ItemViewDemo/icon-item-view-layout-depth.png";
+        private string DEPTH_LAYOUT_IMAGE_SELECTED = CommonResource.GetDaliResourcePath() +  "ItemViewDemo/icon-item-view-layout-depth-selected.png";
 
         
         private ItemView mItemView;
@@ -316,7 +316,7 @@ namespace Tizen.NUI.Samples
         public View NewItemView(uint itemId)
         {
             // Create an image view for this item
-            string imagePath = CommonResource.GetFHResourcePath() + "ItemViewDemo/gallery/gallery-medium-";
+            string imagePath = CommonResource.GetDaliResourcePath() + "ItemViewDemo/gallery/gallery-medium-";
             uint id = itemId % 53;
             imagePath += id.ToString();
             imagePath += ".jpg";

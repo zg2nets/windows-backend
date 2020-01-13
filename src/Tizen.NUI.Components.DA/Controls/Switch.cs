@@ -31,6 +31,7 @@ namespace Tizen.NUI.Components.DA
         private ImageView trackImage;
         private ImageView thumbImage;
         private Animation handlerAni = null;
+        static Switch() { }
 
         /// <summary>
         /// Creates a new instance of a Switch.
@@ -96,7 +97,6 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
-        private StringSelector switchBackgroundImageURLSelector = new StringSelector();
         /// <summary>
         /// Background image's resource url selector in Switch.
         /// </summary>
@@ -105,11 +105,16 @@ namespace Tizen.NUI.Components.DA
         {
             get
             {
-                return switchBackgroundImageURLSelector;
+                StringSelector strSl = new StringSelector();
+                strSl.Clone(Style?.Track?.ResourceUrl);
+                return strSl;
             }
             set
             {
-                switchBackgroundImageURLSelector.Clone(value);
+                if (null != value && null != Style?.Track)
+                {
+                    Style.Track.ResourceUrl = value;
+                }
             }
         }
 
@@ -132,7 +137,6 @@ namespace Tizen.NUI.Components.DA
             }
         }
 
-        private StringSelector switchHandlerImageURLSelector = new StringSelector();
         /// <summary>
         /// Handler image's resource url selector in Switch.
         /// </summary>
@@ -141,11 +145,16 @@ namespace Tizen.NUI.Components.DA
         {
             get
             {
-                return switchHandlerImageURLSelector;
+                StringSelector strSl = new StringSelector();
+                strSl.Clone(Style?.Thumb?.ResourceUrl);
+                return strSl;
             }
             set
             {
-                switchHandlerImageURLSelector.Clone(value);
+                if (null != value && null != Style?.Thumb)
+                {
+                    Style.Thumb.ResourceUrl = value;
+                }
             }
         }
 

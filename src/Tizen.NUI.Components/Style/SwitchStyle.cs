@@ -28,6 +28,8 @@ namespace Tizen.NUI.Components
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class SwitchStyle : ButtonStyle
     {
+        static SwitchStyle() { }
+
         /// <summary>
         /// Creates a new instance of a SwitchStyle.
         /// </summary>
@@ -64,11 +66,7 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageViewStyle Thumb
-        {
-            get;
-            set;
-        }
+        public ImageViewStyle Thumb { get; set; }
 
         /// <summary>
         /// Track image's style.
@@ -76,11 +74,7 @@ namespace Tizen.NUI.Components
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageViewStyle Track
-        {
-            get;
-            set;
-        }
+        public ImageViewStyle Track { get; set; }
 
         /// <summary>
         /// Style's clone function.

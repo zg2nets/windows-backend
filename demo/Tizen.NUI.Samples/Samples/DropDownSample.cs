@@ -36,7 +36,7 @@ namespace Tizen.NUI.Samples
             root = new View()
             {
                 Size2D = new Size2D(1920, 1080),
-                BackgroundColor = Color.White,
+                BackgroundColor = new Color(0.7f, 0.9f, 0.8f, 1.0f),
             };
             window.Add(root);
 
@@ -167,7 +167,7 @@ namespace Tizen.NUI.Samples
                 },
                 SpaceBetweenButtonTextAndIcon = 8,
                 ListMargin = new Extents(20, 0, 20, 0),
-                BackgroundColor = new Selector<Color> { All = new Color(1, 1, 1, 1) },
+                //BackgroundColor = new Selector<Color> { All = new Color(1, 1, 1, 1) },
                 ListPadding = new Extents(4, 4, 4, 4),
             };
 

@@ -22,6 +22,7 @@ namespace Tizen.NUI.Components.DA
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class CheckBox : SelectButton
     {
+        static CheckBox() { }
         /// <summary>
         /// Creates a new instance of a CheckBox.
         /// </summary>

@@ -69,7 +69,7 @@ namespace Tizen.NUI.Samples
             mContactCard.Size2D = new Size2D((int)mContactCardLayoutInfo.foldedSize.Width, (int)mContactCardLayoutInfo.foldedSize.Height);
             mContactCard.KeyEvent += OnKeyEvent;
 
-            Window.Instance.GetDefaultLayer().Add(mContactCard);
+            //Window.Instance.GetDefaultLayer().Add(mContactCard);
             rootView.Add(mContactCard);
 
             // Create the header which will be shown only when the contact is unfolded
@@ -278,7 +278,7 @@ namespace Tizen.NUI.Samples
                 }
             }
 
-            return true;
+            return false;
         }
 
         private void OnTap(object sender, TapGestureDetector.DetectedEventArgs e)

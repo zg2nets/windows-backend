@@ -38,6 +38,8 @@ namespace Tizen.NUI.Components.DA
         private int indicatorCount = 0;
         private int selectedIndex = -1;
 
+        static Pagination() { }
+
         /// <summary>
         /// Creates a new instance of a Pagination.
         /// </summary>

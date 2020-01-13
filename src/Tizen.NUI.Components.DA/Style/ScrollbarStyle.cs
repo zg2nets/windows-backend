@@ -28,6 +28,8 @@ namespace Tizen.NUI.Components.DA
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ScrollBarStyle : ControlStyle
     {
+        static ScrollBarStyle() { }
+
         /// <summary>
         /// Creates a new instance of a ScrollBarStyle.
         /// </summary>
@@ -62,11 +64,7 @@ namespace Tizen.NUI.Components.DA
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageViewStyle Track
-        {
-            get;
-            set;
-        }
+        public ImageViewStyle Track { get; set; }
 
         /// <summary>
         /// Get or set thumb image style
@@ -74,11 +72,7 @@ namespace Tizen.NUI.Components.DA
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageViewStyle Thumb
-        {
-            get;
-            set;
-        }
+        public ImageViewStyle Thumb { get; set; }
 
         /// <summary>
         /// Get or set direction type
@@ -86,11 +80,7 @@ namespace Tizen.NUI.Components.DA
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ScrollBar.DirectionType? Direction
-        {
-            get;
-            set;
-        }
+        public ScrollBar.DirectionType? Direction { get; set; }
 
         /// <summary>
         /// Get or set duration
@@ -98,11 +88,7 @@ namespace Tizen.NUI.Components.DA
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public uint Duration
-        {
-            get;
-            set;
-        }
+        public uint Duration { get; set; }
 
         /// <summary>
         /// Attributes's clone function.

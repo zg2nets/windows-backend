@@ -44,8 +44,15 @@ namespace Tizen.FH.NUI.Examples
 
         public void Clear()
         {
-            Window.Instance.Remove(rootView);
-            rootView.Dispose();
+            if (null != rootView)
+            {
+                if (null != rootView.GetParent())
+                {
+                    rootView.GetParent().Remove(rootView);
+                }
+                rootView.Dispose();
+                rootView = null;
+            }
         }
 
         private void Initialize()

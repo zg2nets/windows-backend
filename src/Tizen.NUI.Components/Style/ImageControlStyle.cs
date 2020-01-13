@@ -35,7 +35,7 @@ namespace Tizen.NUI.Components
         {
             var imageControlStyle = (ImageControlStyle)bindable;
             if (null == imageControlStyle.resourceUrlSelector) imageControlStyle.resourceUrlSelector = new Selector<string>();
-            imageControlStyle.resourceUrlSelector.Clone((Selector<string>)newValue);
+            imageControlStyle.resourceUrlSelector.Clone(null == newValue ? new Selector<string>() : (Selector<string>)newValue);
         },
         defaultValueCreator: (bindable) =>
         {
@@ -59,15 +59,15 @@ namespace Tizen.NUI.Components
         private Selector<string> resourceUrlSelector;
         private Selector<Rectangle> borderSelector;
 
+        static ImageControlStyle() { }
+
         /// <summary>
         /// Creates a new instance of a ImageControlStyle.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImageControlStyle() : base()
-        {
-        }
+        public ImageControlStyle() : base() { }
 
         /// <summary>
         /// Creates a new instance of a ImageControlStyle with style.

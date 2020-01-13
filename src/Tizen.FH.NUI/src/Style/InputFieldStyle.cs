@@ -16,6 +16,7 @@
  */
 using Tizen.NUI.BaseComponents;
 using Tizen.NUI.Binding;
+using Tizen.NUI.Components.DA;
 
 namespace Tizen.FH.NUI.Components
 {
@@ -24,7 +25,7 @@ namespace Tizen.FH.NUI.Components
     /// </summary>
     /// <since_tizen> 6 </since_tizen>
     /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.   
-    public class InputFieldStyle : Tizen.NUI.Components.DA.InputFieldStyle
+    public class InputFieldStyle : ControlStyle
     {
         /// <summary>
         /// Creates a new instance of a InputFieldStyle.
@@ -47,6 +48,20 @@ namespace Tizen.FH.NUI.Components
             }
             CopyFrom(inputFieldStyle);
         }
+
+        /// <summary>
+        /// Gets or sets input box attributes of input field.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public TextFieldStyle InputBox { get; set; } = new TextFieldStyle();
+
+        /// <summary>
+        /// Gets or sets space.
+        /// </summary>
+        /// <since_tizen> 6 </since_tizen>
+        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        public int? Space { get; set; }
 
         /// <summary>
         /// Cancel button's attributes.
@@ -109,6 +124,7 @@ namespace Tizen.FH.NUI.Components
             base.CopyFrom(that);
 
             InputFieldStyle inputFieldStyle = that as InputFieldStyle;
+            InputBox.CopyFrom(inputFieldStyle.InputBox);
             CancelButton.CopyFrom(inputFieldStyle.CancelButton);
             DeleteButton.CopyFrom(inputFieldStyle.DeleteButton);
             AddButtonBackground.CopyFrom(inputFieldStyle.AddButtonBackground);
@@ -118,6 +134,7 @@ namespace Tizen.FH.NUI.Components
 
             SpaceBetweenTextFieldAndRightButton = inputFieldStyle.SpaceBetweenTextFieldAndRightButton;
             SpaceBetweenTextFieldAndLeftButton = inputFieldStyle.SpaceBetweenTextFieldAndLeftButton;
+            Space = inputFieldStyle.Space;
         }
     }
 }

@@ -28,63 +28,6 @@ namespace Tizen.NUI.BaseComponents
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ViewStyle : BindableObject
     {
-        private string styleName;
-        private string backgroundImage;
-        private View.States? state;
-        private View.States? subState;
-        private float? flex;
-        private int? alignSelf;
-        private Vector4 flexMargin;
-        private Vector2 cellIndex;
-        private float? rowSpan;
-        private float? columnSpan;
-        private HorizontalAlignmentType? cellHorizontalAlignment;
-        private VerticalAlignmentType? cellVerticalAlignment;
-        private View leftFocusableView;
-        private View rightFocusableView;
-        private View upFocusableView;
-        private View downFocusableView;
-        private bool? focusable;
-        private Size2D size2D;
-        private Position2D position2D;
-        private bool? positionUsesPivotPoint;
-        private int? siblingOrder;
-        private Position parentOrigin;
-        private Position pivotPoint;
-        private float? sizeWidth;
-        private float? sizeHeight;
-        private Position position;
-        private float? positionX;
-        private float? positionY;
-        private float? positionZ;
-        private Rotation orientation;
-        private Vector3 scale;
-        private float? scaleX;
-        private float? scaleY;
-        private float? scaleZ;
-        private string name;
-        private bool? sensitive;
-        private bool? leaveRequired;
-        private bool? inheritOrientation;
-        private bool? inheritScale;
-        private DrawModeType? drawMode;
-        private Vector3 sizeModeFactor;
-        private ResizePolicyType? widthResizePolicy;
-        private ResizePolicyType? heightResizePolicy;
-        private SizeScalePolicyType? sizeScalePolicy;
-        private bool? widthForHeight;
-        private bool? heightForWidth;
-        private Extents padding;
-        private Size2D minimumSize;
-        private Size2D maximumSize;
-        private bool? inheritPosition;
-        private ClippingModeType? clippingMode;
-        private Size size;
-        private bool? inheritLayoutDirection;
-        private ViewLayoutDirectionType? layoutDirection;
-        private Extents margin;
-        private float? weight;
-
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static readonly BindableProperty StyleNameProperty = BindableProperty.Create(nameof(StyleName), typeof(string), typeof(ViewStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
@@ -103,7 +46,7 @@ namespace Tizen.NUI.BaseComponents
         {
             var viewStyle = (ViewStyle)bindable;
             if (null == viewStyle.backgroundImageSelector) viewStyle.backgroundImageSelector = new Selector<string>();
-            viewStyle.backgroundImageSelector.Clone((Selector<string>)newValue);
+            viewStyle.backgroundImageSelector.Clone(null == newValue ? new Selector<string>() : (Selector<string>)newValue);
         },
         defaultValueCreator: (bindable) =>
         {
@@ -308,7 +251,7 @@ namespace Tizen.NUI.BaseComponents
         {
             var viewStyle = (ViewStyle)bindable;
             if (null == viewStyle.opacitySelector) viewStyle.opacitySelector = new Selector<float?>();
-            viewStyle.opacitySelector.Clone((Selector<float?>)newValue);
+            viewStyle.opacitySelector.Clone(null == newValue ? new Selector<float?>() : (Selector<float?>)newValue);
         },
         defaultValueCreator: (bindable) =>
         {
@@ -656,7 +599,8 @@ namespace Tizen.NUI.BaseComponents
         public static readonly BindableProperty PaddingProperty = BindableProperty.Create(nameof(Padding), typeof(Extents), typeof(ViewStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var viewStyle = (ViewStyle)bindable;
-            viewStyle.padding = (Extents)newValue;
+            if (null == viewStyle.padding) viewStyle.padding = new Extents(viewStyle.OnPaddingChanged, 0, 0, 0, 0);
+            viewStyle.padding.CopyFrom(null == newValue ? new Extents() : (Extents)newValue);
         },
         defaultValueCreator: (bindable) =>
         {
@@ -752,7 +696,8 @@ namespace Tizen.NUI.BaseComponents
         public static readonly BindableProperty MarginProperty = BindableProperty.Create(nameof(Margin), typeof(Extents), typeof(ViewStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var viewStyle = (ViewStyle)bindable;
-            viewStyle.margin = (Extents)newValue;
+            if (null == viewStyle.margin) viewStyle.margin = new Extents(viewStyle.OnMarginChanged, 0, 0, 0, 0);
+            viewStyle.margin.CopyFrom(null == newValue ? new Extents() : (Extents)newValue);
         },
         defaultValueCreator: (bindable) =>
         {
@@ -777,7 +722,7 @@ namespace Tizen.NUI.BaseComponents
         {
             var viewStyle = (ViewStyle)bindable;
             if (null == viewStyle.backgroundColorSelector) viewStyle.backgroundColorSelector = new Selector<Color>();
-            viewStyle.backgroundColorSelector.Clone((Selector<Color>)newValue);
+            viewStyle.backgroundColorSelector.Clone(null == newValue ? new Selector<Color>() : (Selector<Color>)newValue);
         },
         defaultValueCreator: (bindable) =>
         {
@@ -790,7 +735,8 @@ namespace Tizen.NUI.BaseComponents
         {
             var viewStyle = (ViewStyle)bindable;
             if (null == viewStyle.backgroundImageBorderSelector) viewStyle.backgroundImageBorderSelector = new Selector<Rectangle>();
-            viewStyle.backgroundImageBorderSelector.Clone((Selector<Rectangle>)newValue);
+
+            viewStyle.backgroundImageBorderSelector.Clone(newValue == null ? new Selector<Rectangle>() : (Selector<Rectangle>)newValue);
         },
         defaultValueCreator: (bindable) =>
         {
@@ -798,11 +744,101 @@ namespace Tizen.NUI.BaseComponents
             return viewStyle.backgroundImageBorderSelector;
         });
 
+        /// A BindableProperty for ImageShadow
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty ImageShadowProperty = BindableProperty.Create(nameof(ImageShadow), typeof(Selector<ImageShadow>), typeof(ViewStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var viewStyle = (ViewStyle)bindable;
+            viewStyle.imageShadow = SelectorHelper<ImageShadow>.Clone(newValue);
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            var viewStyle = (ViewStyle)bindable;
+            return viewStyle.imageShadow;
+        });
+
+        /// A BindableProperty for BoxShadow
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty BoxShadowProperty = BindableProperty.Create(nameof(BoxShadow), typeof(Selector<ImageShadow>), typeof(ViewStyle), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var viewStyle = (ViewStyle)bindable;
+            viewStyle.boxShadow = SelectorHelper<Shadow>.Clone(newValue);
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            var viewStyle = (ViewStyle)bindable;
+            return viewStyle.boxShadow;
+        });
+
+        private string styleName;
+        private string backgroundImage;
+        private View.States? state;
+        private View.States? subState;
+        private float? flex;
+        private int? alignSelf;
+        private Vector4 flexMargin;
+        private Vector2 cellIndex;
+        private float? rowSpan;
+        private float? columnSpan;
+        private HorizontalAlignmentType? cellHorizontalAlignment;
+        private VerticalAlignmentType? cellVerticalAlignment;
+        private View leftFocusableView;
+        private View rightFocusableView;
+        private View upFocusableView;
+        private View downFocusableView;
+        private bool? focusable;
+        private Size2D size2D;
+        private Position2D position2D;
+        private bool? positionUsesPivotPoint;
+        private int? siblingOrder;
+        private Position parentOrigin;
+        private Position pivotPoint;
+        private float? sizeWidth;
+        private float? sizeHeight;
+        private Position position;
+        private float? positionX;
+        private float? positionY;
+        private float? positionZ;
+        private Rotation orientation;
+        private Vector3 scale;
+        private float? scaleX;
+        private float? scaleY;
+        private float? scaleZ;
+        private string name;
+        private bool? sensitive;
+        private bool? leaveRequired;
+        private bool? inheritOrientation;
+        private bool? inheritScale;
+        private DrawModeType? drawMode;
+        private Vector3 sizeModeFactor;
+        private ResizePolicyType? widthResizePolicy;
+        private ResizePolicyType? heightResizePolicy;
+        private SizeScalePolicyType? sizeScalePolicy;
+        private bool? widthForHeight;
+        private bool? heightForWidth;
+        private Extents padding;
+        private Size2D minimumSize;
+        private Size2D maximumSize;
+        private bool? inheritPosition;
+        private ClippingModeType? clippingMode;
+        private Size size;
+        private bool? inheritLayoutDirection;
+        private ViewLayoutDirectionType? layoutDirection;
+        private Extents margin;
+        private float? weight;
+
+        private Selector<ImageShadow> imageShadow;
+        private Selector<Shadow> boxShadow;
+        private Selector<string> backgroundImageSelector;
+        private Selector<float?> opacitySelector;
+        private Selector<Color> backgroundColorSelector;
+        private Selector<Rectangle> backgroundImageBorderSelector;
+
+        static ViewStyle() {}
+
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ViewStyle()
-        {
-        }
+        public ViewStyle() { }
 
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -822,7 +858,6 @@ namespace Tizen.NUI.BaseComponents
             set => SetValue(StyleNameProperty, value);
         }
 
-        private Selector<string> backgroundImageSelector;
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
         public Selector<string> BackgroundImage
@@ -963,7 +998,6 @@ namespace Tizen.NUI.BaseComponents
             set => SetValue(Size2DProperty, value);
         }
 
-        private Selector<float?> opacitySelector;
         /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
         public Selector<float?> Opacity
@@ -1207,7 +1241,7 @@ namespace Tizen.NUI.BaseComponents
             get
             {
                 Extents tmp = (Extents)GetValue(PaddingProperty);
-                return (null != tmp) ? tmp : padding = new Extents((ushort start, ushort end, ushort top, ushort bottom) => { Padding = new Extents(start, end, top, bottom); }, 0, 0, 0, 0);
+                return (null != tmp) ? tmp : padding = new Extents(OnPaddingChanged, 0, 0, 0, 0);
             }
             set => SetValue(PaddingProperty, value);
         }
@@ -1279,7 +1313,7 @@ namespace Tizen.NUI.BaseComponents
             get
             {
                 Extents tmp = (Extents)GetValue(MarginProperty);
-                return (null != tmp) ? tmp : margin = new Extents((ushort start, ushort end, ushort top, ushort bottom) => { Margin = new Extents(start, end, top, bottom); }, 0, 0, 0, 0);
+                return (null != tmp) ? tmp : margin = new Extents(OnMarginChanged, 0, 0, 0, 0);
             }
             set => SetValue(MarginProperty, value);
         }
@@ -1292,7 +1326,6 @@ namespace Tizen.NUI.BaseComponents
             set => SetValue(WeightProperty, value);
         }
 
-        private Selector<Color> backgroundColorSelector;
         /// <summary> View BackgroundColor </summary>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1305,7 +1338,7 @@ namespace Tizen.NUI.BaseComponents
             }
             set => SetValue(BackgroundColorSelectorProperty, value);
         }
-        private Selector<Rectangle> backgroundImageBorderSelector;
+
         /// <summary>View BackgroundBorder</summary>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1317,6 +1350,44 @@ namespace Tizen.NUI.BaseComponents
                 return (null != border) ? border : backgroundImageBorderSelector = new Selector<Rectangle>();
             }
             set => SetValue(BackgroundImageBorderSelectorProperty, value);
+        }
+
+        /// <summary>
+        /// Describes a shadow as an image for a View.
+        /// It is null by default.
+        /// </summary>
+        /// <remarks>
+        /// The mutually exclusive with "BoxShadow".
+        /// </remarks>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Selector<ImageShadow> ImageShadow
+        {
+            get => (Selector<ImageShadow>)GetValue(ImageShadowProperty);
+            set => SetValue(ImageShadowProperty, value);
+        }
+
+        /// <summary>
+        /// Describes a box shaped shadow drawing for a View.
+        /// It is null by default.
+        /// </summary>
+        /// <remarks>
+        /// The mutually exclusive with "ImageShadow".
+        /// </remarks>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Selector<Shadow> BoxShadow
+        {
+            get => (Selector<Shadow>)GetValue(BoxShadowProperty);
+            set => SetValue(BoxShadowProperty, value);
+        }
+
+        private void OnPaddingChanged(ushort start, ushort end, ushort top, ushort bottom)
+        {
+            Padding = new Extents(start, end, top, bottom);
+        }
+
+        private void OnMarginChanged(ushort start, ushort end, ushort top, ushort bottom)
+        {
+            Margin = new Extents(start, end, top, bottom);
         }
     }
 }

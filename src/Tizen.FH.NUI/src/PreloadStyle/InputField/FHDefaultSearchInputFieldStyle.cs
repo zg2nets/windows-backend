@@ -19,18 +19,9 @@ namespace Tizen.FH.NUI.Components
                 Space = 24,
                 SpaceBetweenTextFieldAndLeftButton = 16,
                 SpaceBetweenTextFieldAndRightButton = 56,
-                BackgroundImageAttributes = new ImageViewStyle
-                {
-                    ResourceUrl = new StringSelector
-                    {
-                        All = CommonResource.Instance.GetFHResourcePath() + "1. Action bar/search_bg.png",
-                    },
-                    Border = new RectangleSelector
-                    {
-                        All = new Rectangle(45, 45, 0, 0),
-                    },
-                },
-                InputBoxAttributes = new TextFieldStyle
+                BackgroundImage = CommonResource.Instance.GetFHResourcePath() + "1. Action bar/search_bg.png",
+                BackgroundImageBorder= new Rectangle(45, 45, 0, 0),
+                InputBox= new TextFieldStyle
                 {
                     TextColor = new ColorSelector
                     {

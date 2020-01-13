@@ -28,6 +28,8 @@ namespace Tizen.NUI.Components.DA
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ToastStyle : ControlStyle
     {
+        static ToastStyle() { }
+
         /// <summary>
         /// Creates a new instance of a ToastStyle.
         /// </summary>
@@ -58,11 +60,7 @@ namespace Tizen.NUI.Components.DA
         /// <since_tizen> 6 </since_tizen>
         /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public uint? Duration
-        {
-            get;
-            set;
-        }
+        public uint? Duration { get; set; }
 
         /// <summary>
         /// Text's Style.

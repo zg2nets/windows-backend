@@ -110,7 +110,7 @@ namespace Tizen.NUI.Components.DA
                 instance.Style.Duration = (uint)newValue;
                 if (instance.scrollAniPlayer != null)
                 {
-                    instance.scrollAniPlayer.Duration = (int)newValue;
+                    instance.scrollAniPlayer.Duration = (int)(uint)newValue;
                 }
             }
         },
@@ -129,6 +129,7 @@ namespace Tizen.NUI.Components.DA
         private int minValue;
         private int maxValue;
         private int curValue;
+        static ScrollBar() { }
 
         /// <summary>
         /// The constructor of ScrollBar.
