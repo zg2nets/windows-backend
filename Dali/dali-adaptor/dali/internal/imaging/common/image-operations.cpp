@@ -339,8 +339,8 @@ ImageDimensions FitToScalingMode( ImageDimensions requestedSize, ImageDimensions
  */
 void CalculateBordersFromFittingMode(  ImageDimensions sourceSize, FittingMode::Type fittingMode, ImageDimensions& requestedSize, int& scanlinesToCrop, int& columnsToCrop )
 {
-  const unsigned int sourceWidth( sourceSize.GetWidth() );
-  const unsigned int sourceHeight( sourceSize.GetHeight() );
+  const int sourceWidth( static_cast<int>( sourceSize.GetWidth() ) );
+  const int sourceHeight( static_cast<int>(sourceSize.GetHeight() ) );
   const float targetAspect( static_cast< float >( requestedSize.GetWidth() ) / static_cast< float >( requestedSize.GetHeight() ) );
   int finalWidth = 0;
   int finalHeight = 0;
@@ -2384,7 +2384,7 @@ void HorizontalShear( const uint8_t* const pixelsIn,
     return;
   }
 
-  widthOut = widthIn + static_cast<unsigned int>( absRadians * static_cast<float>( heightIn ) );
+  widthOut = widthIn + static_cast<unsigned int>( ceil ( absRadians * static_cast<float>( heightIn ) ) );
   heightOut = heightIn;
 
   // Allocate the buffer for the shear.

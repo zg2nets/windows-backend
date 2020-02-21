@@ -37,7 +37,7 @@
 
 #undef LOG
 //#define LOG DALI_LOG_ERROR
-#define LOG(a,...)
+#define LOG(a, ...)
 
 
 #ifdef __cplusplus

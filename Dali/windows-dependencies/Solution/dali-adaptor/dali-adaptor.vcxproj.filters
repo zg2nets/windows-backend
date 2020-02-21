@@ -577,6 +577,9 @@
     <ClCompile Include="..\..\..\dali-adaptor\dali\integration-api\adaptor-framework\scene-holder-impl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\dali-adaptor\dali\internal\system\common\configuration-manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

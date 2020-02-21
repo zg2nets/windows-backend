@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tizen.FH.NUI.Examples", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tizen.FH.NUI.PhotoSlide", "..\Tizen.FH.NUI.PhotoSlide\Tizen.FH.NUI.PhotoSlide.csproj", "{0381998D-861A-4D76-BCF9-3E835A682708}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tizen.NUI.Xaml.Samples", "..\Tizen.NUI.Xaml.Samples\Tizen.NUI.Xaml.Samples.csproj", "{954B7E72-9810-47F2-A665-E4B66F8F8059}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -543,6 +545,26 @@ Global
 		{0381998D-861A-4D76-BCF9-3E835A682708}.RelWithDebInfo|x64.Build.0 = Release|Any CPU
 		{0381998D-861A-4D76-BCF9-3E835A682708}.RelWithDebInfo|x86.ActiveCfg = Release|Any CPU
 		{0381998D-861A-4D76-BCF9-3E835A682708}.RelWithDebInfo|x86.Build.0 = Release|Any CPU
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.Debug|x64.ActiveCfg = Debug|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.Debug|x86.ActiveCfg = Debug|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.Debug|x86.Build.0 = Debug|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.MinSizeRel|Any CPU.ActiveCfg = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.MinSizeRel|Any CPU.Build.0 = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.MinSizeRel|x64.ActiveCfg = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.MinSizeRel|x64.Build.0 = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.MinSizeRel|x86.ActiveCfg = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.MinSizeRel|x86.Build.0 = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.Release|Any CPU.ActiveCfg = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.Release|x64.ActiveCfg = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.Release|x86.ActiveCfg = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.Release|x86.Build.0 = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.RelWithDebInfo|Any CPU.ActiveCfg = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.RelWithDebInfo|Any CPU.Build.0 = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.RelWithDebInfo|x64.ActiveCfg = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.RelWithDebInfo|x64.Build.0 = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.RelWithDebInfo|x86.ActiveCfg = Release|x86
+		{954B7E72-9810-47F2-A665-E4B66F8F8059}.RelWithDebInfo|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

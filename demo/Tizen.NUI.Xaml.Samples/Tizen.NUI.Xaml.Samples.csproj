@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.11\build\netstandard2.0\Tizen.NUI.XamlBuild.props" Condition="Exists('..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.11\build\netstandard2.0\Tizen.NUI.XamlBuild.props')" />
+  <Import Project="..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.6\build\netstandard2.0\Tizen.NUI.XamlBuild.props" Condition="Exists('..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.6\build\netstandard2.0\Tizen.NUI.XamlBuild.props')" />
   <Import Project="packages\Tizen.NUI.XamlBuild.1.0.0\build\netstandard2.0\Tizen.NUI.XamlBuild.props" Condition="Exists('packages\Tizen.NUI.XamlBuild.1.0.0\build\netstandard2.0\Tizen.NUI.XamlBuild.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -71,8 +73,8 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Tizen.NUI.XamlBuild, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Tizen.NUI.XamlBuild.1.0.0\lib\netstandard2.0\Tizen.NUI.XamlBuild.dll</HintPath>
+    <Reference Include="Tizen.NUI.XamlBuild, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.11\lib\netstandard2.0\Tizen.NUI.XamlBuild.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -129,10 +131,6 @@
       <Project>{b69c603f-ae97-4dd7-acf5-9c38a62e0ede}</Project>
       <Name>Tizen.NUI.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Tizen.NUI.Xaml\Tizen.NUI.Xaml.csproj">
-      <Project>{1e08b7be-2a96-481c-a691-413902b9fa40}</Project>
-      <Name>Tizen.NUI.Xaml</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Tizen.System.SystemSettings\Tizen.System.SystemSettings.csproj">
       <Project>{8d71b1b6-9901-436f-8914-9f812e1b10a7}</Project>
       <Name>Tizen.System.SystemSettings</Name>
@@ -157,8 +155,9 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\Tizen.NUI.XamlBuild.1.0.0\build\netstandard2.0\Tizen.NUI.XamlBuild.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Tizen.NUI.XamlBuild.1.0.0\build\netstandard2.0\Tizen.NUI.XamlBuild.props'))" />
-    <Error Condition="!Exists('packages\Tizen.NUI.XamlBuild.1.0.0\build\netstandard2.0\Tizen.NUI.XamlBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Tizen.NUI.XamlBuild.1.0.0\build\netstandard2.0\Tizen.NUI.XamlBuild.targets'))" />
+    <Error Condition="!Exists('..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.11\build\netstandard2.0\Tizen.NUI.XamlBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.11\build\netstandard2.0\Tizen.NUI.XamlBuild.props'))" />
+    <Error Condition="!Exists('..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.11\build\netstandard2.0\Tizen.NUI.XamlBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.11\build\netstandard2.0\Tizen.NUI.XamlBuild.targets'))" />
   </Target>
-  <Import Project="packages\Tizen.NUI.XamlBuild.1.0.0\build\netstandard2.0\Tizen.NUI.XamlBuild.targets" Condition="Exists('packages\Tizen.NUI.XamlBuild.1.0.0\build\netstandard2.0\Tizen.NUI.XamlBuild.targets')" />
+  <Import Project="..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.6\build\netstandard2.0\Tizen.NUI.XamlBuild.targets" Condition="Exists('..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.6\build\netstandard2.0\Tizen.NUI.XamlBuild.targets')" />
+  <Import Project="..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.11\build\netstandard2.0\Tizen.NUI.XamlBuild.targets" Condition="Exists('..\csharp-demo\packages\Tizen.NUI.XamlBuild.1.0.11\build\netstandard2.0\Tizen.NUI.XamlBuild.targets')" />
 </Project>

@@ -435,6 +435,7 @@
     <ClCompile Include="..\..\..\dali-adaptor\dali\internal\system\common\abort-handler.cpp" />
     <ClCompile Include="..\..\..\dali-adaptor\dali\internal\system\common\color-controller-impl.cpp" />
     <ClCompile Include="..\..\..\dali-adaptor\dali\internal\system\common\command-line-options.cpp" />
+    <ClCompile Include="..\..\..\dali-adaptor\dali\internal\system\common\configuration-manager.cpp" />
     <ClCompile Include="..\..\..\dali-adaptor\dali\internal\system\common\environment-options.cpp" />
     <ClCompile Include="..\..\..\dali-adaptor\dali\internal\system\common\fps-tracker.cpp" />
     <ClCompile Include="..\..\..\dali-adaptor\dali\internal\system\common\frame-time-stamp.cpp" />

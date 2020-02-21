@@ -841,6 +841,12 @@
     <ClCompile Include="..\..\..\dali-core\dali\internal\event\events\rotation-gesture\rotation-gesture-recognizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\dali-core\dali\devel-api\events\long-press-gesture-detector-devel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dali-core\dali\devel-api\rendering\frame-buffer-devel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

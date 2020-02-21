@@ -87,6 +87,9 @@
     <ClCompile Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\transition-effects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\gestures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\common.h">
