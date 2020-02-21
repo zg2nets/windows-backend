@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,6 @@
 #include <dali/integration-api/events/wheel-event-integ.h>
 #include <dali/integration-api/processor-interface.h>
 
-#include <fstream>
-
 // INTERNAL INCLUDES
 #include <dali/public-api/dali-adaptor-common.h>
 #include <dali/internal/system/common/thread-controller.h>
@@ -59,6 +57,7 @@
 #include <dali/internal/clipboard/common/clipboard-impl.h>
 #include <dali/internal/system/common/object-profiler.h>
 #include <dali/internal/window-system/common/display-connection.h>
+#include <dali/internal/window-system/common/display-utils.h> // For Utils::MakeUnique
 #include <dali/internal/window-system/common/window-impl.h>
 #include <dali/internal/window-system/common/window-render-surface.h>
 
@@ -68,6 +67,8 @@
 #include <dali/internal/imaging/common/image-loader-plugin-proxy.h>
 #include <dali/internal/imaging/common/image-loader.h>
 
+#include <dali/internal/system/common/configuration-manager.h>
+#include <dali/internal/system/common/environment-variables.h>
 
 using Dali::TextAbstraction::FontClient;
 
@@ -82,7 +83,9 @@ namespace Adaptor
 
 namespace
 {
+
 thread_local Adaptor* gThreadLocalAdaptor = NULL; // raw thread specific pointer to allow Adaptor::Get
+
 } // unnamed namespace
 
 Dali::Adaptor* Adaptor::New( Dali::Integration::SceneHolder window, Dali::RenderSurfaceInterface *surface, Dali::Configuration::ContextLoss configuration, EnvironmentOptions* environmentOptions )
@@ -278,6 +281,10 @@ void Adaptor::Initialize( GraphicsFactory& graphicsFactory, Dali::Configuration:
   if( mEnvironmentOptions->GetMinimumPinchDistance() >= 0 )
   {
     Integration::SetPinchGestureMinimumDistance( mEnvironmentOptions->GetMinimumPinchDistance() );
+  }
+  if( mEnvironmentOptions->GetLongPressMinimumHoldingTime() >= 0 )
+  {
+    Integration::SetLongPressMinimumHoldingTime( mEnvironmentOptions->GetLongPressMinimumHoldingTime() );
   }
 
   // Set max texture size
@@ -1079,6 +1086,7 @@ Adaptor::Adaptor(Dali::Integration::SceneHolder window, Dali::Adaptor& adaptor, 
   mGraphics( nullptr ),
   mDisplayConnection( nullptr ),
   mWindows(),
+  mConfigurationManager( nullptr ),
   mPlatformAbstraction( nullptr ),
   mCallbackManager( nullptr ),
   mNotificationOnIdleInstalled( false ),

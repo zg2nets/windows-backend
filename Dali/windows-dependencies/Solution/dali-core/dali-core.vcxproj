@@ -278,6 +278,7 @@
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\common\stage-devel.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\events\hit-test-algorithm.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\events\key-event-devel.cpp" />
+    <ClCompile Include="..\..\..\dali-core\dali\devel-api\events\long-press-gesture-detector-devel.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\events\rotation-gesture-detector.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\events\rotation-gesture.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\events\touch-data-devel.cpp" />
@@ -287,6 +288,7 @@
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\images\pixel-data-devel.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\object\handle-devel.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\object\csharp-type-registry.cpp" />
+    <ClCompile Include="..\..\..\dali-core\dali\devel-api\rendering\frame-buffer-devel.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\scripting\scripting.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\signals\signal-delegate.cpp" />
     <ClCompile Include="..\..\..\dali-core\dali\devel-api\threading\conditional-wait.cpp" />

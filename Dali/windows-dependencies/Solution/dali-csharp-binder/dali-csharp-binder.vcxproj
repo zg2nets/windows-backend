@@ -149,6 +149,7 @@
     <ClCompile Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\extents.cpp" />
     <ClCompile Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\flex-layout.cpp" />
     <ClCompile Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\font-client.cpp" />
+    <ClCompile Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\gestures.cpp" />
     <ClCompile Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\input-method-context.cpp" />
     <ClCompile Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\input-method-options.cpp" />
     <ClCompile Include="..\..\..\dali-csharp-binder\dali-csharp-binder\src\keyboard.cpp" />

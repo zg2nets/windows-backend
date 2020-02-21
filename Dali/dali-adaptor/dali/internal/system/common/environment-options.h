@@ -220,6 +220,31 @@ public:
   float GetMinimumPinchDistance() const;
 
   /**
+   * @return The minimum touch events required before a pinch can be started (-1 means it's not set)
+   */
+  int GetMinimumPinchTouchEvents() const;
+
+  /**
+   * @return The minimum touch events required after a pinch started (-1 means it's not set)
+   */
+  int GetMinimumPinchTouchEventsAfterStart() const;
+
+  /**
+   * @return The minimum touch events required before a rotation can be started (-1 means it's not set)
+   */
+  int GetMinimumRotationTouchEvents() const;
+
+  /**
+   * @return The minimum touch events required after a rotation started (-1 means it's not set)
+   */
+  int GetMinimumRotationTouchEventsAfterStart() const;
+
+  /**
+   * @return The minimum holding time required to be recognized as a long press gesture (milliseconds)
+   */
+  int GetLongPressMinimumHoldingTime() const;
+
+  /**
    * @return The width of the window
    */
   unsigned int GetWindowWidth() const;
@@ -347,6 +372,11 @@ private: // Data
   int mPanMinimumDistance;                        ///< minimum distance required before pan starts
   int mPanMinimumEvents;                          ///< minimum events required before pan starts
   float mPinchMinimumDistance;                    ///< minimum number of pixels moved before a pinch starts
+  int mPinchMinimumTouchEvents;                   ///< minimum events required before a pinch starts
+  int mPinchMinimumTouchEventsAfterStart;         ///< minimum events required after a pinch started
+  int mRotationMinimumTouchEvents;                ///< minimum events required before a rotation starts
+  int mRotationMinimumTouchEventsAfterStart;      ///< minimum events required after a rotation started
+  int mLongPressMinimumHoldingTime;               ///< minimum holding time required to be recognized as a long press gesture (millisecond)
   int mGlesCallTime;                              ///< time in seconds between status updates
   int mMultiSamplingLevel;                        ///< The number of samples required in multisample buffers
   ThreadingMode::Type mThreadingMode;             ///< threading mode

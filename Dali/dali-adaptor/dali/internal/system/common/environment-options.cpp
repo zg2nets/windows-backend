@@ -120,6 +120,11 @@ EnvironmentOptions::EnvironmentOptions()
   mPanMinimumDistance( -1 ),
   mPanMinimumEvents( -1 ),
   mPinchMinimumDistance( -1.0f ),
+  mPinchMinimumTouchEvents( -1 ),
+  mPinchMinimumTouchEventsAfterStart( -1 ),
+  mRotationMinimumTouchEvents( -1 ),
+  mRotationMinimumTouchEventsAfterStart( -1 ),
+  mLongPressMinimumHoldingTime( -1 ),
   mGlesCallTime( 0 ),
   mMultiSamplingLevel( DEFAULT_MULTI_SAMPLING_LEVEL ),
   mThreadingMode( ThreadingMode::COMBINED_UPDATE_RENDER ),
@@ -287,6 +292,31 @@ int EnvironmentOptions::GetMinimumPanEvents() const
 float EnvironmentOptions::GetMinimumPinchDistance() const
 {
   return mPinchMinimumDistance;
+}
+
+int EnvironmentOptions::GetMinimumPinchTouchEvents() const
+{
+  return mPinchMinimumTouchEvents;
+}
+
+int EnvironmentOptions::GetMinimumPinchTouchEventsAfterStart() const
+{
+  return mPinchMinimumTouchEventsAfterStart;
+}
+
+int EnvironmentOptions::GetMinimumRotationTouchEvents() const
+{
+  return mRotationMinimumTouchEvents;
+}
+
+int EnvironmentOptions::GetMinimumRotationTouchEventsAfterStart() const
+{
+  return mRotationMinimumTouchEventsAfterStart;
+}
+
+int EnvironmentOptions::GetLongPressMinimumHoldingTime() const
+{
+  return mLongPressMinimumHoldingTime;
 }
 
 unsigned int EnvironmentOptions::GetWindowWidth() const
@@ -508,6 +538,12 @@ void EnvironmentOptions::ParseEnvironmentOptions()
   if( GetFloatEnvironmentVariable( DALI_ENV_PINCH_MINIMUM_DISTANCE, pinchMinimumDistance ) )
   {
     mPinchMinimumDistance = pinchMinimumDistance;
+  }
+
+  int longPressMinimumHoldingTime = -1;
+  if( GetIntegerEnvironmentVariable( DALI_ENV_LONG_PRESS_MINIMUM_HOLDING_TIME, longPressMinimumHoldingTime ) )
+  {
+    mLongPressMinimumHoldingTime = longPressMinimumHoldingTime;
   }
 
   int glesCallTime(0);

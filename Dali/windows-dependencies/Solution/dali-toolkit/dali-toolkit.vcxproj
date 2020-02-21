@@ -297,6 +297,7 @@
     <ClCompile Include="..\..\..\dali-toolkit\dali-toolkit\devel-api\controls\text-controls\text-selection-popup.cpp" />
     <ClCompile Include="..\..\..\dali-toolkit\dali-toolkit\devel-api\controls\text-controls\text-selection-toolbar.cpp" />
     <ClCompile Include="..\..\..\dali-toolkit\dali-toolkit\devel-api\controls\tool-bar\tool-bar.cpp" />
+    <ClCompile Include="..\..\..\dali-toolkit\dali-toolkit\devel-api\controls\video-view\video-view-devel.cpp" />
     <ClCompile Include="..\..\..\dali-toolkit\dali-toolkit\devel-api\controls\web-view\web-view.cpp" />
     <ClCompile Include="..\..\..\dali-toolkit\dali-toolkit\devel-api\drag-drop-detector\drag-and-drop-detector.cpp" />
     <ClCompile Include="..\..\..\dali-toolkit\dali-toolkit\devel-api\focus-manager\keyinput-focus-manager.cpp" />
